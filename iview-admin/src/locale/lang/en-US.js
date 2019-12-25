@@ -60,5 +60,6 @@ export default {
   table: 'Table',
   'bingo-staff-card': 'Staff-Card',
   'bingo-state': 'Select State',
-  'bingo-date': 'Date'
+  'bingo-date': 'Date',
+  'bingo-demo': 'Demo'
 }

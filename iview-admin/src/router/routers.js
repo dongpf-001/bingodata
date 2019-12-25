@@ -248,6 +248,15 @@ export default [
         component: () => import('@/pages/components-api/bingo-state')
       },
       {
+        path: 'bingo-demo',
+        name: 'bingo-demo',
+        meta: {
+          icon: 'md-arrow-dropdown-circle',
+          title: '代码示例'
+        },
+        component: () => import('@/pages/components-api/bingo-demo')
+      },
+      {
         path: 'bingo-date',
         name: 'bingo-date',
         meta: {

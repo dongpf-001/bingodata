@@ -60,5 +60,6 @@ export default {
   table: '表格组件',
   'bingo-staff-card': '人员卡片组件',
   'bingo-state': '状态选择组件',
-  'bingo-date': '日期组件'
+  'bingo-date': '日期组件',
+  'bingo-demo': '示例代码'
 }
