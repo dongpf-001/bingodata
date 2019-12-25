@@ -36,7 +36,9 @@ export default {
       editState: false,
       disabledEdit: false,
       disabledDelete: false,
-      disabledAdd: false
+      disabledAdd: false,
+      dragstartNode: '', // 拖拽的节点
+      dragstartData: '' // 拖拽的节点数据
     }
   },
   props: {
@@ -55,6 +57,10 @@ export default {
     inputWidth: { // 是否控制所有权限不可使用
       type: Number,
       default: 12
+    },
+    draggable: { // 控制是否可以拖拽
+      type: Boolean,
+      default: false
     }
   },
   methods: {
@@ -65,6 +71,9 @@ export default {
           display: 'inline-block',
           lineHeight: '1.1rem',
           cursor: 'pointer'
+        },
+        attrs: {
+          draggable: this.draggable && !(node.nodeKey === 0) && !data.disabled && !data.disabledDrag
         },
         on: {
           click: () => {
@@ -118,7 +127,12 @@ export default {
               this.$refs.contentMenu.$refs.reference = event.target
               this.$refs.contentMenu.currentVisible = !this.$refs.contentMenu.currentVisible
             }
-          }
+          },
+          // 拖拽
+          dragstart: () => this.handleDragStart(root, node, data),
+          dragover: () => this.handleDragOver(root, node, data),
+          dragend: () => this.handleDragEnd(root, node, data),
+          drop: () => this.handleDrop(root, node, data)
         }
       }, [
         h('span', [
@@ -234,6 +248,80 @@ export default {
     },
     onSelectChange (selectData, data) {
       this.$emit('on-select-change', selectData, data)
+    },
+    // 拖拽
+    handleDragStart (root, node, data) {
+      const event = window.event || arguments[0]
+      this.dragstartNode = node
+      this.dragstartData = data
+    },
+    handleDragOver (root, node, data) {
+      const event = window.event || arguments[0]
+      event.preventDefault()
+    },
+    handleDragEnd (root, node, data) {
+      debugger
+      const event = window.event || arguments[0]
+      event.preventDefault()
+    },
+    handleDrop (root, node, data) {
+      // root 根
+      // node 移动的最终节点
+      // data 移动的最终节点的数据
+      // target_children 最终节点的子节点  最终+1
+      // source_parent 移动节点的父节点 最终-1
+      event.preventDefault()
+      if (node === this.dragstartNode) return
+      // 判断是否拖拽到子节点上了
+      const parentNodes = this.findAllParent(data, [root[0].node], [], 0)
+      if (parentNodes && parentNodes.length > 0) {
+        for (let i = 0; i < parentNodes.length; i++) {
+          if (parentNodes[i].value === this.dragstartNode.node.value) {
+            return
+          }
+        }
+      }
+      let _this = this
+      // 拖拽前的操作
+      this.$emit('on-drag-before', root, node, data, function () {
+        // 拖拽后修改被拖拽节点的parentValue
+        _this.dragstartNode.node.parentValue = data.value
+        const target_children = data.children || []
+        target_children.push(_this.dragstartData)
+        _this.$set(data, 'children', target_children)
+        const source_parentKey = root.find(el => el === _this.dragstartNode).parent
+        const source_parent = root.find(el => el.nodeKey === source_parentKey).node
+        const source_index = source_parent.children.indexOf(_this.dragstartData)
+        source_parent.children.splice(source_index, 1)
+        // console.log(root[0].node, 'data')
+        // console.log(_this.dragstartNode.node, '拖拽的节点')
+        // console.log(data, '目标节点')
+      })
+
+      this.$emit('on-drag', root, this.dragstartNode, data)
+    },
+    // 获取目标节点的所有父节点
+    findAllParent (node, tree, parentNodes = [], index = 0) {
+      if (!node || node.nodeKey === 0) {
+        return
+      }
+      this.findParent(node, parentNodes, tree)
+      let parentNode = parentNodes[index]
+      this.findAllParent(parentNode, tree, parentNodes, ++index)
+      return parentNodes
+    },
+    // 获取目标节点的所有父节点
+    findParent (node, parentNodes, tree) {
+      for (let i = 0; i < tree.length; i++) {
+        let item = tree[i]
+        if (item.value === node.parentValue) {
+          parentNodes.push(item)
+          return
+        }
+        if (item.children && item.children.length > 0) {
+          this.findParent(node, parentNodes, item.children)
+        }
+      }
     }
   }
 }

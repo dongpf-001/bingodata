@@ -17,7 +17,16 @@
                 </bingo-tree>
             </Card>
             <Card>
-                <bingo-tree ref="tree" :data="data" :showCheckbox="true" :maxLength="20" :inputWidth="6" @on-select-change="onSelectChange"></bingo-tree>
+                <bingo-tree ref="tree"
+                            :draggable="true"
+                            :data="data"
+                            :showCheckbox="true"
+                            :maxLength="20"
+                            :inputWidth="6"
+                            @on-select-change="onSelectChange"
+                            @on-drag-before="onDrop"
+                            @on-drag="onDrag"
+                ></bingo-tree>
             </Card>
             <div>
                 <pre v-highlight>
@@ -74,15 +83,16 @@ export default {
               checked: false,
               children: [
                 {
-                  title: 'leaf 1-1-1',
+                  title: '不可拖拽1',
                   expand: true,
                   value: 3,
                   selected: true,
                   checked: true,
+                  disabledDrag: true,
                   parentValue: 1
                 },
                 {
-                  title: 'leaf 1-1-2',
+                  title: '拖拽2',
                   expand: true,
                   value: 4,
                   selected: false,
@@ -102,7 +112,7 @@ export default {
               checked: false,
               children: [
                 {
-                  title: 'leaf 1-2-1',
+                  title: '拖拽3',
                   expand: true,
                   value: 5,
                   selected: false,
@@ -110,7 +120,7 @@ export default {
                   parentValue: 2
                 },
                 {
-                  title: 'leaf 1-2-1',
+                  title: '拖拽4',
                   expand: true,
                   value: 6,
                   selected: false,
@@ -380,13 +390,23 @@ export default {
     }
   },
   components: {
-    bingoTree,
+    bingoTree
     // Api
   },
   created () {
     this.getOragnization()
   },
   methods: {
+    onDrop (root, node, data, callback) {
+      if (!(data.title === '拖拽3')) {
+        callback()
+      }
+    },
+    onDrag (root, dragData, data) {
+      console.log(root[0].node, '根')
+      console.log(dragData, '拖拽的节点')
+      console.log(data, '目标节点')
+    },
     onQuery (model) {
       // Api.getOrganizationByName(model).then(res => {
       //   this.selectTreeData = []
