@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="tree-wrapper">
         <span v-if="showQuery">
             <Input v-model="queryModel" placeholder="请输入" style="width: 150px" size="small"/>
             <Button type="primary" @click="handleQuery" style="margin-left: 10px" size="small">查询</Button>
@@ -38,7 +38,11 @@ export default {
       disabledDelete: false,
       disabledAdd: false,
       dragstartNode: '', // 拖拽的节点
-      dragstartData: '' // 拖拽的节点数据
+      dragstartData: '', // 拖拽的节点数据
+      dropPosition: '', // 节点的位置
+      dragOverClass: '', // 0 -1 1
+      overNodeKey: '',
+      nodeIndex: '' // 目标节点的角标
     }
   },
   props: {
@@ -66,11 +70,18 @@ export default {
   methods: {
     renderContent (h, { root, node, data }) {
       return h('span', {
-        class: `${(data.selected || data.checked) && !this.$attrs.showCheckbox ? 'ivu-tree-title ivu-tree-title-selected' : 'ivu-tree-title'}`,
+        class: {
+          'ivu-tree-title ivu-tree-title-selected': (data.selected || data.checked) && !this.$attrs.showCheckbox,
+          'ivu-tree-title': !((data.selected || data.checked) && !this.$attrs.showCheckbox),
+          'tree-drag-over': this.overNodeKey === data.value && this.dragOverClass === 0,
+          'tree-drag-over-top': this.overNodeKey === data.value && this.dragOverClass === -1 && this.nodeIndex === 0,
+          'tree-drag-over-bottom': this.overNodeKey === data.value && this.dragOverClass === 1
+        },
         style: {
           display: 'inline-block',
           lineHeight: '1.1rem',
-          cursor: 'pointer'
+          cursor: 'pointer',
+          border: '1px solid transparent'
         },
         attrs: {
           draggable: this.draggable && !(node.nodeKey === 0) && !data.disabled && !data.disabledDrag
@@ -130,12 +141,16 @@ export default {
           },
           // 拖拽
           dragstart: () => this.handleDragStart(root, node, data),
+          dragenter: () => this.handleDragEnter(root, node, data),
           dragover: () => this.handleDragOver(root, node, data),
+          dragleave: () => this.handleLeave(root, node, data),
           dragend: () => this.handleDragEnd(root, node, data),
           drop: () => this.handleDrop(root, node, data)
         }
       }, [
-        h('span', [
+        h('div', {
+          class: 'tree-span'
+        }, [
           h(`${data.editState ? '' : 'span'}`, data.title),
           h(`${data.editState ? 'input' : ''}`, {
             class: 'ivu-input ivu-input-small ivu-input-edit',
@@ -255,14 +270,83 @@ export default {
       this.dragstartNode = node
       this.dragstartData = data
     },
+    handleDragEnter (root, node, data) {
+      const event = window.event || arguments[0]
+      this.overNodeKey = data.value
+    },
     handleDragOver (root, node, data) {
       const event = window.event || arguments[0]
       event.preventDefault()
+      // 获取目标节点对应的角标
+      if (!(node.nodeKey === 0)) {
+        const source_parentKey = root.find(el => el === node).parent
+        const source_parent = root.find(el => el.nodeKey === source_parentKey).node
+        this.nodeIndex = source_parent.children.indexOf(data)
+      } else {
+        this.nodeIndex = ''
+      }
+      if (this.overNodeKey === data.value) {
+        this.dropPosition = this.calDropPosition(event) // 放置标识0，-1,1
+        this.dragOverClass = this.setDragOverClass(data)
+      }
+    },
+    handleLeave (root, node, data) {
+      const event = window.event || arguments[0]
+      this.dragOverClass = ''
+    },
+    // 计算拖拽节点的放置方式0（作为目标节点的子节点），-1（放置在目标节点的前面）,1（放置在目标节点的后面）
+    calDropPosition (e) {
+      var offsetTop = this.getOffset(e.target).top
+      var offsetHeight = e.target.offsetHeight
+      var pageY = e.pageY
+      var gapHeight = 0.2 * offsetHeight
+      if (pageY > offsetTop + offsetHeight - gapHeight) {
+        // 放在目标节点后面-同级
+        return 1
+      }
+      if (pageY < offsetTop + gapHeight) {
+        // 放在目标节点前面-同级
+        return -1
+      }
+      // 放在目标节点里面-作为子节点
+      return 0
+    },
+    // 获取元素到文档顶部和左边的距离
+    getOffset (ele) {
+      if (!ele.getClientRects().length) {
+        return { top: 0, left: 0 }
+      }
+      var rect = ele.getBoundingClientRect()
+      if (rect.width || rect.height) {
+        var doc = ele.ownerDocument
+        var win = doc.defaultView
+        var docElem = doc.documentElement
+        return {
+          // 元素距离视窗顶部距离，滚动高度，元素边框厚度
+          top: rect.top + win.pageYOffset - docElem.clientTop,
+          left: rect.left + win.pageXOffset - docElem.clientLeft
+        }
+      }
+      return rect
+    },
+    setDragOverClass (data) {
+      var pos = this.dropPosition
+      if (this.overNodeKey !== data.value) {
+        return
+      }
+      if (pos === 0) {
+        return 0
+      } else if (pos === -1) {
+        return -1
+      } else if (pos === 1) {
+        return 1
+      }
+      return ''
     },
     handleDragEnd (root, node, data) {
-      debugger
       const event = window.event || arguments[0]
       event.preventDefault()
+      this.dragOverClass = ''
     },
     handleDrop (root, node, data) {
       // root 根
@@ -271,6 +355,7 @@ export default {
       // target_children 最终节点的子节点  最终+1
       // source_parent 移动节点的父节点 最终-1
       event.preventDefault()
+      // this.dragOverClass = ''
       if (node === this.dragstartNode) return
       // 判断是否拖拽到子节点上了
       const parentNodes = this.findAllParent(data, [root[0].node], [], 0)
@@ -283,20 +368,61 @@ export default {
       }
       let _this = this
       // 拖拽前的操作
-      this.$emit('on-drag-before', root, node, data, function () {
-        // 拖拽后修改被拖拽节点的parentValue
-        _this.dragstartNode.node.parentValue = data.value
-        const target_children = data.children || []
-        target_children.push(_this.dragstartData)
-        _this.$set(data, 'children', target_children)
-        const source_parentKey = root.find(el => el === _this.dragstartNode).parent
-        const source_parent = root.find(el => el.nodeKey === source_parentKey).node
-        const source_index = source_parent.children.indexOf(_this.dragstartData)
-        source_parent.children.splice(source_index, 1)
-        // console.log(root[0].node, 'data')
-        // console.log(_this.dragstartNode.node, '拖拽的节点')
-        // console.log(data, '目标节点')
-      })
+      if (this.dragOverClass === 0) { // 拖拽到节点上。
+        this.$emit('on-drag-before', root, node, data, function () {
+          // 拖拽后修改被拖拽节点的parentValue
+          _this.dragstartNode.node.parentValue = data.value
+          const target_children = data.children || []
+          target_children.push(_this.dragstartData)
+          _this.$set(data, 'children', target_children)
+          const source_parentKey = root.find(el => el === _this.dragstartNode).parent
+          const source_parent = root.find(el => el.nodeKey === source_parentKey).node
+          const source_index = source_parent.children.indexOf(_this.dragstartData)
+          source_parent.children.splice(source_index, 1)
+          // console.log(root[0].node, 'data')
+          // console.log(_this.dragstartNode.node, '拖拽的节点')
+          // console.log(data, '目标节点')
+        })
+      } else if (this.dragOverClass === 1) { // 拖拽到目标节点下面
+        debugger
+        // 拖拽到同级兄弟节点
+        const source_parentKey = root.find(el => el === _this.dragstartNode).parent // 拖拽节点的父节点
+        const source_parent = root.find(el => el.nodeKey === source_parentKey).node.children
+        const index = source_parent.indexOf(_this.dragstartData)
+        source_parent.splice(index, 1)
+        let target_parent = []
+        if (node.nodeKey === 0) { // 判断目标节点是否是根节点
+          target_parent = node.children
+          _this.dragstartNode.node.parentValue = 0 // 改变拖拽节点父节点的值
+        } else {
+          const target_parentKey = root.find(el => el === node).parent // 目标节点的父节点
+          target_parent = root.find(el => el.nodeKey === target_parentKey).node.children
+          // 改变拖拽节点父节点的值
+          _this.dragstartNode.node.parentValue = root.find(el => el.nodeKey === target_parentKey).node.value
+        }
+        const data_index = target_parent.indexOf(data)
+        target_parent.splice(data_index + 1, 0, _this.dragstartData) // 第0个位置添加
+        // _this.$set(data, 'children', target_parent)
+      } else if (this.dragOverClass === -1) { // 拖拽到目标节点上面
+        // 拖拽到同级兄弟节点
+        const source_parentKey = root.find(el => el === _this.dragstartNode).parent // 拖拽节点的父节点
+        const source_parent = root.find(el => el.nodeKey === source_parentKey).node.children
+        const index = source_parent.indexOf(_this.dragstartData)
+        source_parent.splice(index, 1)
+        let target_parent = []
+        if (node.nodeKey === 0) { // 判断目标节点是否是根节点
+          target_parent = node.children
+          _this.dragstartNode.node.parentValue = 0 // 改变拖拽节点父节点的值
+        } else {
+          const target_parentKey = root.find(el => el === node).parent // 目标节点的父节点
+          target_parent = root.find(el => el.nodeKey === target_parentKey).node.children
+          // 改变拖拽节点父节点的值
+          _this.dragstartNode.node.parentValue = root.find(el => el.nodeKey === target_parentKey).node.value
+        }
+        const data_index = target_parent.indexOf(data)
+        target_parent.splice(0, 0, _this.dragstartData) // 第0个位置添加
+        // _this.$set(data, 'children', target_parent)
+      }
 
       this.$emit('on-drag', root, this.dragstartNode, data)
     },
@@ -327,5 +453,28 @@ export default {
 }
 </script>
 
-<style>
+<style lang="less">
+  .tree-wrapper .ivu-tree ul li {
+    margin: 0!important;
+  }
+  .tree-span {
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+  .tree-wrapper .ivu-checkbox-wrapper {
+    margin-top: 4px;
+  }
+  .tree-drag-over {
+    background-color: #5295E7;
+    color: white;
+    /*border: 2px #5295E7 solid;*/
+  }
+  .tree-drag-over-top {
+    border-top: 1px red solid!important;
+    border-radius: 0!important;
+  }
+  .tree-drag-over-bottom {
+    border-bottom: 1px #5295E7 solid!important;
+    border-radius: 0!important;
+  }
 </style>

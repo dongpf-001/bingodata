@@ -112,7 +112,7 @@ export default {
               checked: false,
               children: [
                 {
-                  title: '拖拽3',
+                  title: '不可以拖拽到我身上',
                   expand: true,
                   value: 5,
                   selected: false,
@@ -123,6 +123,22 @@ export default {
                   title: '拖拽4',
                   expand: true,
                   value: 6,
+                  selected: false,
+                  checked: false,
+                  parentValue: 2
+                },
+                {
+                  title: '拖拽5',
+                  expand: true,
+                  value: 7,
+                  selected: false,
+                  checked: false,
+                  parentValue: 2
+                },
+                {
+                  title: '拖拽6',
+                  expand: true,
+                  value: 8,
                   selected: false,
                   checked: false,
                   parentValue: 2
@@ -398,7 +414,7 @@ export default {
   },
   methods: {
     onDrop (root, node, data, callback) {
-      if (!(data.title === '拖拽3')) {
+      if (!(data.value === 5)) {
         callback()
       }
     },

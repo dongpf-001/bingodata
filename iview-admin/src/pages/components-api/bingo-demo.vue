@@ -1,162 +1,103 @@
-
 <template>
-  <div>
-    <Tree :data="data5" :render="renderContent" ></Tree>
-  </div>
+  <el-tree
+    :data="data"
+    node-key="id"
+    default-expand-all
+    @node-drag-start="handleDragStart"
+    @node-drag-enter="handleDragEnter"
+    @node-drag-leave="handleDragLeave"
+    @node-drag-over="handleDragOver"
+    @node-drag-end="handleDragEnd"
+    @node-drop="handleDrop"
+    draggable
+    :allow-drop="allowDrop"
+    :allow-drag="allowDrag">
+  </el-tree>
 </template>
+
 <script>
 export default {
   data () {
     return {
-      data5: [
-        {
-          title: 'parent 1',
-          expand: true,
-          children: [
-            {
-              title: 'parent 1-1',
-              expand: true,
-              children: [
-                {
-                  title: 'leaf 1-1-1'
-                },
-                {
-                  title: 'leaf 1-1-2'
-                }
-              ]
-            },
-            {
-              title: 'parent 1-2',
-              expand: true,
-              children: [
-                {
-                  title: 'leaf 1-2-1'
-                },
-                {
-                  title: 'leaf 1-2-1'
-                }
-              ]
-            }
-          ]
-        }
-      ],
-      buttonProps: {
-        type: 'default',
-        size: 'small'
-      },
-      dragstartNode: '',
-      dragstartData: ''
+      data: [{
+        id: 1,
+        label: '一级 1',
+        children: [{
+          id: 4,
+          label: '二级 1-1',
+          children: [{
+            id: 9,
+            label: '三级 1-1-1'
+          }, {
+            id: 10,
+            label: '三级 1-1-2'
+          }]
+        }]
+      }, {
+        id: 2,
+        label: '一级 2',
+        children: [{
+          id: 5,
+          label: '二级 2-1'
+        }, {
+          id: 6,
+          label: '二级 2-2'
+        }]
+      }, {
+        id: 3,
+        label: '一级 3',
+        children: [{
+          id: 7,
+          label: '二级 3-1'
+        }, {
+          id: 8,
+          label: '二级 3-2',
+          children: [{
+            id: 11,
+            label: '三级 3-2-1'
+          }, {
+            id: 12,
+            label: '三级 3-2-2'
+          }, {
+            id: 13,
+            label: '三级 3-2-3'
+          }]
+        }]
+      }],
+      defaultProps: {
+        children: 'children',
+        label: 'label'
+      }
     }
   },
-  mounted () {
-  },
   methods: {
-    renderContent (h, { root, node, data }) {
-      return h('span', {
-        style: {
-          display: 'inline-block',
-          width: '100%'
-        },
-        attrs: {
-          draggable: 'true'
-        },
-        on: {
-          dragstart: () => this.handleDragStart(root, node, data),
-          dragover: () => this.handleDragOver(root, node, data),
-          dragend: () => this.handleDragEnd(root, node, data),
-          drop: () => this.handleDrop(root, node, data)
-        }
-      }, [
-        h('span', [
-          h('Icon', {
-            props: {
-              type: 'ios-paper-outline'
-            },
-            style: {
-              marginRight: '8px'
-            }
-          }),
-          h('span', data.title)
-        ]),
-        h('span', {
-          style: {
-            display: 'inline-block',
-            marginRight: '32px',
-            marginLeft: '10px'
-          }
-        }, [
-          h('Button', {
-            props: Object.assign({}, this.buttonProps, {
-              icon: 'ios-create',
-              shape: 'circle'
-            }),
-            style: {
-              marginRight: '8px'
-            },
-            on: {
-              click: () => { this.append(data) }
-            }
-          }),
-          h('Button', {
-            props: Object.assign({}, this.buttonProps, {
-              icon: 'ios-remove',
-              shape: 'circle'
-            }),
-            on: {
-              click: () => { this.remove(root, node, data) }
-            }
-          })
-        ])
-      ])
+    handleDragStart (node, ev) {
+      console.log('drag start', node)
     },
-    append (data) {
-      const children = data.children || []
-      children.push({
-        title: 'appended node',
-        expand: true
-      })
-      this.$set(data, 'children', children)
+    handleDragEnter (draggingNode, dropNode, ev) {
+      console.log('tree drag enter: ', dropNode.label)
     },
-    remove (root, node, data) {
-      const parentKey = root.find(el => el === node).parent
-      const parent = root.find(el => el.nodeKey === parentKey).node
-      const index = parent.children.indexOf(data)
-      parent.children.splice(index, 1)
+    handleDragLeave (draggingNode, dropNode, ev) {
+      console.log('tree drag leave: ', dropNode.label)
     },
-    handleDragStart (root, node, data) {
-      const event = window.event || arguments[0]
-      this.dragstartNode = node
-      this.dragstartData = data
+    handleDragOver (draggingNode, dropNode, ev) {
+      console.log('tree drag over: ', dropNode.label)
     },
-    handleDragOver (root, node, data) {
-      const event = window.event || arguments[0]
-      event.preventDefault()
+    handleDragEnd (draggingNode, dropNode, dropType, ev) {
+      console.log('tree drag end: ', dropNode && dropNode.label, dropType)
     },
-    handleDragEnd (root, node, data) {
-      const event = window.event || arguments[0]
-      event.preventDefault()
+    handleDrop (draggingNode, dropNode, dropType, ev) {
+      console.log('tree drop: ', dropNode.label, dropType)
     },
-    handleDrop (root, node, data) {
-      debugger
-      // root 根
-      // node 移动的最终节点
-      // data 移动的最终节点的数据
-      // target_parent 最终节点的父节点
-      // target_children 最终节点的子节点  最终+1
-      // source_parent 移动节点的父节点 最终-1
-      event.preventDefault()
-      if (node === this.dragstartNode) return
-      const target_parentKey = root.find(el => el === node).parent
-      const target_parent = root.find(el => el.nodeKey === target_parentKey).node
-      const target_index = target_parent.children.indexOf(data)
-      const target_children = data.children || []
-      target_children.push(this.dragstartData)
-      this.$set(data, 'children', target_children)
-      const source_parentKey = root.find(el => el === this.dragstartNode).parent
-      const source_parent = root.find(el => el.nodeKey === source_parentKey).node
-      const source_index = source_parent.children.indexOf(this.dragstartData)
-      source_parent.children.splice(source_index, 1)
-      console.log(this.data5, 'data5')
+    allowDrop (draggingNode, dropNode, type) {
+      if (dropNode.data.label === '二级 3-1') {
+        return type !== 'inner'
+      } else {
+        return true
+      }
+    },
+    allowDrag (draggingNode) {
+      return draggingNode.data.label.indexOf('三级 3-2-2') === -1
     }
   }
 }
