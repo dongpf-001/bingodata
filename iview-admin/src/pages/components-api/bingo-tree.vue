@@ -23,9 +23,11 @@
                             :showCheckbox="true"
                             :maxLength="20"
                             :inputWidth="6"
+                            :delete-node-before="deleteNodeBefore"
                             @on-select-change="onSelectChange"
-                            @on-drag-before="onDrop"
+                            :on-drag-before="onDrop"
                             @on-drag="onDrag"
+                            @delete-node="deleteNode"
                 ></bingo-tree>
             </Card>
             <div>
@@ -414,6 +416,7 @@ export default {
   },
   methods: {
     onDrop (root, node, data, callback) {
+      debugger
       if (!(data.value === 5)) {
         callback()
       }
@@ -525,6 +528,13 @@ export default {
     deleteNode (data, deleteData) {
       console.log(data)
       console.log(deleteData)
+    },
+    deleteNodeBefore (data, deleteData, callback) {
+      debugger
+      if (deleteData.node.title === '拖拽4') {
+        return
+      }
+      callback()
     },
     onSelectChange (data, item) {
       debugger

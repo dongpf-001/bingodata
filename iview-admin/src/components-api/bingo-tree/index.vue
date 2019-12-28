@@ -40,9 +40,9 @@ export default {
       dragstartNode: '', // 拖拽的节点
       dragstartData: '', // 拖拽的节点数据
       dropPosition: '', // 节点的位置
-      dragOverClass: '', // 0 -1 1
-      overNodeKey: '',
-      nodeIndex: '' // 目标节点的角标
+      dragOverClass: '', // 0：目标节点内  -1：目标节点上   1：目标节点下
+      overNodeKey: '', // 拖拽经过的节点
+      nodeIndex: '' // 目标节点的角标，
     }
   },
   props: {
@@ -65,6 +65,18 @@ export default {
     draggable: { // 控制是否可以拖拽
       type: Boolean,
       default: false
+    },
+    deleteNodeBefore: { // 删除前的方法，回调
+      type: Function,
+      default: (data1, data2, callback) => {
+        callback()
+      }
+    },
+    onDragBefore: { // 拖拽前的方法，回调
+      type: Function,
+      default: (data1, data2, data3, callback) => {
+        callback()
+      }
     }
   },
   methods: {
@@ -247,13 +259,19 @@ export default {
     // 删除节点
     deleteNode () {
       event.stopPropagation()
-      const parentKey = this.root.find(el => el === this.node).parent
-      const parent = this.root.find(el => el.nodeKey === parentKey).node
-      const index = parent.children.indexOf(this.nodeInfo)
-      let data = parent.children[index]
-      parent.children.splice(index, 1)
-      // 返回的参数  全部数据/删除的数据
-      this.$emit('delete-node', this.$attrs.data, data)
+      let _this = this
+      // 回调删除
+      if (this.deleteNodeBefore && (typeof this.deleteNodeBefore === 'function')) {
+        _this.deleteNodeBefore.apply(this, [this.$attrs.data, this.node, function () {
+          const parentKey = _this.root.find(el => el === _this.node).parent
+          const parent = _this.root.find(el => el.nodeKey === parentKey).node
+          const index = parent.children.indexOf(_this.nodeInfo)
+          let data = parent.children[index]
+          parent.children.splice(index, 1)
+          // 返回的参数  全部数据/删除的数据
+          _this.$emit('delete-node', _this.$attrs.data, data)
+        }])
+      }
     },
     handleQuery () {
       this.$emit('on-query', this.queryModel)
@@ -368,63 +386,48 @@ export default {
       }
       let _this = this
       // 拖拽前的操作
-      if (this.dragOverClass === 0) { // 拖拽到节点上。
-        this.$emit('on-drag-before', root, node, data, function () {
-          // 拖拽后修改被拖拽节点的parentValue
-          _this.dragstartNode.node.parentValue = data.value
-          const target_children = data.children || []
-          target_children.push(_this.dragstartData)
-          _this.$set(data, 'children', target_children)
-          const source_parentKey = root.find(el => el === _this.dragstartNode).parent
-          const source_parent = root.find(el => el.nodeKey === source_parentKey).node
-          const source_index = source_parent.children.indexOf(_this.dragstartData)
-          source_parent.children.splice(source_index, 1)
-          // console.log(root[0].node, 'data')
-          // console.log(_this.dragstartNode.node, '拖拽的节点')
-          // console.log(data, '目标节点')
-        })
-      } else if (this.dragOverClass === 1) { // 拖拽到目标节点下面
-        debugger
-        // 拖拽到同级兄弟节点
-        const source_parentKey = root.find(el => el === _this.dragstartNode).parent // 拖拽节点的父节点
-        const source_parent = root.find(el => el.nodeKey === source_parentKey).node.children
-        const index = source_parent.indexOf(_this.dragstartData)
-        source_parent.splice(index, 1)
-        let target_parent = []
-        if (node.nodeKey === 0) { // 判断目标节点是否是根节点
-          target_parent = node.children
-          _this.dragstartNode.node.parentValue = 0 // 改变拖拽节点父节点的值
-        } else {
-          const target_parentKey = root.find(el => el === node).parent // 目标节点的父节点
-          target_parent = root.find(el => el.nodeKey === target_parentKey).node.children
-          // 改变拖拽节点父节点的值
-          _this.dragstartNode.node.parentValue = root.find(el => el.nodeKey === target_parentKey).node.value
-        }
-        const data_index = target_parent.indexOf(data)
-        target_parent.splice(data_index + 1, 0, _this.dragstartData) // 第0个位置添加
-        // _this.$set(data, 'children', target_parent)
-      } else if (this.dragOverClass === -1) { // 拖拽到目标节点上面
-        // 拖拽到同级兄弟节点
-        const source_parentKey = root.find(el => el === _this.dragstartNode).parent // 拖拽节点的父节点
-        const source_parent = root.find(el => el.nodeKey === source_parentKey).node.children
-        const index = source_parent.indexOf(_this.dragstartData)
-        source_parent.splice(index, 1)
-        let target_parent = []
-        if (node.nodeKey === 0) { // 判断目标节点是否是根节点
-          target_parent = node.children
-          _this.dragstartNode.node.parentValue = 0 // 改变拖拽节点父节点的值
-        } else {
-          const target_parentKey = root.find(el => el === node).parent // 目标节点的父节点
-          target_parent = root.find(el => el.nodeKey === target_parentKey).node.children
-          // 改变拖拽节点父节点的值
-          _this.dragstartNode.node.parentValue = root.find(el => el.nodeKey === target_parentKey).node.value
-        }
-        const data_index = target_parent.indexOf(data)
-        target_parent.splice(0, 0, _this.dragstartData) // 第0个位置添加
-        // _this.$set(data, 'children', target_parent)
+      if (this.onDragBefore && (typeof this.onDragBefore === 'function')) {
+        _this.onDragBefore.apply(this, [root, _this.dragstartData, data, function () {
+          if (_this.dragOverClass === 0) { // 拖拽到节点上。
+            // 拖拽后修改被拖拽节点的parentValue
+            _this.dragstartNode.node.parentValue = data.value
+            const target_children = data.children || []
+            target_children.push(_this.dragstartData)
+            _this.$set(data, 'children', target_children)
+            const source_parentKey = root.find(el => el === _this.dragstartNode).parent
+            const source_parent = root.find(el => el.nodeKey === source_parentKey).node
+            const source_index = source_parent.children.indexOf(_this.dragstartData)
+            source_parent.children.splice(source_index, 1)
+            // console.log(root[0].node, 'data')
+            // console.log(_this.dragstartNode.node, '拖拽的节点')
+            // console.log(data, '目标节点')
+            _this.$emit('on-drag', root, _this.dragstartData, data)
+          } else if (_this.dragOverClass === 1 || _this.dragOverClass === -1) { // 拖拽到目标节点下面或上面
+            // 拖拽到同级兄弟节点
+            const source_parentKey = root.find(el => el === _this.dragstartNode).parent // 拖拽节点的父节点
+            const source_parent = root.find(el => el.nodeKey === source_parentKey).node.children
+            const index = source_parent.indexOf(_this.dragstartData)
+            source_parent.splice(index, 1)
+            let target_parent = []
+            if (node.nodeKey === 0) { // 判断目标节点是否是根节点
+              target_parent = data.children
+              _this.dragstartNode.node.parentValue = 0 // 改变拖拽节点父节点的值
+            } else {
+              const target_parentKey = root.find(el => el === node).parent // 目标节点的父节点
+              target_parent = root.find(el => el.nodeKey === target_parentKey).node.children
+              // 改变拖拽节点父节点的值
+              _this.dragstartNode.node.parentValue = root.find(el => el.nodeKey === target_parentKey).node.value
+            }
+            const data_index = target_parent.indexOf(data)
+            if (_this.dragOverClass === 1) {
+              target_parent.splice(data_index + 1, 0, _this.dragstartData) // 第0个位置添加
+            } else if (_this.dragOverClass === -1) {
+              target_parent.splice(0, 0, _this.dragstartData) // 第0个位置添加
+            }
+            _this.$emit('on-drag', root, _this.dragstartData, data)
+          }
+        }])
       }
-
-      this.$emit('on-drag', root, this.dragstartNode, data)
     },
     // 获取目标节点的所有父节点
     findAllParent (node, tree, parentNodes = [], index = 0) {
