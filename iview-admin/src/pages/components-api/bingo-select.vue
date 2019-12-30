@@ -19,7 +19,7 @@
                             <bingo-grid-item>
                                 <FormItem label="下拉多选" prop="model2" label-for="model2">
                                     <bingo-select ref="element" v-model="model.model2" :data="datas"
-                                                  :multiple="multiple" :filterable="filterable"
+                                                  :multiple="multiple" :filterable="filterable" :showSelectAll="true"
                                                   :labelInValue="labelInValue" @on-change="onChange">
                                     </bingo-select>
                                     <Button @click="btnClear2">清空</Button>{{model.model2}}
@@ -29,7 +29,7 @@
                                 <FormItem label="远程查询" label-for="model3">
                                     <bingo-select ref="element" v-model="model.model3" :data="datas1" :multiple="multiple"
                                                   :filterable="filterable" :labelInValue="labelInValue" :remote="remote"
-                                                  :max-tag-count="2"
+                                                  :max-tag-count="2" :showSelectAll="true"
                                                   :remoteMethod="remoteMethod" :loading="loading" placeholder="请选择">
                                     </bingo-select>{{model.model3}}
                                 </FormItem>
@@ -150,8 +150,8 @@ export default {
   data () {
     return {
       model: {
-        model1: '1',
-        model2: ['1', '2'],
+        model1: 1,
+        model2: [1, 2],
         model3: '',
         treeValue1: '',
         treeValue2: '',
@@ -752,7 +752,6 @@ export default {
       // })
     },
     loadData (item, callback) {
-      debugger
       let value = item.value
       this.getOragnization(item, value)
     },
@@ -792,7 +791,6 @@ export default {
       }
     },
     handleSearch2 (value) {
-      debugger
       this.autoData1 = !value || value.indexOf('@') >= 0 ? [] : [
         value + '@qq.com',
         value + '@sina.com',
@@ -800,7 +798,6 @@ export default {
       ]
     },
     filterMethod (value, option) {
-      debugger
       return option.toUpperCase().indexOf(value.toUpperCase()) !== -1
     },
     onChange (value) {
