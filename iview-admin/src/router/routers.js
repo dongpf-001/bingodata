@@ -194,6 +194,15 @@ export default [
         component: () => import('@/pages/components-api/bingo-choice')
       },
       {
+        path: 'bingo-select',
+        name: 'bingo-select',
+        meta: {
+          icon: 'md-arrow-dropdown-circle',
+          title: '下拉选择组件'
+        },
+        component: () => import('@/pages/components-api/bingo-select')
+      },
+      {
         path: 'bingo-select-icon',
         name: 'bingo-select-icon',
         meta: {
