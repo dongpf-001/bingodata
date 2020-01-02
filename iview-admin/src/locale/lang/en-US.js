@@ -61,5 +61,6 @@ export default {
   'bingo-staff-card': 'Staff-Card',
   'bingo-state': 'Select State',
   'bingo-date': 'Date',
-  'bingo-demo': 'Demo'
+  'bingo-demo': 'Demo',
+  'bingo-ag-table': 'Ag-Grid'
 }

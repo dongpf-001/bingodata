@@ -22,6 +22,10 @@ import './styles/iconfont/iconfont.js'
 import Highlight from './plugin/highlight/highlight.js'
 // 引入iview pro
 import './libs/iview-pro/iview-pro.css'
+// 引入ag-grid的样式文件
+import '../node_modules/ag-grid-community/dist/styles/ag-grid.css'
+import '../node_modules/ag-grid-community/dist/styles/ag-theme-balham.css'
+
 // import iViewPro from './libs/iview-pro/iview-pro.min.js'
 Vue.use(Highlight)
 // Vue.use(iViewPro)

@@ -1,17 +1,14 @@
 <template>
-  <div class="content-inner">
-    <!-- columnDefs表头  rowData表格数据-->
-    <!-- ag-theme-balham 是ag-grid自带的表格样式类 -->
-    <ag-grid-vue class="table ag-theme-balham" :columnDefs="columnDefs" :rowData="rowData"></ag-grid-vue>
-  </div>
+    <div class="content-inner">
+      <bingo-ag-table :columnDefs="columnDefs" :rowData="rowData"></bingo-ag-table>
+    </div>
 </template>
 
 <script>
-// 引入ag-grid-vue
-import { AgGridVue } from 'ag-grid-vue'
+import bingoAgTable from '@/components-api/bingo-ag-table'
 
 export default {
-  components: { AgGridVue },
+  name: 'bingo-ag-table1',
   data () {
     return {
       columnDefs: [
@@ -25,13 +22,15 @@ export default {
         { name: '姜宇', gender: '男', age: 18 }
       ]
     }
+  },
+  components: { bingoAgTable },
+  created () {
+  },
+  mounted () {
+  },
+  computed: {},
+  watch: {},
+  methods: {
   }
 }
 </script>
-
-<style scoped>
-  .table{
-    width: 100%;
-    height: 100%;
-  }
-</style>

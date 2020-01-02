@@ -174,13 +174,13 @@ export default [
             component: () => import('@/pages/components-api/table/bingo-table')
           },
           {
-            path: 'bingo-table',
-            name: 'bingo-table',
+            path: 'bingo-ag-table',
+            name: 'bingo-ag-table',
             meta: {
               icon: 'md-arrow-dropdown-circle',
-              title: '表格组件'
+              title: '高级表格组件'
             },
-            component: () => import('@/pages/components-api/table/bingo-table')
+            component: () => import('@/pages/components-api/table/bingo-ag-table')
           }
         ]
       },

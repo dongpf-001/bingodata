@@ -61,5 +61,6 @@ export default {
   'bingo-staff-card': '人员卡片组件',
   'bingo-state': '状态选择组件',
   'bingo-date': '日期组件',
-  'bingo-demo': '示例代码'
+  'bingo-demo': '示例代码',
+  'bingo-ag-table': '高级表格'
 }
