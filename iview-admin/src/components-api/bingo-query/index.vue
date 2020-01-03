@@ -11,7 +11,7 @@
                         </span>
                     </div>
                     <FormItem class="query-form">
-                        <a v-font="14" class="ivu-mr-8" @click="collapseClick" v-if="node.length>0">
+                        <a style="font-size: 14px" class="ivu-mr-8" @click="collapseClick" v-if="node.length>0">
                             <template v-if="collapse">
                                 <Icon type="ios-arrow-down" />
                             </template>
@@ -32,7 +32,7 @@
                             <div slot="footer-button">
                                 <Button type="primary" @click="handleSubmit">{{$t('page.common.search')}}</Button>
                                 <Button class="ivu-ml-8" @click="handleReset">{{$t('page.common.reset')}}</Button>
-                                <a v-font="14" class="ivu-ml-8" @click="close">
+                                <a style="font-size: 14px" class="ivu-ml-8" @click="close">
                                     <template>
                                         <Icon type="ios-arrow-up" />
                                     </template>
@@ -41,7 +41,7 @@
                         </bingo-modal-form>
                     </div>
                     <FormItem class="query-form">
-                        <a v-font="14" class="ivu-mr-8" @click="open"  v-if="node.length>0">
+                        <a style="font-size: 14px" class="ivu-mr-8" @click="open"  v-if="node.length>0">
                             <template>
                                 <Icon type="ios-arrow-down" />
                             </template>
