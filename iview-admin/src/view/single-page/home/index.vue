@@ -126,7 +126,7 @@ export default {
       widths: 1450,
       height: 770,
       topHeight: 0,
-      flag: 1,
+      flag: 2,
       // 卡片区数据
       taskStatistical: { // 完成统计
         title: '完成统计',
