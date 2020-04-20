@@ -1,10 +1,12 @@
 <template>
-
+  <Card>
+    表单缓存
+  </Card>
 </template>
 
 <script>
 export default {
-  name: 'codeMirror1',
+  name: 'form-demo',
   components: {
   },
   data () {

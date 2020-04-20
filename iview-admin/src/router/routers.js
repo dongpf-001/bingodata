@@ -405,6 +405,35 @@ export default [
     ]
   },
   {
+    path: '/demo',
+    name: 'demo',
+    meta: {
+      icon: 'md-cloud-upload',
+      title: '样例'
+    },
+    component: Main,
+    children: [
+      {
+        path: 'form-demo',
+        name: 'form-demo',
+        meta: {
+          icon: 'ios-document',
+          title: '表单缓存'
+        },
+        component: () => import('@/pages/components-api/demo/form-demo.vue')
+      },
+      {
+        path: 'table-demo',
+        name: 'table-demo',
+        meta: {
+          icon: 'ios-document',
+          title: '正常表格案例'
+        },
+        component: () => import('@/pages/components-api/demo/table-demo.vue')
+      }
+    ]
+  },
+  {
     path: '/update',
     name: 'update',
     meta: {

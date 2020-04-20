@@ -63,5 +63,8 @@ export default {
   'bingo-date': '日期组件',
   'bingo-demo': '示例代码',
   'bingo-ag-table': '高级表格',
-  'bingo-run': '在线编辑'
+  'bingo-run': '在线编辑',
+  'demo': '样例',
+  'form-demo': '表单缓存样例',
+  'table-demo': '正常表格样例'
 }

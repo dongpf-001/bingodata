@@ -1,10 +1,12 @@
 <template>
-
+  <div>
+    表格案例
+  </div>
 </template>
 
 <script>
 export default {
-  name: 'codeMirror1',
+  name: 'form-demo',
   components: {
   },
   data () {

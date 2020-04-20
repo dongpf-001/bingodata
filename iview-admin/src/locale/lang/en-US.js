@@ -63,5 +63,8 @@ export default {
   'bingo-date': 'Date',
   'bingo-demo': 'Demo',
   'bingo-ag-table': 'Ag-Grid',
-  'bingo-run': 'Run Code'
+  'bingo-run': 'Run Code',
+  'demo': 'Demo',
+  'form-demo': 'Form Cache',
+  'table-demo': 'Table Demo'
 }
