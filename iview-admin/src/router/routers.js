@@ -274,6 +274,15 @@ export default [
         },
         component: () => import('@/pages/components-api/bingo-date')
       },
+      {
+        path: 'bingo-run',
+        name: 'bingo-run',
+        meta: {
+          icon: 'md-arrow-dropdown-circle',
+          title: 'Run Code'
+        },
+        component: () => import('@/pages/components-api/bingo-run')
+      },
     ]
   },
   {

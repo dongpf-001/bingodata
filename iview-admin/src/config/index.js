@@ -17,7 +17,7 @@ export default {
    * @description api请求基础路径
    */
   baseUrl: {
-    dev: 'http://172.20.30.31:30003/api/v1',
+    dev: 'http://localhost:8081',
     pro: 'https://produce.com'
   },
   /**

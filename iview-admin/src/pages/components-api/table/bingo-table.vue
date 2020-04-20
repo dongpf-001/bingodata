@@ -123,7 +123,7 @@
 
 <script>
 import bingoTable from '@/components-api/bingo-table'
-
+import { getTableData } from '@/api/mock.js'
 export default {
   name: 'bingo-table',
   data () {
@@ -220,6 +220,7 @@ export default {
   },
   components: { bingoTable },
   created () {
+    this.getTableDatas()
   },
   mounted () {
     this.data = [
@@ -347,6 +348,13 @@ export default {
           }
         ]
       }
+    },
+    getTableDatas () {
+      debugger
+      getTableData().then(res => {
+        debugger
+        console.log(res)
+      })
     },
     onSelect (selection, row) {
       console.log(selection, row)
