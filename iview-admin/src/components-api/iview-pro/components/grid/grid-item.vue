@@ -4,62 +4,63 @@
     </div>
 </template>
 <script>
-    import { getStyle } from '../../utils/assist.js';
+import { getStyle } from '../../utils/assist.js'
 
-    export default {
-        name: 'GridItem',
-        inject: ['GridInstance'],
-        data () {
-            return {
-                height: 0
-            };
-        },
-        computed: {
-            col () {
-                return this.GridInstance.col;
-            },
-            square () {
-                return this.GridInstance.square;
-            },
-            styles () {
-                const style = {
-                    width: `${100 / this.col}%`
-                };
+export default {
+  name: 'GridItem',
+  inject: ['GridInstance'],
+  data () {
+    return {
+      height: 0
+    }
+  },
+  computed: {
+    col () {
+      debugger
+      return this.GridInstance.col
+    },
+    square () {
+      return this.GridInstance.square
+    },
+    styles () {
+      const style = {
+        width: `${100 / this.col}%`
+      }
 
-                if (this.height && this.square) {
-                    style.height = `${this.height}px`;
-                }
-                return style;
-            },
-            mainStyles () {
-                return {
-                    padding: this.GridInstance.padding
-                };
-            }
-        },
-        watch: {
-            col () {
-                this.$nextTick(() => {
-                    this.handleChangeHeight();
-                });
-            },
-            square () {
-                this.handleChangeHeight();
-            },
-            'GridInstance.resizeCount' () {
-                this.handleChangeHeight();
-            }
-        },
-        methods: {
-            handleChangeHeight () {
-                if (this.square) {
-                    const $col = this.$refs.col;
-                    this.height = parseFloat(getStyle($col, 'width'));
-                }
-            }
-        },
-        mounted () {
-            this.handleChangeHeight();
-        }
-    };
+      if (this.height && this.square) {
+        style.height = `${this.height}px`
+      }
+      return style
+    },
+    mainStyles () {
+      return {
+        padding: this.GridInstance.padding
+      }
+    }
+  },
+  watch: {
+    col () {
+      this.$nextTick(() => {
+        this.handleChangeHeight()
+      })
+    },
+    square () {
+      this.handleChangeHeight()
+    },
+    'GridInstance.resizeCount' () {
+      this.handleChangeHeight()
+    }
+  },
+  methods: {
+    handleChangeHeight () {
+      if (this.square) {
+        const $col = this.$refs.col
+        this.height = parseFloat(getStyle($col, 'width'))
+      }
+    }
+  },
+  mounted () {
+    this.handleChangeHeight()
+  }
+}
 </script>
