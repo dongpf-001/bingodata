@@ -1,39 +1,41 @@
 <template>
-  <div>
-    <!--下拉选择-->
-    <Select v-model="model"
-            v-if="type!='selectTree' && type!='selectAuto'"
-            ref="select"
-            v-bind="$attrs"
-            @on-query-change="queryChange"
-            :placeholder="placeholder"
-            v-on="$listeners"
-            :disabled="disabledSelect">
-      <Option disabled value="" key="" style="color: white" v-if="showSelectAll && $attrs.multiple">
-        {{query}}
-        <Button size="small" style="float: right;margin-right: 6px" @click="cancelAll">取消</Button>
-        <Button type ='primary' size="small" style="float: right;margin-right: 6px" @click="selectAll">全选</Button>
-      </Option>
-      <Option :value="item.value" v-for="item in data" :key="item.value" :disabled="item.disabledOption">{{item.label}}</Option>
-    </Select>
-    <!--下拉选择树-->
-    <TreeSelect v-model="treeModel"
-                v-if="type=='selectTree'"
+    <div>
+        <!--下拉选择-->
+        <Select v-model="model"
+                v-if="type!='selectTree' && type!='selectAuto'"
+                ref="select"
+                v-bind="$attrs"
+                @on-query-change="queryChange"
+                :clearable="clearable"
+                :filterable="filterable"
+                :placeholder="placeholder"
+                v-on="$listeners"
+                :disabled="disabledSelect">
+            <Option disabled value="" key="" style="color: white" v-if="showSelectAll && $attrs.multiple">
+                {{query}}
+                <Button size="small" style="float: right;margin-right: 6px" @click="cancelAll">取消</Button>
+                <Button type ='primary' size="small" style="float: right;margin-right: 6px" @click="selectAll">全选</Button>
+            </Option>
+            <Option :value="item.value" v-for="item in data" :key="item.value" v-show="!item.hiddenOption" :disabled="item.disabledOption">{{item.label}}</Option>
+        </Select>
+        <!--下拉选择树-->
+        <TreeSelect v-model="treeModel"
+                    v-if="type=='selectTree'"
+                    :data="data"
+                    :placeholder="placeholder"
+                    v-bind="$attrs"
+                    v-on="$listeners"/>
+        <!--智能感知-->
+        <AutoComplete
+                v-model="autoModel"
+                v-if="type=='selectAuto'"
                 :data="data"
                 :placeholder="placeholder"
                 v-bind="$attrs"
-                v-on="$listeners"/>
-    <!--智能感知-->
-    <AutoComplete
-      v-model="autoModel"
-      v-if="type=='selectAuto'"
-      :data="data"
-      :placeholder="placeholder"
-      v-bind="$attrs"
-      v-on="$listeners">
-      <slot></slot>
-    </AutoComplete>
-  </div>
+                v-on="$listeners">
+            <slot></slot>
+        </AutoComplete>
+    </div>
 </template>
 <script>
 export default {
@@ -59,6 +61,14 @@ export default {
     disabledSelect: {
       type: Boolean,
       default: false
+    },
+    clearable: { // 是否可以删除
+      type: Boolean,
+      default: true
+    },
+    filterable: { // 是否可以聚焦
+      type: Boolean,
+      default: true
     },
     placeholder: {
       type: String,

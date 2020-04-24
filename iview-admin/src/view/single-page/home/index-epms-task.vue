@@ -23,48 +23,48 @@
 </template>
 
 <script>
-    export default {
-        name: 'index-card',
-        components: {
+export default {
+  name: 'index-card',
+  components: {
+  },
+  props: {
+    widths: Number,
+    topHeight: {
+      type: Number
+    }
+  },
+  data () {
+    return {
+      etmsTask: [
+        {
+          a: '2019XMHT',
+          b: 'BPM',
+          c: 'ISO-TP通信记录',
+          d: '2019-10-09',
+          e: '张三'
         },
-        props: {
-            widths: Number,
-            topHeight:  {
-                type: Number
-            },
+        {
+          a: '2019XMHT',
+          b: 'BPM',
+          c: 'ISO-TP通信记录',
+          d: '2019-10-09',
+          e: '李四'
         },
-        data () {
-            return {
-                etmsTask: [
-                    {
-                        a: '2019XMHT',
-                        b: 'BPM',
-                        c: 'ISO-TP通信记录',
-                        d: '2019-10-09',
-                        e: '张三'
-                    },
-                    {
-                        a: '2019XMHT',
-                        b: 'BPM',
-                        c: 'ISO-TP通信记录',
-                        d: '2019-10-09',
-                        e: '李四'
-                    },
-                    {
-                        a: '2019XMHT',
-                        b: 'BPM',
-                        c: 'ISO-TP通信记录',
-                        d: '2019-10-09',
-                        e: '王五'
-                    },
-                ],
-            };
-        },
-        mounted () {
-        },
-        methods: {
+        {
+          a: '2019XMHT',
+          b: 'BPM',
+          c: 'ISO-TP通信记录',
+          d: '2019-10-09',
+          e: '王五'
         }
-    };
+      ]
+    }
+  },
+  mounted () {
+  },
+  methods: {
+  }
+}
 </script>
 
 <style>

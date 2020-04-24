@@ -32,134 +32,134 @@
     </TabPane>
 </template>
 <script>
-    import { findComponentsDownward } from '../../utils/assist.js';
+import { findComponentsDownward } from '../../utils/assist.js'
 
-    export default {
-        name: 'NotificationTab',
-        inject: ['NotificationInstance'],
-        provide () {
-            return { NotificationTabInstance: this };
-        },
-        props: {
-            count: {
-                type: Number,
-            },
-            title: {
-                type: String,
-                required: true
-            },
-            // 标识
-            name: {
-                type: String
-            },
-            emptyText: {
-                type: String,
-                default: '目前没有通知'
-            },
-            emptyImage: {
-                type: String,
-                default: 'https://file.iviewui.com/iview-pro/icon-no-message.svg'
-            },
-            // data: {
-            //     type: Array,
-            //     default () {
-            //         return [];
-            //     }
-            // },
-            // 已加载完所有消息
-            loadedAll: {
-                type: Boolean,
-                default: true
-            },
-            // 是否显示已加载完所有消息
-            showLoadedAll: {
-                type: Boolean,
-                default: true
-            },
-            // 当前 Tab 的加载状态
-            loading: {
-                type: Boolean,
-                default: false
-            },
-            // 是否允许滚动到底部自动加载
-            scrollToLoad: {
-                type: Boolean,
-                default: true
-            },
-            // 是否显示清空按钮
-            showClear: {
-                type: Boolean,
-                default: true
-            },
-            showClearIcon: {
-                type: Boolean,
-                default: true
+export default {
+  name: 'NotificationTab',
+  inject: ['NotificationInstance'],
+  provide () {
+    return { NotificationTabInstance: this }
+  },
+  props: {
+    count: {
+      type: Number
+    },
+    title: {
+      type: String,
+      required: true
+    },
+    // 标识
+    name: {
+      type: String
+    },
+    emptyText: {
+      type: String,
+      default: '目前没有通知'
+    },
+    emptyImage: {
+      type: String,
+      default: 'https://file.iviewui.com/iview-pro/icon-no-message.svg'
+    },
+    // data: {
+    //     type: Array,
+    //     default () {
+    //         return [];
+    //     }
+    // },
+    // 已加载完所有消息
+    loadedAll: {
+      type: Boolean,
+      default: true
+    },
+    // 是否显示已加载完所有消息
+    showLoadedAll: {
+      type: Boolean,
+      default: true
+    },
+    // 当前 Tab 的加载状态
+    loading: {
+      type: Boolean,
+      default: false
+    },
+    // 是否允许滚动到底部自动加载
+    scrollToLoad: {
+      type: Boolean,
+      default: true
+    },
+    // 是否显示清空按钮
+    showClear: {
+      type: Boolean,
+      default: true
+    },
+    showClearIcon: {
+      type: Boolean,
+      default: true
+    }
+  },
+  data () {
+    return {
+      customLabel: (h) => {
+        return h('div', [
+          h('span', this.title),
+          h('Badge', {
+            props: {
+              count: this.count
             }
-        },
-        data () {
-            return {
-                customLabel: (h) => {
-                    return h('div', [
-                        h('span', this.title),
-                        h('Badge', {
-                            props: {
-                                count: this.count
-                            }
-                        })
-                    ]);
-                },
-                // 有多少个 NotificationItem，
-                itemCount: 0
-            };
-        },
-        computed: {
-            currentTitle () {
-                const countType = this.NotificationInstance.countType;
-                if (countType === 'text') {
-                    const count = this.count ? `(${this.count})` : '';
-                    return `${this.title} ${count}`;
-                } else if (countType === 'badge') {
-                    return this.customLabel;
-                }
-            }
-        },
-        watch: {
-            count: {
-                handler () {
-                    this.NotificationInstance.handleGetCountAll();
-                },
-                immediate: true
-            }
-        },
-        methods: {
-            handleGetTabBaseInfo () {
-                return {
-                    name: this.name,
-                    title: this.title
-                };
-            },
-            handleGetItems () {
-                const items = findComponentsDownward(this, 'NotificationItem');
-                this.itemCount = items.length;
-            },
-            handleItemClick (item) {
-                this.NotificationInstance.handleItemClick(this.handleGetTabBaseInfo(), item);
-            },
-            handleClear () {
-                this.NotificationInstance.handleClear(this.handleGetTabBaseInfo());
-            },
-            handleLoadMore () {
-                this.NotificationInstance.handleLoadMore(this.handleGetTabBaseInfo());
-            },
-            handleScroll () {
-                if (!this.scrollToLoad) return;
-                const $scroll = this.$refs.scroll;
-                const displacement = $scroll.scrollHeight - $scroll.clientHeight - $scroll.scrollTop;
+          })
+        ])
+      },
+      // 有多少个 NotificationItem，
+      itemCount: 0
+    }
+  },
+  computed: {
+    currentTitle () {
+      const countType = this.NotificationInstance.countType
+      if (countType === 'text') {
+        const count = this.count ? `(${this.count})` : ''
+        return `${this.title} ${count}`
+      } else if (countType === 'badge') {
+        return this.customLabel
+      }
+    }
+  },
+  watch: {
+    count: {
+      handler () {
+        this.NotificationInstance.handleGetCountAll()
+      },
+      immediate: true
+    }
+  },
+  methods: {
+    handleGetTabBaseInfo () {
+      return {
+        name: this.name,
+        title: this.title
+      }
+    },
+    handleGetItems () {
+      const items = findComponentsDownward(this, 'NotificationItem')
+      this.itemCount = items.length
+    },
+    handleItemClick (item) {
+      this.NotificationInstance.handleItemClick(this.handleGetTabBaseInfo(), item)
+    },
+    handleClear () {
+      this.NotificationInstance.handleClear(this.handleGetTabBaseInfo())
+    },
+    handleLoadMore () {
+      this.NotificationInstance.handleLoadMore(this.handleGetTabBaseInfo())
+    },
+    handleScroll () {
+      if (!this.scrollToLoad) return
+      const $scroll = this.$refs.scroll
+      const displacement = $scroll.scrollHeight - $scroll.clientHeight - $scroll.scrollTop
 
-                if (!this.loading && displacement === 0) {
-                    this.handleLoadMore();
-                }
-            }
-        }
-    };
+      if (!this.loading && displacement === 0) {
+        this.handleLoadMore()
+      }
+    }
+  }
+}
 </script>

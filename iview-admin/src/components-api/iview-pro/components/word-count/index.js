@@ -1,2 +1,2 @@
-import WordCount from './word-count.vue';
-export default WordCount;
+import WordCount from './word-count.vue'
+export default WordCount

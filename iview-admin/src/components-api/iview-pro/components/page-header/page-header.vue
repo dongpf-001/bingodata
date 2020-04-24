@@ -52,62 +52,62 @@
     </div>
 </template>
 <script>
-    export default {
-        name: 'PageHeader',
-        props: {
-            title: {
-                type: String
-            },
-            back: {
-                type: Boolean,
-                default: false
-            },
-            logo: {
-                type: String
-            },
-            action: {
-                type: String
-            },
-            content: {
-                type: String
-            },
-            extra: {
-                type: String
-            },
-            breadcrumbList: {
-                type: Array
-            },
-            hiddenBreadcrumb: {
-                type: Boolean,
-                default: false
-            },
-            tabList: {
-                type: Array
-            },
-            tabActiveKey: {
-                type: String
-            },
-            // 是否定宽
-            wide: {
-                type: Boolean,
-                default: false
-            }
-        },
-        computed: {
-            classes () {
-                return {
-                    'ivu-page-header-wide': this.wide
-                };
-            }
-        },
-        methods: {
-            handleTabChange (name) {
-                const tab = this.tabList.find(item => item.name === name);
-                this.$emit('on-tab-change', JSON.parse(JSON.stringify(tab)));
-            },
-            handleBack () {
-                this.$emit('on-back');
-            }
-        }
-    };
+export default {
+  name: 'PageHeader',
+  props: {
+    title: {
+      type: String
+    },
+    back: {
+      type: Boolean,
+      default: false
+    },
+    logo: {
+      type: String
+    },
+    action: {
+      type: String
+    },
+    content: {
+      type: String
+    },
+    extra: {
+      type: String
+    },
+    breadcrumbList: {
+      type: Array
+    },
+    hiddenBreadcrumb: {
+      type: Boolean,
+      default: false
+    },
+    tabList: {
+      type: Array
+    },
+    tabActiveKey: {
+      type: String
+    },
+    // 是否定宽
+    wide: {
+      type: Boolean,
+      default: false
+    }
+  },
+  computed: {
+    classes () {
+      return {
+        'ivu-page-header-wide': this.wide
+      }
+    }
+  },
+  methods: {
+    handleTabChange (name) {
+      const tab = this.tabList.find(item => item.name === name)
+      this.$emit('on-tab-change', JSON.parse(JSON.stringify(tab)))
+    },
+    handleBack () {
+      this.$emit('on-back')
+    }
+  }
+}
 </script>

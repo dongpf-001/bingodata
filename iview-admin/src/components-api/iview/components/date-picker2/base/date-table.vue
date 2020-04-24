@@ -60,7 +60,7 @@ export default {
         return this.t('i.datepicker.weeks.' + item)
       })
       const weekDays = translatedDays.splice(weekStartDay, 7 - weekStartDay).concat(translatedDays.splice(0, weekStartDay))
-      return this.showWeekNumbers ? [''].concat(weekDays) : weekDays
+      return this.showWeekNumbers ? ['KW'].concat(weekDays) : weekDays
     },
     cells () {
       const tableYear = this.tableDate.getFullYear()
@@ -73,66 +73,70 @@ export default {
 
       const isRange = this.selectionMode === 'range'
       const disabledTestFn = typeof this.disabledDate === 'function' && this.disabledDate
-      // 计算每个月的周一是第几周，用于显示周
-      let days = [] // 每个月周一对应的都是几号
-      let indexArr = [10, 18, 26, 34, 42, 50] // 周一对应的index
-      let weekIndex = [8, 16, 24, 32, 40, 48] // 显示周位置对应的index
-      let cellArr = []
-      this.calendar(tableYear, tableMonth, (cell) => {
-        cellArr.push(cell)
-      }).cells.slice(this.showWeekNumbers ? 8 : 0)
-      for (let i = 0; i < cellArr.length; i++) {
-        for (let j = 0; j < indexArr.length; j++) {
-          if (cellArr[i].index == indexArr[j]) {
-            days.push({
-              day: cellArr[i].desc,
-              type: cellArr[i].type,
-              index: weekIndex[j]
-            })
+      if (this.showWeekNumbers) {
+        // 计算每个月的周一是第几周，用于显示周
+        let days = [] // 每个月周一对应的都是几号
+        let indexArr = [10, 18, 26, 34, 42, 50] // 周一对应的index
+        let weekIndex = [8, 16, 24, 32, 40, 48] // 显示周位置对应的index
+        let cellArr = []
+        this.calendar(tableYear, tableMonth, (cell) => {
+          cellArr.push(cell)
+        }).cells.slice(this.showWeekNumbers ? 8 : 0)
+        for (let i = 0; i < cellArr.length; i++) {
+          for (let j = 0; j < indexArr.length; j++) {
+            if (cellArr[i].index == indexArr[j]) {
+              days.push({
+                day: cellArr[i].desc,
+                type: cellArr[i].type,
+                index: weekIndex[j]
+              })
+            }
           }
         }
-      }
-      // console.log('哈哈哈'+days)
-      for (let i = 0; i < days.length; i++) {
-        if (days[i].type == 'monthDay') {
-          let date = tableYear + '-' + (tableMonth + 1) + '-' + days[i].day
-          days[i].week = getWeek(date)
-        } else if (days[i].type == 'nextMonth') {
-          if (tableMonth == 11) {
-            let date = (tableYear + 1) + '-' + 1 + '-' + days[i].day
+        // console.log('哈哈哈'+days)
+        for (let i = 0; i < days.length; i++) {
+          if (days[i].type == 'monthDay') {
+            let date = tableYear + '-' + (tableMonth + 1) + '-' + days[i].day
             days[i].week = getWeek(date)
-          } else {
-            let date = tableYear + '-' + (tableMonth + 2) + '-' + days[i].day
-            days[i].week = getWeek(date)
-          }
-        } else if (days[i].type == 'prevMonth') {
-          if (tableMonth == 0) {
-            let date = (tableYear - 1) + '-' + 12 + '-' + days[i].day
-            days[i].week = getWeek(date)
-          } else {
-            let date = tableYear + '-' + (tableMonth) + '-' + days[i].day
-            days[i].week = getWeek(date)
+          } else if (days[i].type == 'nextMonth') {
+            if (tableMonth == 11) {
+              let date = (tableYear + 1) + '-' + 1 + '-' + days[i].day
+              days[i].week = getWeek(date)
+            } else {
+              let date = tableYear + '-' + (tableMonth + 2) + '-' + days[i].day
+              days[i].week = getWeek(date)
+            }
+          } else if (days[i].type == 'prevMonth') {
+            if (tableMonth == 0) {
+              let date = (tableYear - 1) + '-' + 12 + '-' + days[i].day
+              days[i].week = getWeek(date)
+            } else {
+              let date = tableYear + '-' + (tableMonth) + '-' + days[i].day
+              days[i].week = getWeek(date)
+            }
           }
         }
+        this.daysAll = days
+        // day为数组，里面包括每周周一对应的日期，类型，显示周对应的index 以及对应的周num
+        // -------------------
       }
-      this.daysAll = days
-      // day为数组，里面包括每周周一对应的日期，类型，显示周对应的index 以及对应的周num
-      // -------------------
       return this.calendar(tableYear, tableMonth, (cell) => {
         // normalize date offset from the dates provided by jsCalendar
         if (cell.date instanceof Date) cell.date.setTime(cell.date.getTime() + cell.date.getTimezoneOffset() * 60000)
-        // --------------修改desc
-        let weekIndex = [8, 16, 24, 32, 40, 48]
-        for (let i = 0; i < weekIndex.length; i++) {
-          if (cell.index == weekIndex[i]) {
-            this.daysAll.forEach((item) => {
-              if (item.index == weekIndex[i]) {
-                cell.desc = item.week
-              }
-            })
+        if (this.showWeekNumbers) {
+          // --------------修改desc
+          let weekIndex = [8, 16, 24, 32, 40, 48]
+          for (let i = 0; i < weekIndex.length; i++) {
+            if (cell.index == weekIndex[i]) {
+              this.daysAll.forEach((item) => {
+                if (item.index == weekIndex[i]) {
+                  cell.desc = item.week
+                }
+              })
+            }
           }
+          // -----------
         }
-        // -----------
         const time = cell.date && clearHours(cell.date)
         const dateIsInCurrentMonth = cell.date && tableMonth === cell.date.getMonth()
         return {

@@ -5,13 +5,13 @@
     </div>
 </template>
 <script>
-    export default {
-        name: 'FooterToolbar',
-        props: {
-            // 额外信息，向左对齐
-            extra: {
-                type: String
-            }
-        }
-    };
+export default {
+  name: 'FooterToolbar',
+  props: {
+    // 额外信息，向左对齐
+    extra: {
+      type: String
+    }
+  }
+}
 </script>

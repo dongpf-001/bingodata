@@ -16,29 +16,29 @@
 </template>
 
 <script>
-    export default {
-        name: 'index-card',
-        components: {
-        },
-        props: {
-            widths: Number,
-        },
-        data () {
-            return {
-                // 科长
-                toDo: { // 待办任务数量
-                    bigTitle: 'EPMS',
-                    title: '待办任务数量',
-                    url: '点击查询详情',
-                    number: '33'
-                },
-            };
-        },
-        mounted () {
-        },
-        methods: {
-        }
-    };
+export default {
+  name: 'index-card',
+  components: {
+  },
+  props: {
+    widths: Number
+  },
+  data () {
+    return {
+      // 科长
+      toDo: { // 待办任务数量
+        bigTitle: 'EPMS',
+        title: '待办任务数量',
+        url: '点击查询详情',
+        number: '33'
+      }
+    }
+  },
+  mounted () {
+  },
+  methods: {
+  }
+}
 </script>
 
 <style scoped>

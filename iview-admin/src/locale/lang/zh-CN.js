@@ -62,7 +62,7 @@ export default {
   'bingo-state': '状态选择组件',
   'bingo-date': '日期组件',
   'bingo-demo': '示例代码',
-  'bingo-ag-table': '高级表格',
+  'bingo-advance-table': '高级表格',
   'bingo-run': '在线编辑',
   'demo': '样例',
   'form-demo': '表单缓存样例',

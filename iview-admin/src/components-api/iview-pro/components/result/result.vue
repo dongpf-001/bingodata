@@ -11,33 +11,33 @@
     </div>
 </template>
 <script>
-    import { oneOf } from '../../utils/assist.js';
+import { oneOf } from '../../utils/assist.js'
 
-    export default {
-        name: 'Result',
-        props: {
-            type: {
-                validator (value) {
-                    return oneOf(value, ['success', 'error']);
-                }
-            },
-            title: {
-                type: String
-            },
-            desc: {
-                type: String
-            },
-            extra: {
-                type: String
-            }
-        },
-        computed: {
-            iconClasses () {
-                return {
-                    'ivu-result-icon-success': this.type === 'success',
-                    'ivu-result-icon-error': this.type === 'error'
-                };
-            }
-        }
-    };
+export default {
+  name: 'Result',
+  props: {
+    type: {
+      validator (value) {
+        return oneOf(value, ['success', 'error'])
+      }
+    },
+    title: {
+      type: String
+    },
+    desc: {
+      type: String
+    },
+    extra: {
+      type: String
+    }
+  },
+  computed: {
+    iconClasses () {
+      return {
+        'ivu-result-icon-success': this.type === 'success',
+        'ivu-result-icon-error': this.type === 'error'
+      }
+    }
+  }
+}
 </script>

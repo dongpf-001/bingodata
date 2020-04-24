@@ -230,7 +230,6 @@ export const TYPE_VALUE_RESOLVER_MAP = {
         } else {
           dateStr = trueDate.getFullYear() + '-' + (month + 1) + '-' + trueDate.getDate()
         }
-        debugger
         let week = getWeek(dateStr)
         if (week === 1 && month === 11) {
           trueDate.setHours(0, 0, 0, 0)
@@ -239,7 +238,7 @@ export const TYPE_VALUE_RESOLVER_MAP = {
         let date = formatDate(trueDate, format)
 
         date = /ww/.test(date)
-          ? date.replace(/ww/, week < 10 ? '0' + week : week)
+          ? date.replace(/ww/, week < 10 ? week : week)
           : date.replace(/w/, week)
         return date
       }

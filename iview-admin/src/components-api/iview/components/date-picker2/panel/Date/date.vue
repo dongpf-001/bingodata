@@ -85,7 +85,7 @@ import datePanelLabel from './date-panel-label.vue'
 
 import Mixin from '../panel-mixin'
 import DateMixin from './date-panel-mixin'
-import Locale from '@/components-api/iview/mixins/locale'
+import Locale from '../../../../mixins/locale'
 
 import { siblingMonth, formatDateLabels } from '../../util'
 

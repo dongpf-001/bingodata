@@ -27,54 +27,54 @@
 </template>
 
 <script>
-    export default {
-        name: 'index-card',
-        components: {
+export default {
+  name: 'index-card',
+  components: {
+  },
+  props: {
+    widths: {
+      type: Number,
+      default: 1450
+    },
+    topHeight: {
+      type: Number
+    }
+  },
+  data () {
+    return {
+      professional: [
+        {
+          car: '地盘',
+          title: 'TPB checklist',
+          date: '2019-10-09',
+          class: 'icon bg-green'
         },
-        props: {
-            widths:  {
-                type: Number,
-                default: 1450
-            },
-            topHeight:  {
-                type: Number
-            },
+        {
+          car: '发动机',
+          title: 'EPG试验报告',
+          date: '2019-10-09',
+          class: 'icon bg-red'
         },
-        data () {
-            return {
-                professional: [
-                    {
-                        car: '地盘',
-                        title: 'TPB checklist',
-                        date: '2019-10-09',
-                        class: 'icon bg-green'
-                    },
-                    {
-                        car: '发动机',
-                        title: 'EPG试验报告',
-                        date: '2019-10-09',
-                        class: 'icon bg-red'
-                    },
-                    {
-                        car: '车窗',
-                        title: '重量数据管理',
-                        date: '2019-10-09',
-                        class: 'icon bg-red'
-                    },
-                    {
-                        car: '地盘',
-                        title: 'TPB checklist',
-                        date: '2019-10-09',
-                        class: 'icon bg-red'
-                    }
-                ],
-            };
+        {
+          car: '车窗',
+          title: '重量数据管理',
+          date: '2019-10-09',
+          class: 'icon bg-red'
         },
-        mounted () {
-        },
-        methods: {
+        {
+          car: '地盘',
+          title: 'TPB checklist',
+          date: '2019-10-09',
+          class: 'icon bg-red'
         }
-    };
+      ]
+    }
+  },
+  mounted () {
+  },
+  methods: {
+  }
+}
 </script>
 
 <style scoped>

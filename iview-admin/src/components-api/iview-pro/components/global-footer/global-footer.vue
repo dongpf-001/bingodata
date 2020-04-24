@@ -20,18 +20,18 @@
     </footer>
 </template>
 <script>
-    export default {
-        name: 'GlobalFooter',
-        props: {
-            links: {
-                type: Array,
-                default () {
-                    return [];
-                }
-            },
-            copyright: {
-                type: String
-            }
-        }
-    };
+export default {
+  name: 'GlobalFooter',
+  props: {
+    links: {
+      type: Array,
+      default () {
+        return []
+      }
+    },
+    copyright: {
+      type: String
+    }
+  }
+}
 </script>

@@ -58,30 +58,30 @@
 </template>
 
 <script>
-    export default {
-        name: 'index-modular',
-        data () {
-            return {
-                time: ['全部', '7天内', '30天内'],
-                from: ['全部', 'E架构', '任务中心', '其他'],
-                child: ['全部', '主计划', 'TPB', '整车发展流程', '模块验收表单', 'EPG费用'],
-                state: ['全部', '未开始', '进行中', '已延期', '已完成'],
-                timeName: '全部',
-                fromName: '全部',
-                childName: '全部',
-                stateName: '全部',
-            };
-        },
-        components: {
-        },
-        props: {
-            height: Number
-        },
-        mounted () {
-        },
-        methods: {
-        }
-    };
+export default {
+  name: 'index-modular',
+  data () {
+    return {
+      time: ['全部', '7天内', '30天内'],
+      from: ['全部', 'E架构', '任务中心', '其他'],
+      child: ['全部', '主计划', 'TPB', '整车发展流程', '模块验收表单', 'EPG费用'],
+      state: ['全部', '未开始', '进行中', '已延期', '已完成'],
+      timeName: '全部',
+      fromName: '全部',
+      childName: '全部',
+      stateName: '全部'
+    }
+  },
+  components: {
+  },
+  props: {
+    height: Number
+  },
+  mounted () {
+  },
+  methods: {
+  }
+}
 </script>
 
 <style lang="less">

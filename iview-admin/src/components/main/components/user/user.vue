@@ -48,10 +48,10 @@ export default {
     },
     handleClick (name) {
       switch (name) {
-        case 'logout': this.logout()
-          break
-        case 'message': this.message()
-          break
+      case 'logout': this.logout()
+        break
+      case 'message': this.message()
+        break
       }
     }
   }

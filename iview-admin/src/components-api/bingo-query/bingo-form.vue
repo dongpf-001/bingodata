@@ -3,7 +3,7 @@
           style="margin-top: 0px;">
         <Grid :col="col" :border="false" justify="end" padding="5px">
             <slot></slot>
-            <GridItem v-if="button" style="width: 100%">
+            <GridItem v-if="button" style="width: 100%;text-align: right;" >
                 <FormItem>
                     <slot name="button">
                         <Button type="primary" @click="handleOne" :loading="loading">{{buttonOneText}}</Button>
@@ -18,7 +18,6 @@
 </template>
 <script>
 import { mapState } from 'vuex'
-import Grid from '@/components-api/iview-pro/components/grid'
 
 export default {
   name: 'query-form',
@@ -71,9 +70,6 @@ export default {
       loading: false,
       collapse: false
     }
-  },
-  components: {
-    Grid
   },
   computed: {
     ...mapState('admin/layout', [

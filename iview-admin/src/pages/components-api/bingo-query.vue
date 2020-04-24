@@ -213,7 +213,7 @@ export default {
   },
   components: {
     bingoQuery,
-    bingoGridItem,
+    bingoGridItem
   },
   beforeCreate () {
   },

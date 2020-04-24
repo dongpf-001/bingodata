@@ -27,15 +27,16 @@
     </Modal>
 </template>
 <script>
-import bingoForm from '@/components-api/bingo-query/bingo-form'
-import bingoGridItem from '@/components-api/bingo-query/bingo-grid-item'
+import bingoForm from '../bingo-form/index.vue'
+import bingoGridItem from '../bingo-grid-item/index.vue'
 export default {
   name: 'bingo-modal-form',
   data () {
     return {
       show: false,
       loading: false,
-      collapse: false
+      collapse: false,
+      timeId: ''
     }
   },
   props: {
@@ -54,7 +55,7 @@ export default {
     },
     closable: {
       type: Boolean,
-      default: false
+      default: true
     },
     fullscreen: {
       type: Boolean,
@@ -139,18 +140,23 @@ export default {
       this.$emit('on-cancel')
     },
     save (selection) {
-      debugger
-      this.$refs.bingoform.$refs.form.validate((valid) => {
-        this.loading = true
-        if (valid) {
-          let _this = this
-          this.$emit('on-save', function () {
-            _this.loading = false
-          })
-        } else {
-          this.loading = false
-        }
-      })
+      if (this.timeId) { // 防止双击事件触发单击事件，但是还会概率触发
+        window.clearTimeout(this.timeId)
+        this.timeId = null
+      }
+      this.timeId = setTimeout(() => {
+        this.$refs.bingoform.$refs.form.validate((valid) => {
+          this.loading = true
+          if (valid) {
+            let _this = this
+            this.$emit('on-save', function () {
+              _this.loading = false
+            })
+          } else {
+            this.loading = false
+          }
+        })
+      }, 400)
     },
     saveClose (selection) {
       this.$refs.bingoform.$refs.form.validate((valid) => {

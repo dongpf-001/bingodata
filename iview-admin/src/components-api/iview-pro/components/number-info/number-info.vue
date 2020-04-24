@@ -9,41 +9,41 @@
     </div>
 </template>
 <script>
-    import Trend from '../trend/trend.vue';
-    import { oneOf } from '../../utils/assist';
+import Trend from '../trend/trend.vue'
+import { oneOf } from '../../utils/assist'
 
-    export default {
-        name: 'NumberInfo',
-        components: { Trend },
-        props: {
-            title: {
-                type: String
-            },
-            subTitle: {
-                type: String
-            },
-            total: {
-                type: [String, Number]
-            },
-            subTotal: {
-                type: [String, Number]
-            },
-            status: {
-                validator (value) {
-                    return oneOf(value, ['up', 'down']);
-                }
-            },
-            gap: {
-                type: [String, Number],
-                default: 8
-            }
-        },
-        computed: {
-            valueStyle () {
-                return {
-                    'margin-top': this.gap + 'px'
-                };
-            }
-        }
-    };
+export default {
+  name: 'NumberInfo',
+  components: { Trend },
+  props: {
+    title: {
+      type: String
+    },
+    subTitle: {
+      type: String
+    },
+    total: {
+      type: [String, Number]
+    },
+    subTotal: {
+      type: [String, Number]
+    },
+    status: {
+      validator (value) {
+        return oneOf(value, ['up', 'down'])
+      }
+    },
+    gap: {
+      type: [String, Number],
+      default: 8
+    }
+  },
+  computed: {
+    valueStyle () {
+      return {
+        'margin-top': this.gap + 'px'
+      }
+    }
+  }
+}
 </script>

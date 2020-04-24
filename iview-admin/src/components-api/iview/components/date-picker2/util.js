@@ -1,4 +1,4 @@
-import dateUtil from '@/components-api/iview/utils/date'
+import dateUtil from '../../utils/date'
 
 // 获取大众周 add by dongpf
 export const getWeek = function (value) {

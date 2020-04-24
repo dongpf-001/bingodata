@@ -1,11 +1,11 @@
 <template>
      <div class="toolbar-wrapper">
             <div class="toolbar-wrapper-col" ref="icoll">
-                <span style="margin-right: 6px" v-if="showAllButton">
-                    <Button type='primary' customIcon='iconfont iconxinjian1' @click="newClick"
-                            v-if="showNew">新建</Button>
-                    <Button type='primary' icon='md-trash' @click="deleteClick" v-if="showDelete">删除</Button>
-                    <Button type='primary' icon='md-refresh' @click="refreshClick" v-if="showRefresh">刷新</Button>
+                <span v-if="showAllButton">
+                    <Button type='primary' :disabled="disabledNew" customIcon='iconfont iconxinjian1' @click="newClick"
+                            v-if="showNew">{{$t('page.common.new')}}</Button>
+                    <Button type='primary' :disabled="disabledDelete" icon='md-trash' @click="deleteClick" v-if="showDelete">{{$t('page.common.delete')}}</Button>
+                    <Button type='primary' :disabled="disabledRefresh" icon='md-refresh' @click="refreshClick" v-if="showRefresh">{{$t('page.common.refresh')}}</Button>
                 </span>
                 <slot name="toolbar">
                 </slot>
@@ -45,6 +45,18 @@ export default {
     showRefresh: {
       type: Boolean,
       default: true
+    },
+    disabledNew: {
+      type: Boolean,
+      default: false
+    },
+    disabledDelete: {
+      type: Boolean,
+      default: false
+    },
+    disabledRefresh: {
+      type: Boolean,
+      default: false
     },
     showAllButton: {
       type: Boolean,

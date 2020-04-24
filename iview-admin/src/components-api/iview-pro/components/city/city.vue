@@ -63,388 +63,388 @@
     </div>
 </template>
 <script>
-    import provinceData from './province.js';
-    import cityData from './city.js';
+import provinceData from './province.js'
+import cityData from './city.js'
 
-    import { deepCopy, oneOf } from '../../utils/assist.js';
-    import Emitter from '../../mixins/emitter.js';
+import { deepCopy, oneOf } from '../../utils/assist.js'
+import Emitter from '../../mixins/emitter.js'
 
-    function getCityName (name) {
-        return name.replace('市', '').replace('地区', '').replace('特别行政区', '');
-    }
+function getCityName (name) {
+  return name.replace('市', '').replace('地区', '').replace('特别行政区', '')
+}
 
-    function handleGetCities () {
-        const cData = deepCopy(cityData);
-        const cities = [];
-        for (let cid in cData) {
-            const city = cData[cid];
-            city.n = getCityName(city.n);
-            cities.push(city);
-        }
-        return cities;
-    }
+function handleGetCities () {
+  const cData = deepCopy(cityData)
+  const cities = []
+  for (let cid in cData) {
+    const city = cData[cid]
+    city.n = getCityName(city.n)
+    cities.push(city)
+  }
+  return cities
+}
 
-    function handleGetCodeByName (cities, name) {
-        if (!name) return '';
-        const info = cities.find(item => item.n === name);
-        if (info) {
-            return info.c;
-        } else {
+function handleGetCodeByName (cities, name) {
+  if (!name) return ''
+  const info = cities.find(item => item.n === name)
+  if (info) {
+    return info.c
+  } else {
             console.error(`[iView Pro warn]: City name error.`); // eslint-disable-line
-            return '';
-        }
+    return ''
+  }
+}
+
+function handleGetNameByCode (cities, code) {
+  const info = cities.find(item => item.c === code)
+  return info.n
+}
+
+export default {
+  name: 'City',
+  mixins: [ Emitter ],
+  props: {
+    value: {
+      type: String
+    },
+    // value 是否使用名称，而不是 code
+    useName: {
+      type: Boolean,
+      default: false
+    },
+    // 预设城市
+    cities: {
+      type: Array,
+      default () {
+        return []
+      }
+    },
+    disabled: {
+      type: Boolean,
+      default: false
+    },
+    clearable: {
+      type: Boolean,
+      default: false
+    },
+    // 是否显示后缀，开启则显示北京市，否则显示北京
+    showSuffix: {
+      type: Boolean,
+      default: false
+    },
+    size: {
+      validator (value) {
+        return oneOf(value, ['small', 'large', 'default'])
+      },
+      default () {
+        return !this.$IVIEWPRO || this.$IVIEWPRO.size === '' ? 'default' : this.$IVIEWPRO.size
+      }
+    },
+    transfer: {
+      type: Boolean,
+      default () {
+        return !this.$IVIEWPRO || this.$IVIEWPRO.transfer === '' ? false : this.$IVIEWPRO.transfer
+      }
+    },
+    name: {
+      type: String
+    },
+    elementId: {
+      type: String
+    },
+    placeholder: {
+      type: String,
+      default: '请选择'
+    },
+    searchPlaceholder: {
+      type: String,
+      default: '输入城市名称搜索'
     }
+  },
+  data () {
+    const allCities = handleGetCities()
+    const value = this.useName ? handleGetCodeByName(allCities, this.value) : this.value
 
-    function handleGetNameByCode (cities, code) {
-        const info = cities.find(item => item.c === code);
-        return info.n;
+    return {
+      currentValue: value,
+      visible: false,
+      provinceList: [],
+      cityListByProvince: [],
+      cityListByLetter: {},
+      allCities: allCities, // 全量城市，用于搜索
+      listType: 'province', // province || city
+      queryCity: '' // 搜索词
     }
-
-    export default {
-        name: 'City',
-        mixins: [ Emitter ],
-        props: {
-            value: {
-                type: String
-            },
-            // value 是否使用名称，而不是 code
-            useName: {
-                type: Boolean,
-                default: false
-            },
-            // 预设城市
-            cities: {
-                type: Array,
-                default () {
-                    return [];
-                }
-            },
-            disabled: {
-                type: Boolean,
-                default: false
-            },
-            clearable: {
-                type: Boolean,
-                default: false
-            },
-            // 是否显示后缀，开启则显示北京市，否则显示北京
-            showSuffix: {
-                type: Boolean,
-                default: false
-            },
-            size: {
-                validator (value) {
-                    return oneOf(value, ['small', 'large', 'default']);
-                },
-                default () {
-                    return !this.$IVIEWPRO || this.$IVIEWPRO.size === '' ? 'default' : this.$IVIEWPRO.size;
-                }
-            },
-            transfer: {
-                type: Boolean,
-                default () {
-                    return !this.$IVIEWPRO || this.$IVIEWPRO.transfer === '' ? false : this.$IVIEWPRO.transfer;
-                }
-            },
-            name: {
-                type: String
-            },
-            elementId: {
-                type: String
-            },
-            placeholder: {
-                type: String,
-                default: '请选择'
-            },
-            searchPlaceholder: {
-                type: String,
-                default: '输入城市名称搜索'
-            },
-        },
-        data () {
-            const allCities = handleGetCities();
-            const value = this.useName ? handleGetCodeByName(allCities, this.value) : this.value;
-
-            return {
-                currentValue: value,
-                visible: false,
-                provinceList: [],
-                cityListByProvince: [],
-                cityListByLetter: {},
-                allCities: allCities, // 全量城市，用于搜索
-                listType: 'province',  // province || city
-                queryCity: '',  // 搜索词
-            };
-        },
-        watch: {
-            value (val) {
-                const value = this.useName ? handleGetCodeByName(this.allCities, val) : val;
-                this.currentValue = value;
-            }
-        },
-        computed: {
-            showCloseIcon () {
-                return this.currentValue && this.clearable && !this.disabled;
-            },
-            classes () {
-                return [
-                    {
-                        ['ivu-city-show-clear']: this.showCloseIcon,
-                        [`ivu-city-size-${this.size}`]: !!this.size,
-                        ['ivu-city-visible']: this.visible,
-                        ['ivu-city-disabled']: this.disabled,
-                    }
-                ];
-            },
-            // 从预设的 cities code 转为具体数据
-            relCities () {
-                const cities = [];
-                if (this.cities.length) {
-                    this.cities.forEach(item => {
-                        const newItem = cityData[item];
-                        newItem.n = getCityName(newItem.n);
-                        cities.push(newItem);
-                    });
-                }
-
-                return cities;
-            },
-            // cid 转城市名
-            codeToName () {
-                if (!this.currentValue) return this.placeholder;
-                const n = cityData[this.currentValue].n;
-                return this.showSuffix ? n : getCityName(n);
-            }
-        },
-        methods: {
-            handleSelect (val) {
-                if (val) {
-                    this.handleChangeValue(val);
-                    this.$nextTick(() => {
-                        this.queryCity = '';
-                    });
-                }
-            },
-            handleChangeValue (val) {
-                this.currentValue = val;
-                this.visible = false;
-                const value = this.useName ? handleGetNameByCode(this.allCities, val) : val;
-                this.$emit('input', value);
-                this.$emit('on-change', cityData[val]);
-                this.dispatch('FormItem', 'on-form-change', val);
-            },
-            handleClickLetter (l) {
-                let letter = l;
-                if (letter === '直辖市') letter = 'Z1';
-                else if (letter === '港澳') letter = 'Z2';
-
-                const className = `.ivu-city-${letter}`;
-                const $list = this.$refs.list;
-
-                const $letter = $list.querySelectorAll(className)[0];
-                const offsetTop = $letter.offsetTop;
-                const listTop = $list.offsetTop;
-
-                $list.scrollTop = offsetTop - listTop;
-            },
-            clearSelect () {
-                if (this.disabled) return false;
-                // todo
-            },
-            handleToggleOpen () {
-                if (this.disabled) return false;
-                this.visible = !this.visible;
-            },
-            handleVisibleChange (visible) {
-                this.visible = visible;
-            },
-            handleClickOutside (e) {
-                if (this.$refs.city.contains(e.target)) return;
-                this.visible = false;
-            },
-            handleGetProvinceByLetter () {
-                const provinces = {
-                    A: {
-                        n: 'A',  // 省的首字母
-                        p: [],  // 省数据
-                        c: []  // 该首字母下的城市数据
-                    },
-                    F: {
-                        n: 'F',
-                        p: [],
-                        c: []
-                    },
-                    G: {
-                        n: 'G',
-                        p: [],
-                        c: []
-                    },
-                    H: {
-                        n: 'H',
-                        p: [],
-                        c: []
-                    },
-                    J: {
-                        n: 'J',
-                        p: [],
-                        c: []
-                    },
-                    L: {
-                        n: 'L',
-                        p: [],
-                        c: []
-                    },
-                    N: {
-                        n: 'N',
-                        p: [],
-                        c: []
-                    },
-                    Q: {
-                        n: 'Q',
-                        p: [],
-                        c: []
-                    },
-                    S: {
-                        n: 'S',
-                        p: [],
-                        c: []
-                    },
-                    T: {
-                        n: 'T',
-                        p: [],
-                        c: []
-                    },
-                    X: {
-                        n: 'X',
-                        p: [],
-                        c: []
-                    },
-                    Y: {
-                        n: 'Y',
-                        p: [],
-                        c: []
-                    },
-                    Z: {
-                        n: 'Z',
-                        p: [],
-                        c: []
-                    },
-                    Z1: {
-                        n: '直辖市',
-                        p: [],
-                        c: []
-                    },
-                    Z2: {
-                        n: '港澳',
-                        p: [],
-                        c: []
-                    },
-                };
-
-                for (let c in provinceData) {
-                    const item = provinceData[c];
-                    provinces[item.l].p.push(item);
-                }
-                this.provinceList = provinces;
-            },
-            handleGetCityByProvince () {
-                const provinceList = deepCopy(this.provinceList);
-                const cityListByProvince = [];
-                const cData = deepCopy(cityData);
-
-                // 直辖市、港澳
-                const otherCities = [
-                    {
-                        p: {
-                            n: '直辖市',
-                            p: '86',
-                            l: 'Z1'
-                        },
-                        c: []
-                    },
-                    {
-                        p: {
-                            n: '港澳',
-                            p: '86',
-                            l: 'Z2'
-                        },
-                        c: []
-                    }
-                ];
-
-                for (let letter in provinceList) {
-                    const letterProvince = provinceList[letter];
-
-                    for (let i = 0; i < letterProvince.p.length; i++) {
-                        const province = letterProvince.p[i];
-                        const pid = province.c;
-
-                        const provinceCities = {
-                            p: province,
-                            c: []
-                        };
-
-                        for (let cid in cData) {
-                            const city = cData[cid];
-                            city.n = getCityName(city.n);
-
-                            if (pid === city.p) {
-                                provinceCities.c.push(city);
-                            }
-                        }
-
-                        if (letter === 'Z1') {
-                            otherCities[0].c.push(cData[pid]);
-                        } else if (letter === 'Z2') {
-                            otherCities[1].c.push(cData[pid]);
-                        } else {
-                            cityListByProvince.push(provinceCities);
-                        }
-                    }
-                }
-
-                this.cityListByProvince = cityListByProvince.concat(otherCities);
-            },
-            handleGetCityByLetter () {
-                const cData = deepCopy(cityData);
-                const cityListByLetter = {
-                    A: [],
-                    B: [],
-                    C: [],
-                    D: [],
-                    E: [],
-                    F: [],
-                    G: [],
-                    H: [],
-                    J: [],
-                    K: [],
-                    L: [],
-                    M: [],
-                    N: [],
-                    P: [],
-                    Q: [],
-                    R: [],
-                    S: [],
-                    T: [],
-                    W: [],
-                    X: [],
-                    Y: [],
-                    Z: []
-                };
-
-                for (let cid in cData) {
-                    const city = cData[cid];
-                    city.n = getCityName(city.n);
-                    cityListByLetter[city.l].push(city);
-                }
-
-                this.cityListByLetter = cityListByLetter;
-            }
-        },
-        created () {
-            this.handleGetProvinceByLetter();
-            this.handleGetCityByProvince();
-            this.handleGetCityByLetter();
+  },
+  watch: {
+    value (val) {
+      const value = this.useName ? handleGetCodeByName(this.allCities, val) : val
+      this.currentValue = value
+    }
+  },
+  computed: {
+    showCloseIcon () {
+      return this.currentValue && this.clearable && !this.disabled
+    },
+    classes () {
+      return [
+        {
+          'ivu-city-show-clear': this.showCloseIcon,
+          [`ivu-city-size-${this.size}`]: !!this.size,
+          'ivu-city-visible': this.visible,
+          'ivu-city-disabled': this.disabled
         }
-    };
+      ]
+    },
+    // 从预设的 cities code 转为具体数据
+    relCities () {
+      const cities = []
+      if (this.cities.length) {
+        this.cities.forEach(item => {
+          const newItem = cityData[item]
+          newItem.n = getCityName(newItem.n)
+          cities.push(newItem)
+        })
+      }
+
+      return cities
+    },
+    // cid 转城市名
+    codeToName () {
+      if (!this.currentValue) return this.placeholder
+      const n = cityData[this.currentValue].n
+      return this.showSuffix ? n : getCityName(n)
+    }
+  },
+  methods: {
+    handleSelect (val) {
+      if (val) {
+        this.handleChangeValue(val)
+        this.$nextTick(() => {
+          this.queryCity = ''
+        })
+      }
+    },
+    handleChangeValue (val) {
+      this.currentValue = val
+      this.visible = false
+      const value = this.useName ? handleGetNameByCode(this.allCities, val) : val
+      this.$emit('input', value)
+      this.$emit('on-change', cityData[val])
+      this.dispatch('FormItem', 'on-form-change', val)
+    },
+    handleClickLetter (l) {
+      let letter = l
+      if (letter === '直辖市') letter = 'Z1'
+      else if (letter === '港澳') letter = 'Z2'
+
+      const className = `.ivu-city-${letter}`
+      const $list = this.$refs.list
+
+      const $letter = $list.querySelectorAll(className)[0]
+      const offsetTop = $letter.offsetTop
+      const listTop = $list.offsetTop
+
+      $list.scrollTop = offsetTop - listTop
+    },
+    clearSelect () {
+      if (this.disabled) return false
+      // todo
+    },
+    handleToggleOpen () {
+      if (this.disabled) return false
+      this.visible = !this.visible
+    },
+    handleVisibleChange (visible) {
+      this.visible = visible
+    },
+    handleClickOutside (e) {
+      if (this.$refs.city.contains(e.target)) return
+      this.visible = false
+    },
+    handleGetProvinceByLetter () {
+      const provinces = {
+        A: {
+          n: 'A', // 省的首字母
+          p: [], // 省数据
+          c: [] // 该首字母下的城市数据
+        },
+        F: {
+          n: 'F',
+          p: [],
+          c: []
+        },
+        G: {
+          n: 'G',
+          p: [],
+          c: []
+        },
+        H: {
+          n: 'H',
+          p: [],
+          c: []
+        },
+        J: {
+          n: 'J',
+          p: [],
+          c: []
+        },
+        L: {
+          n: 'L',
+          p: [],
+          c: []
+        },
+        N: {
+          n: 'N',
+          p: [],
+          c: []
+        },
+        Q: {
+          n: 'Q',
+          p: [],
+          c: []
+        },
+        S: {
+          n: 'S',
+          p: [],
+          c: []
+        },
+        T: {
+          n: 'T',
+          p: [],
+          c: []
+        },
+        X: {
+          n: 'X',
+          p: [],
+          c: []
+        },
+        Y: {
+          n: 'Y',
+          p: [],
+          c: []
+        },
+        Z: {
+          n: 'Z',
+          p: [],
+          c: []
+        },
+        Z1: {
+          n: '直辖市',
+          p: [],
+          c: []
+        },
+        Z2: {
+          n: '港澳',
+          p: [],
+          c: []
+        }
+      }
+
+      for (let c in provinceData) {
+        const item = provinceData[c]
+        provinces[item.l].p.push(item)
+      }
+      this.provinceList = provinces
+    },
+    handleGetCityByProvince () {
+      const provinceList = deepCopy(this.provinceList)
+      const cityListByProvince = []
+      const cData = deepCopy(cityData)
+
+      // 直辖市、港澳
+      const otherCities = [
+        {
+          p: {
+            n: '直辖市',
+            p: '86',
+            l: 'Z1'
+          },
+          c: []
+        },
+        {
+          p: {
+            n: '港澳',
+            p: '86',
+            l: 'Z2'
+          },
+          c: []
+        }
+      ]
+
+      for (let letter in provinceList) {
+        const letterProvince = provinceList[letter]
+
+        for (let i = 0; i < letterProvince.p.length; i++) {
+          const province = letterProvince.p[i]
+          const pid = province.c
+
+          const provinceCities = {
+            p: province,
+            c: []
+          }
+
+          for (let cid in cData) {
+            const city = cData[cid]
+            city.n = getCityName(city.n)
+
+            if (pid === city.p) {
+              provinceCities.c.push(city)
+            }
+          }
+
+          if (letter === 'Z1') {
+            otherCities[0].c.push(cData[pid])
+          } else if (letter === 'Z2') {
+            otherCities[1].c.push(cData[pid])
+          } else {
+            cityListByProvince.push(provinceCities)
+          }
+        }
+      }
+
+      this.cityListByProvince = cityListByProvince.concat(otherCities)
+    },
+    handleGetCityByLetter () {
+      const cData = deepCopy(cityData)
+      const cityListByLetter = {
+        A: [],
+        B: [],
+        C: [],
+        D: [],
+        E: [],
+        F: [],
+        G: [],
+        H: [],
+        J: [],
+        K: [],
+        L: [],
+        M: [],
+        N: [],
+        P: [],
+        Q: [],
+        R: [],
+        S: [],
+        T: [],
+        W: [],
+        X: [],
+        Y: [],
+        Z: []
+      }
+
+      for (let cid in cData) {
+        const city = cData[cid]
+        city.n = getCityName(city.n)
+        cityListByLetter[city.l].push(city)
+      }
+
+      this.cityListByLetter = cityListByLetter
+    }
+  },
+  created () {
+    this.handleGetProvinceByLetter()
+    this.handleGetCityByProvince()
+    this.handleGetCityByLetter()
+  }
+}
 </script>

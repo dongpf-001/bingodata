@@ -36,79 +36,79 @@
 </template>
 
 <script>
-    export default {
-        name: 'index-card',
-        components: {
-        },
-        props: {
-            widths:  {
-                type: Number,
-                default: 1450
-            },
-            span: {
-                type: [Function, String, Number],
-            },
-            topHeight:  {
-                type: Number
-            },
-            taskContext: {
-                type: Array,
-                default () {
-                    return [];
-                }
+export default {
+  name: 'index-card',
+  components: {
+  },
+  props: {
+    widths: {
+      type: Number,
+      default: 1450
+    },
+    span: {
+      type: [Function, String, Number]
+    },
+    topHeight: {
+      type: Number
+    },
+    taskContext: {
+      type: Array,
+      default () {
+        return []
+      }
+    }
+  },
+  data () {
+    return {
+      taskContext2: [ // 内容
+        {
+          state: '已延期',
+          number: '1',
+          context: [
+            {
+              a: '2019XMHT',
+              b: '整车交付文档',
+              c: 'ISO-TP通信记录',
+              d: '2019-10-09',
+              e: '张三'
             }
+          ]
         },
-        data () {
-            return {
-                taskContext2: [ // 内容
-                    {
-                        state: '已延期',
-                        number: '1',
-                        context: [
-                            {
-                                a: '2019XMHT',
-                                b: '整车交付文档',
-                                c: 'ISO-TP通信记录',
-                                d: '2019-10-09',
-                                e: '张三'
-                            },
-                        ]
-                    },
-                    {
-                        state: '进行中',
-                        number: '3',
-                        context: [
-                            {
-                                a: '2019XMHT',
-                                b: '整车交付文档',
-                                c: 'ISO-TP通信记录',
-                                d: '2019-10-09',
-                                e: '张三'
-                            },
-                            {
-                                a: '2019XMHT',
-                                b: '整车交付文档',
-                                c: 'ISO-TP通信记录',
-                                d: '2019-10-09',
-                                e: '张三'
-                            },
-                            {
-                                a: '2019XMHT',
-                                b: '整车交付文档',
-                                c: 'ISO-TP通信记录',
-                                d: '2019-10-09',
-                                e: '张三'
-                            },
-                        ]
-                    },
-                ],
-            };
-        },
-        mounted () {
-        },
-        methods: {
+        {
+          state: '进行中',
+          number: '3',
+          context: [
+            {
+              a: '2019XMHT',
+              b: '整车交付文档',
+              c: 'ISO-TP通信记录',
+              d: '2019-10-09',
+              e: '张三'
+            },
+            {
+              a: '2019XMHT',
+              b: '整车交付文档',
+              c: 'ISO-TP通信记录',
+              d: '2019-10-09',
+              e: '张三'
+            },
+            {
+              a: '2019XMHT',
+              b: '整车交付文档',
+              c: 'ISO-TP通信记录',
+              d: '2019-10-09',
+              e: '张三'
+            }
+          ]
         }
-    };
+      ]
+    }
+  },
+  mounted () {
+  },
+  methods: {
+  }
+}
 </script>
 
 <style scoped>

@@ -1,2 +1,2 @@
-import FooterToolbar from './footer-toolbar.vue';
-export default FooterToolbar;
+import FooterToolbar from './footer-toolbar.vue'
+export default FooterToolbar

@@ -1,2 +1,2 @@
-import CountDown from './count-down.vue';
-export default CountDown;
+import CountDown from './count-down.vue'
+export default CountDown

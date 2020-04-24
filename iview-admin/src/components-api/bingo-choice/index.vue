@@ -1,5 +1,5 @@
 <template>
-    <div :types="types">
+    <div :types="types" class="choice-wrapper">
         <RadioGroup v-model="radioModel" :vertical="vertical" :type="type"
                     :size="size" @on-change="changeClick" v-if="types=='radio'">
             <Radio v-for="(item, key) in datas" :key="key" :label="item.label" :disabled="item.disabled"
@@ -47,7 +47,7 @@ export default {
     radioModel: {
       get: function () {
         if (this.labelInValue) {
-          if (typeof this.value == 'object') {
+          if (typeof this.value === 'object') {
             return this.value.label
           } else {
             return this.value
@@ -56,14 +56,14 @@ export default {
         return this.value
       },
       set: function (value) {
-        this.$emit('input', value);
-      },
+        this.$emit('input', value)
+      }
     },
     checkboxModel: {
       get: function () {
         if (this.labelInValue) {
           debugger
-          if (this.value.length > 0 && typeof this.value[0] == 'object') {
+          if (this.value.length > 0 && typeof this.value[0] === 'object') {
             let valueArr = []
             this.value.forEach((item) => {
               valueArr.push(item.label)
@@ -76,8 +76,8 @@ export default {
         return this.value
       },
       set: function (value) {
-        this.$emit('input', value);
-      },
+        this.$emit('input', value)
+      }
     }
   },
   methods: {
@@ -90,11 +90,11 @@ export default {
               value: item.value
             }
             if (this.labelInValue) {
-              this.$emit('input', returnModel);
-              this.$emit('on-change', returnModel);
+              this.$emit('input', returnModel)
+              this.$emit('on-change', returnModel)
             } else {
-              this.$emit('input', msg);
-              this.$emit('on-change', msg);
+              this.$emit('input', msg)
+              this.$emit('on-change', msg)
             }
           }
         })
@@ -111,11 +111,11 @@ export default {
           }
         }
         if (this.labelInValue) {
-          this.$emit('input', returnModel);
-          this.$emit('on-change', returnModel);
+          this.$emit('input', returnModel)
+          this.$emit('on-change', returnModel)
         } else {
-          this.$emit('input', msg);
-          this.$emit('on-change', msg);
+          this.$emit('input', msg)
+          this.$emit('on-change', msg)
         }
       }
     }
@@ -123,4 +123,15 @@ export default {
 }
 </script>
 <style lang="less">
+    .choice-wrapper { // 用于临时解决表单lable 的display:block影响
+        max-height: 32px;
+        .ivu-radio-group:not(.ivu-radio-group-vertical) {
+            .ivu-radio-wrapper {
+                display: unset
+            }
+        }
+        .ivu-checkbox-wrapper {
+            display: unset
+        }
+    }
 </style>

@@ -1,15 +1,19 @@
 <template>
     <bingo-modal ref="modal" v-bind="$attrs" v-on="$listeners" :title="title" :width="width"
-                 :footer-hide="footerHide" style="max-height: 600px">
+                 :footer-hide="footerHide" :height="height">
         <!--toolbar-->
         <bingo-toolbar :showAllButton="false" :showOpenButton="false" v-if="showToolbar">
             <span slot="toolbar">
-                <Button type='primary' customIcon='iconfont iconbaocun1'>保存</Button>
-                <Button type='primary' customIcon='iconfont iconbaocunbingguanbi'>保存并关闭</Button>
-                <Button type='primary' icon='md-close' @click="cancel">关闭</Button>
+                <slot name="toolbar">
+                    <Button type='primary' customIcon='iconfont iconbaocun1' @click="save">保存</Button>
+                    <Button type='primary' customIcon='iconfont iconbaocunbingguanbi' @click="saveCancel">保存并关闭</Button>
+                    <Button type='primary' icon='md-close' @click="cancel">关闭</Button>
+                </slot>
             </span>
         </bingo-toolbar>
-        <slot></slot>
+        <span class="modal-edit-wrapper">
+            <slot></slot>
+        </span>
         <div slot="footer" v-if="$slots.footer">
             <slot name="footer"></slot>
         </div>
@@ -34,6 +38,9 @@ export default {
       type: Number,
       default: 900
     },
+    height: {
+      type: Number
+    },
     footerHide: {
       type: Boolean,
       default: true
@@ -50,13 +57,20 @@ export default {
   },
   methods: {
     ok () {
-      this.$emit('on-ok', this.areaData) // 提供on-ok内置方法，将选中的数据返回
+      this.$emit('on-ok')
     },
     cancel () {
       this.$refs.modal.show = false
+    },
+    save () {
+      this.$emit('on-save', this)
+    },
+    saveCancel () {
+      this.$emit('on-save-cancel', this)
     }
   }
 }
 </script>
-<style lang="less">
+<style>
+    /*原样式已转移到styles/style/toolbar  --  modyfy by yuannnan*/
 </style>

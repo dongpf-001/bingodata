@@ -1,22 +1,14 @@
 // 获取大众周 add by dongpf
 export const getWeek = function (date) {
-  // 周一为一周的第一天
-  debugger
   let weekOfYear = 0
   let dateStr = date
   let dateBiao = new Date(date)
   let theYear = dateBiao.getFullYear()
-  // 一年中第几天
   let dayTh = Math.ceil((dateBiao - new Date(theYear.toString())) / (24 * 60 * 60 * 1000)) + 1
-  // 指定年份的元旦
   let dateNewYear = new Date(theYear.toString() + '-1-1')
-  // 指定年上一年的元旦
   let dateLastNewYear = new Date((theYear - 1).toString() + '-1-1')
-  // 指定年的最后一天
   let dateOfLastDay = new Date(theYear.toString() + '-12-31')
-  // 指定年的最后一天的星期
   let weekOfLastDay = dateOfLastDay.getDay()
-  // 判断该年最后一天是否是此年的最后一周
   let inItsselfYear = true
   let NUM4 = 4
   let NUM5 = 5
@@ -30,28 +22,22 @@ export const getWeek = function (date) {
   let NUM24 = 24
   let NUM1000 = 1000
   let NUM10 = 10
-  if (weekOfLastDay < NUM4) { // 以周日到周三定义开始周
+  if (weekOfLastDay < NUM4) {
     inItsselfYear = false
   }
-  // 元旦的星期
   let weekOfNewYear = dateNewYear.getDay()
-  // 上一年元旦的星期
-  let weekOfLastNewYear = dateLastNewYear.getDay() // (减1 是为了  周一与 1，周二与2 对应上)0对应周日
-  // 日期与元旦差
+  let weekOfLastNewYear = dateLastNewYear.getDay()
   let difNewYear = Math.floor((dateBiao.getTime() - dateNewYear.getTime()) / (NUM3600 * NUM24 * NUM1000))
-  // 日期与年末 差
   let difLastDay = Math.floor((dateOfLastDay.getTime() - dateBiao.getTime()) / (NUM3600 * NUM24 * NUM1000))
-  if (weekOfNewYear < NUM4) { // 元旦是该年 第一周（即元旦为周日，一，二，三）
-    // 该年第一周实际天数
+  if (weekOfNewYear < NUM4) {
     let temp = NUM7 - weekOfNewYear
-    // 日期与元旦在同一个周
     if (difNewYear >= 0 && difNewYear <= (temp - 1)) {
       weekOfYear = 1
-    } else if (difNewYear > (temp - 1)) { // 与元旦不在同一个周次
-      if (inItsselfYear) { // 该年末是此年的最后一周(即最后一天是周三，周四，周五，周六其中一天)
+    } else if (difNewYear > (temp - 1)) {
+      if (inItsselfYear) {
         weekOfYear = Math.floor((dayTh - temp - 1) / NUM7 + NUM2)
       } else { // 该年末是下一年的第一周(即年末为周日，周一，周二)
-        if (difLastDay >= weekOfLastDay + 1) { // 日期与年末 不是同一周(日期还是该年的周次)
+        if (difLastDay >= weekOfLastDay + 1) {
           weekOfYear = Math.floor((dayTh - temp - 1) / NUM7 + NUM2)
         } else { // 日期与年末 是同一周，为下一年的第一周
           theYear = theYear + 1
@@ -59,40 +45,38 @@ export const getWeek = function (date) {
         }
       }
     }
-  } else { // 元旦不是该年 第一周(去年最后一周)
+  } else {
     let difTemp = 1
     switch (weekOfNewYear) {
-      case NUM4:
-        difTemp = NUM3
-        break
-      case NUM5:
-        difTemp = NUM2
-        break
-      default:
-        break
+    case NUM4:
+      difTemp = NUM3
+      break
+    case NUM5:
+      difTemp = NUM2
+      break
+    default:
+      break
     }
 
-    if (difNewYear < difTemp) { // 日期与该年元旦在一个周次（上一年最后一周）
+    if (difNewYear < difTemp) {
       theYear = theYear - 1
       weekOfYear = NUM52
-      // (53周的前提是，上一年如果是非闰年，则只要元旦是周三 ；如果是闰年，则元旦是周三或者周二都行)
       if (NUM3 === weekOfLastNewYear) {
         weekOfYear = NUM53
       } else {
-        // 判断是否为闰年
         // let leapYear = getDuration(dateLastNewYear.getTime(), dateNewYear.getTime())
         let leapYear = Math.floor((dateNewYear.getTime() - dateLastNewYear.getTime()) / (NUM3600 * NUM24 * NUM1000))
         if (NUM365 === leapYear && NUM2 === weekOfLastNewYear) { // 元旦为周三 或者 周四(周四在if中判断了，故不用再判断)
           weekOfYear = NUM53
         }
       }
-    } else { // 日期与该年元旦不在一个周次
-      if (inItsselfYear) { // 该年末是此年的最后一周
+    } else {
+      if (inItsselfYear) {
         weekOfYear = Math.floor((dayTh - difTemp - 1) / NUM7 + 1)
-      } else { // 该年末是下一年的第一周(即年末为周日，一，二)
-        if (difLastDay >= weekOfLastDay + 1) { // 日期与年末 不是同一周(日期还是该年的周次)
+      } else {
+        if (difLastDay >= weekOfLastDay + 1) {
           weekOfYear = Math.floor((dayTh - difTemp - 1) / NUM7 + 1)
-        } else { // 日期与年末 是同一周，为下一年的第一周
+        } else {
           theYear = theYear + 1
           weekOfYear = 1
         }

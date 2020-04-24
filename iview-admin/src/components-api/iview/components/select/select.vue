@@ -776,7 +776,8 @@ export default {
       const { remoteMethod, lastRemoteQuery } = this
       const hasValidQuery = (query !== lastRemoteQuery || !lastRemoteQuery)
       //  const hasValidQuery = query !== '' && (query !== lastRemoteQuery || !lastRemoteQuery);
-      const shouldCallRemoteMethod = remoteMethod && hasValidQuery && !this.preventRemoteCall
+      // const shouldCallRemoteMethod = remoteMethod && hasValidQuery && !this.preventRemoteCall;
+      const shouldCallRemoteMethod = remoteMethod && !this.preventRemoteCall
       this.preventRemoteCall = false // remove the flag
 
       if (shouldCallRemoteMethod) {

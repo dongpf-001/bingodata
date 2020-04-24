@@ -1,2 +1,2 @@
-import Numeral from './numeral.vue';
-export default Numeral;
+import Numeral from './numeral.vue'
+export default Numeral

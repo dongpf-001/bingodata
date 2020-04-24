@@ -181,20 +181,20 @@
 </template>
 
 <script>
-    export default {
-        name: 'ui-font',
-        data() {
-            return {};
-        },
-        created() {
-        },
-        mounted() {
-        },
-        computed: {},
-        watch: {},
-        methods: {
-        }
-    };
+export default {
+  name: 'ui-font',
+  data () {
+    return {}
+  },
+  created () {
+  },
+  mounted () {
+  },
+  computed: {},
+  watch: {},
+  methods: {
+  }
+}
 </script>
 
 <style scoped>

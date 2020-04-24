@@ -1,13 +1,17 @@
 <template>
     <span :type="type">
-        <Modal  class="modal-wrapper"
-                ref="modal"
-                v-if="type=='modal'"
-                v-model="show"
-                :title="title"
-                v-bind="$attrs"
-                @on-visible-change="visibleChange"
-                v-on="$listeners">
+        <Modal class="modal-wrapper"
+               ref="modal"
+               v-if="type=='modal'"
+               v-model="show"
+               :title="title"
+               :okText = "okText"
+               :cancelText = "cancelText"
+               :loading="loading1"
+               v-bind="$attrs"
+               @on-visible-change="visibleChange"
+               @on-ok="ok"
+               @on-cancel="cancel">
             <template ref="body">
                 <slot v-if="show"></slot>
             </template>
@@ -35,9 +39,7 @@
                 </div>
             </div>
         </Modal>
-        <Modal v-model="show"
-               v-if="type=='errorMessage'"
-               footer-hide>
+        <Modal v-model="show" v-if="type=='errorMessage'" footer-hide>
             <div class="ivu-modal-confirm">
                 <div class="modal-error">
                     <div class="modal-error-img">
@@ -51,7 +53,7 @@
                 </div>
                 <div class="ivu-modal-confirm-footer">
                     <button type="button" class="ivu-btn ivu-btn-primary" @click="showClick">详情</button>
-                    <button type="button" class="ivu-btn" @click="ok">关闭</button>
+                    <button type="button" class="ivu-btn" @click="cancel">关闭</button>
                     <div class="modal-error-input" style="margin-top: 10px;text-align: left" v-if="showError">
                         <slot name="content"></slot>
                     </div>
@@ -71,7 +73,9 @@ export default {
       // show: false,
       model: true,
       showError: false,
-      className: ''
+      className: '',
+      timeId: '',
+      loading1: true
     }
   },
   props: {
@@ -79,8 +83,19 @@ export default {
       type: Boolean,
       default: false
     },
+    height: {
+      type: Number
+    },
     title: {
+      type: String,
+      default: '提示信息'
+    },
+    content: {
       type: String
+    },
+    returnSMsg: {
+      type: String,
+      default: null
     },
     type: {
       type: String,
@@ -89,6 +104,28 @@ export default {
     setTimeout: {
       type: [Boolean, Number],
       default: false
+    },
+    /* ok:{
+                type: Function
+            },
+            cancel:{
+                type: Function
+            }, */
+    loading: {
+      type: Boolean,
+      default: false
+    },
+    okText: {
+      type: String,
+      default: '确定'
+    },
+    cancelText: {
+      type: String,
+      default: '取消'
+    },
+    modalMsg: {
+      type: Object,
+      default: () => {}
     }
   },
   computed: {
@@ -144,19 +181,137 @@ export default {
   },
   methods: {
     ok () {
-      this.show = false
+      this.modal = true
+      setTimeout(() => { // 防止双击事件触发单击事件，但是还会概率触发
+        this.show = false
+      }, 300)
       this.$emit('on-ok')
+      // if (this.timeId) { // 防止双击事件触发单击事件，但是还会概率触发
+      //     window.clearTimeout(this.timeId)
+      //     this.timeId = null
+      // }
+      // this.timeId = setTimeout(() => {
+      //     this.show = false
+      //     this.$emit('on-ok');
+      // }, 400)
+    },
+    cancel () {
+      /* this.$emit('on-cancel'); */
+      this.show = false
+      this.onCancel()
     },
     showClick () {
       this.showError = !this.showError
+    },
+    info () {
+      this.$Modal.info({
+        title: this.title,
+        content: this.content,
+        duration: 5,
+        closable: true,
+        onOk: () => {
+          this.onOk()
+        }
+      })
+    },
+    success (msg) {
+      this.$Message.success({
+        content: msg,
+        onOk: () => {
+          this.onOk()
+        }
+      })
+    },
+    warning (msg) {
+      this.$Message.warning({
+        content: msg,
+        duration: 5,
+        closable: true,
+        onOk: () => {
+          this.onOk()
+        }
+      })
+    },
+    error () {
+      this.$Modal.error({
+        title: this.title,
+        content: this.content,
+        onOk: () => {
+          this.onOk()
+        }
+      })
+    },
+    confirm () {
+      this.$Modal.confirm({
+        title: this.title,
+        content: this.content,
+        loading: this.loading,
+        onOk: () => {
+          this.onOk()
+        },
+        onCancel: () => {
+          this.onCancel()
+        }
+      })
+    },
+    confirmAuto () {
+      this.$Modal.confirm({
+        title: this.title,
+        content: this.content,
+        loading: this.loading,
+        onOk: () => {
+          this.onOk()
+        },
+        onCancel: () => {
+          this.onCancel()
+        }
+      })
+    },
+    onOk () {
+      let that = this
+      if (that.timeId) { // 防止双击事件触发单击事件，但是还会概率触发
+        window.clearTimeout(that.timeId)
+        that.timeId = null
+      }
+      that.timeId = setTimeout(() => {
+        if (this.returnSMsg != null) {
+          this.$Modal.remove()
+          that.$Message.success({
+            content: that.returnSMsg
+          })
+        } else {
+          that.$emit('ok')
+        }
+      }, 300)
+    },
+    onCancel () {
+      debugger
+      if (this.timeId) { // 防止双击事件触发单击事件，但是还会概率触发
+        window.clearTimeout(this.timeId)
+        this.timeId = null
+      }
+      this.timeId = setTimeout(() => {
+        this.$emit('on-cancel')
+      }, 300)
+    },
+    onCloseModal () {
+      this.$Modal.remove()
     },
     visibleChange (value) {
       if (value) {
         this.$nextTick(() => {
           const headHeight = this.$refs.modal.$el.getElementsByClassName('ivu-modal-body')[0].offsetTop
           const topHeight = this.$refs.modal.$el.getElementsByClassName('ivu-modal')[0].offsetTop
-          this.$refs.modal.$el.getElementsByClassName('ivu-modal-body')[0].style.maxHeight =
-                            (document.body.clientHeight - topHeight * 2 - headHeight) + 'px'
+          if (this.height) {
+            this.$refs.modal.$el.getElementsByClassName('ivu-modal-body')[0].style.height =
+                                this.height + 'px'
+          } else {
+            // 设置最小高度
+            this.$refs.modal.$el.getElementsByClassName('ivu-modal-body')[0].style.minHeight = '240px'
+            // 设置最大高度
+            this.$refs.modal.$el.getElementsByClassName('ivu-modal-body')[0].style.maxHeight =
+                                (document.body.clientHeight - topHeight * 2 - headHeight) + 'px'
+          }
           this.$refs.modal.$el.getElementsByClassName('ivu-modal-body')[0].style.overflowY =
                             'auto'
         })

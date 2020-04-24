@@ -681,7 +681,11 @@ export default {
       // 处理回显数据格式
       if (type == 'date') {
         if (typeof val === 'string') {
-          val = new Date(val)
+          if (val === '') {
+            val = null
+          } else {
+            val = new Date(val)
+          }
         } else if (val.length > 0) {
           for (let i = 0; i < val.length; i++) {
             if (typeof val[i] === 'string') {

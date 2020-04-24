@@ -15,59 +15,59 @@
     </div>
 </template>
 <script>
-    import { oneOf } from '../../utils/assist';
+import { oneOf } from '../../utils/assist'
 
-    export default {
-        name: 'AvatarList',
-        props: {
-            list: {
-                type: Array,
-                default () {
-                    return [];
-                }
-            },
-            shape: {
-                validator (value) {
-                    return oneOf(value, ['circle', 'square']);
-                },
-                default: 'circle'
-            },
-            size: {
-                validator (value) {
-                    return oneOf(value, ['small', 'large', 'default']);
-                },
-                default: 'default'
-            },
-            excessStyle: {
-                type: Object,
-                default () {
-                    return {};
-                }
-            },
-            max: {
-                type: Number
-            },
-            tooltip: {
-                type: Boolean,
-                default: true
-            },
-            placement: {
-                validator (value) {
-                    return oneOf(value, ['top', 'top-start', 'top-end', 'bottom', 'bottom-start', 'bottom-end', 'left', 'left-start', 'left-end', 'right', 'right-start', 'right-end']);
-                },
-                default: 'top'
-            },
-        },
-        computed: {
-            currentList () {
-                const len = this.list.length;
-                const max = this.max;
-                if (len <= max) {
-                    return [...this.list];
-                } else {
-                    return [...this.list].slice(0, max);
-                }
-            }
-        }
-    };
+export default {
+  name: 'AvatarList',
+  props: {
+    list: {
+      type: Array,
+      default () {
+        return []
+      }
+    },
+    shape: {
+      validator (value) {
+        return oneOf(value, ['circle', 'square'])
+      },
+      default: 'circle'
+    },
+    size: {
+      validator (value) {
+        return oneOf(value, ['small', 'large', 'default'])
+      },
+      default: 'default'
+    },
+    excessStyle: {
+      type: Object,
+      default () {
+        return {}
+      }
+    },
+    max: {
+      type: Number
+    },
+    tooltip: {
+      type: Boolean,
+      default: true
+    },
+    placement: {
+      validator (value) {
+        return oneOf(value, ['top', 'top-start', 'top-end', 'bottom', 'bottom-start', 'bottom-end', 'left', 'left-start', 'left-end', 'right', 'right-start', 'right-end'])
+      },
+      default: 'top'
+    }
+  },
+  computed: {
+    currentList () {
+      const len = this.list.length
+      const max = this.max
+      if (len <= max) {
+        return [...this.list]
+      } else {
+        return [...this.list].slice(0, max)
+      }
+    }
+  }
+}
 </script>

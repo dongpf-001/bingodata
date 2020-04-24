@@ -1,18 +1,19 @@
 <template>
     <div class="tree-wrapper">
-        <span v-if="showQuery">
-            <Input v-model="queryModel" placeholder="请输入" style="width: 150px" size="small"/>
-            <Button type="primary" @click="handleQuery" style="margin-left: 10px" size="small">查询</Button>
-            <Button class="ivu-ml-8" @click="handleReset" size="small">重置</Button>
-        </span>
-        <Tree ref="tree" v-bind="$attrs" v-on="$listeners" :render="renderContent"></Tree>
-        <Dropdown transfer ref="contentMenu" style="display: none" trigger="click" placement="right-start"
+        <div v-if="showQuery" class="tree-search-box">
+            <Input v-model="queryModel" placeholder="请输入"
+                   size="small" icon="ios-search" @on-enter="handleQuery" @on-click="handleQuery"/>
+            <!--            <Button type="primary" @click="handleQuery" style="margin-left: 10px" size="small">查询</Button>-->
+            <!--            <Button class="ivu-ml-8" @click="handleReset" size="small">重置</Button>-->
+        </div>
+        <Tree ref="tree" v-bind="$attrs" v-on="$listeners" :empty-text="emptyText" :render="renderContent"></Tree>
+        <Dropdown transfer ref="contentMenu" style="display: none" trigger="click" transfer-class-name="tree-drop-down"
                   v-if="!disabledAll" @on-click="changeClick">
             <DropdownMenu slot="list">
-                <DropdownItem name="add" v-if="!disabledAdd"><Icon type="ios-add" style="margin-right: 10px"></Icon>添加</DropdownItem>
-                <DropdownItem name="edit" v-if="!disabledEdit"><Icon type="md-create" style="margin-right: 10px"></Icon>编辑</DropdownItem>
+                <DropdownItem name="add" v-if="!disabledAdd"><Icon custom="iconfont iconxinjian1" style="margin-right: 10px"></Icon>{{this.addName}}</DropdownItem>
+                <DropdownItem name="edit" v-if="!disabledEdit"><Icon type="md-create" style="margin-right: 10px" size="16"></Icon>{{this.editName}}</DropdownItem>
                 <DropdownItem name="delete" v-if="node.nodeKey != 0 && !disabledDelete">
-                    <Icon type="ios-remove" style="margin-right: 10px"></Icon>删除
+                    <Icon type="md-trash" style="margin-right: 10px" size="16"></Icon>{{this.deleteName}}
                 </DropdownItem>
             </DropdownMenu>
         </Dropdown>
@@ -46,9 +47,25 @@ export default {
     }
   },
   props: {
+    title: { // 传入的字段
+      type: String,
+      default: 'title'
+    },
+    keyId: { // 传入的字段
+      type: String,
+      default: 'value'
+    },
+    parentValue: { // 传入的字段
+      type: String,
+      default: 'parentValue'
+    },
     showQuery: {
       type: Boolean,
       default: false
+    },
+    emptyText: { // 没有数据时默认显示
+      type: String,
+      default: ''
     },
     disabledAll: { // 是否控制所有权限不可使用
       type: Boolean,
@@ -65,6 +82,24 @@ export default {
     draggable: { // 控制是否可以拖拽
       type: Boolean,
       default: false
+    },
+    addName: { // 新建名称
+      type: String,
+      default: '新建'
+    },
+    deleteName: { // 删除名称
+      type: String,
+      default: '删除'
+    },
+    editName: { // 编辑名称
+      type: String,
+      default: '编辑'
+    },
+    editNodeBefore: { // 编辑前的方法，回调
+      type: Function,
+      default: (data1, data2, name, callback) => {
+        callback()
+      }
     },
     deleteNodeBefore: { // 删除前的方法，回调
       type: Function,
@@ -85,9 +120,9 @@ export default {
         class: {
           'ivu-tree-title ivu-tree-title-selected': (data.selected || data.checked) && !this.$attrs.showCheckbox,
           'ivu-tree-title': !((data.selected || data.checked) && !this.$attrs.showCheckbox),
-          'tree-drag-over': this.overNodeKey === data.value && this.dragOverClass === 0,
-          'tree-drag-over-top': this.overNodeKey === data.value && this.dragOverClass === -1 && this.nodeIndex === 0,
-          'tree-drag-over-bottom': this.overNodeKey === data.value && this.dragOverClass === 1
+          'tree-drag-over': this.overNodeKey === data[this.keyId] && this.dragOverClass === 0,
+          'tree-drag-over-top': this.overNodeKey === data[this.keyId] && this.dragOverClass === -1 && this.nodeIndex === 0,
+          'tree-drag-over-bottom': this.overNodeKey === data[this.keyId] && this.dragOverClass === 1
         },
         style: {
           display: 'inline-block',
@@ -114,16 +149,16 @@ export default {
                   _this.onSelectChange(_this.selectData, data)
                 } else {
                   _this.selectData.forEach((item) => {
-                    if (item.value !== data.value) {
+                    if (item[_this.keyId] !== data[_this.keyId]) {
                       item.selected = false
                       // item.checked = false
                     }
                   })
-                  data.selected = !data.selected
+                  // data.selected = true
                   // data.checked = !data.checked
                   _this.selectData = []
                   _this.selectData.push(data)
-                  _this.onSelectChange(data, data)
+                  // _this.onSelectChange(data, data)
                 }
                 // data.checked = !data.checked
               }, 200)
@@ -139,7 +174,7 @@ export default {
             }
           },
           contextmenu: (e) => {
-            if (!this.disabledAll) {
+            if (!this.disabledAll && (!data.disabledEdit || !data.disabledDelete || !data.disabledAdd)) {
               this.disabledEdit = data.disabledEdit
               this.disabledDelete = data.disabledDelete
               this.disabledAdd = data.disabledAdd
@@ -163,11 +198,12 @@ export default {
         h('div', {
           class: 'tree-span'
         }, [
-          h(`${data.editState ? '' : 'span'}`, data.title),
+          h(`${data.editState ? '' : 'span'}`, data[this.title]),
           h(`${data.editState ? 'input' : ''}`, {
             class: 'ivu-input ivu-input-small ivu-input-edit',
             attrs: {
-              value: `${data.editState ? data.title : ''}`,
+              value: `${data.editState && data[this.title].indexOf('新建节点') < 0 ? data[this.title] : ''}`,
+              placeholder: data[this.title].indexOf('新建节点') >= 0 ? data[this.title] : '',
               autofocus: true,
               maxlength: this.maxLength
             },
@@ -180,7 +216,7 @@ export default {
                 this.inputContent = event.target.value
               },
               blur: () => {
-                this.editNode(data)
+                this.editNode(root, node, data)
               }
             }
           })
@@ -190,8 +226,8 @@ export default {
     // 双击节点时执行的事件
     editTree (data) {
       event.stopPropagation()
-      this.inputContent = data.title
-      this.oldName = data.title
+      this.inputContent = data[this.title]
+      this.oldName = data[this.title]
       this.oldData = {
         checked: data.checked,
         children: data.children,
@@ -199,10 +235,10 @@ export default {
         expand: data.expand,
         loading: data.loading,
         nodeKey: data.nodeKey,
-        selected: data.selected,
-        title: data.title,
-        value: data.value
+        selected: data.selected
       }
+      this.oldData[this.title] = data[this.title]
+      this.oldData[this.keyId] = data[this.keyId]
       this.setStates(data) // 改变状态，显示编辑框
       this.$nextTick(() => { // 编辑框出现后自动聚焦
         this.$refs.tree.$el.getElementsByClassName('ivu-input-edit')[0].focus()
@@ -218,19 +254,29 @@ export default {
       }
     },
     // 节点失焦时执行
-    editNode (data) {
+    editNode (root, node, data) {
       if (!this.inputContent) {
         this.$Message.warning('当前输入有误')
       } else {
-        if (this.oldName !== this.inputContent) {
-          data.title = this.inputContent
-          this.setStates(data)
-        } else {
-          this.setStates(data)
+        let _this = this
+        // 参数： 父节点，当前节点和修改后的节点名称
+        if (this.editNodeBefore && (typeof this.editNodeBefore === 'function')) {
+          let parentKey = ''
+          let parent = {}
+          if (node.nodeKey !== 0) {
+            parentKey = root.find(el => el === node).parent
+            parent = root.find(el => el.nodeKey === parentKey).node
+          }
+          _this.editNodeBefore.apply(this, [parent, data, this.inputContent, function () {
+            if (_this.oldName !== _this.inputContent) {
+              data[_this.title] = _this.inputContent
+            }
+            // 返回的参数  全部数据/修改前的数据/修改后的数据
+            _this.$emit('edit-node', _this.$attrs.data, _this.oldData, data)
+          }])
         }
+        this.setStates(data)
       }
-      // 返回的参数  全部数据/修改前的数据/修改后的数据
-      this.$emit('edit-node', this.$attrs.data, this.oldData, data)
     },
     changeClick (value) {
       if (value === 'edit') {
@@ -246,13 +292,50 @@ export default {
       event.stopPropagation()
       const children = this.nodeInfo.children || []
       let data = {
-        title: '新建节点',
-        expand: true,
-        value: '新建节点',
-        parentValue: this.nodeInfo.value
+        expand: true
       }
+      data[this.parentValue] = this.nodeInfo[this.keyId]
+      // 名称加编号
+      let count = 1
+      let arr = []
+      if (this.nodeInfo.children && this.nodeInfo.children.length > 0) {
+        this.nodeInfo.children.forEach(item => {
+          if (item[this.title].indexOf('新建节点') >= 0) {
+            count = count + 1
+            var start = item[this.title].indexOf('(')
+            var end = item[this.title].indexOf(')')
+            if (start >= 0 && end >= 0) {
+              let isnum = /^\d+$/.test(item[this.title].substr(start + 1, end - start - 1))
+              if (isnum) {
+                arr.push(item[this.title].substr(start + 1, end - start - 1))
+              }
+            }
+          }
+        })
+      }
+      for (let i = 1; i < arr.length; i++) {
+        for (let j = i; j > 0; j--) {
+          if (parseInt(arr[j]) < parseInt(arr[j - 1])) {
+            let pre = arr[j]
+            arr[j] = arr[j - 1]
+            arr[j - 1] = pre
+          }
+        }
+      }
+      if (arr.length > 0) {
+        count = parseInt(arr[arr.length - 1]) + 1
+      }
+      if (count === 1) {
+        data[this.title] = '新建节点'
+        data[this.keyId] = '新建节点'
+      } else {
+        data[this.title] = '新建节点(' + count + ')'
+        data[this.keyId] = '新建节点(' + count + ')'
+      }
+      data.children = [] // 解决节点一直创建出现问题
       children.push(data)
       this.$set(this.nodeInfo, 'children', children)
+      // this.$refs.tree.rebuildTree() // 刷新树节点
       // 返回的参数  全部数据/新加的数据/父节点
       this.$emit('add-node', this.$attrs.data, data, this.nodeInfo)
     },
@@ -262,14 +345,31 @@ export default {
       let _this = this
       // 回调删除
       if (this.deleteNodeBefore && (typeof this.deleteNodeBefore === 'function')) {
-        _this.deleteNodeBefore.apply(this, [this.$attrs.data, this.node, function () {
-          const parentKey = _this.root.find(el => el === _this.node).parent
-          const parent = _this.root.find(el => el.nodeKey === parentKey).node
-          const index = parent.children.indexOf(_this.nodeInfo)
-          let data = parent.children[index]
-          parent.children.splice(index, 1)
-          // 返回的参数  全部数据/删除的数据
-          _this.$emit('delete-node', _this.$attrs.data, data)
+        _this.deleteNodeBefore.apply(this, [this.$attrs.data, this.node, function (msg) {
+          let message = '是否确认删除？'
+          if (msg) { // 添加删除提示   msg为自定义提示内容
+            message = msg
+          }
+          _this.$Modal.confirm({
+            title: '请确认',
+            content: message,
+            onOk: () => {
+              const parentKey = _this.root.find(el => el === _this.node).parent
+              const parent = _this.root.find(el => el.nodeKey === parentKey).node
+              // const index = parent.children.indexOf(_this.nodeInfo)
+              let index = -1
+              parent.children.forEach((item, key) => { // 判断删除的节点在父节点中对应的位置
+                if (item[_this.keyId] === _this.nodeInfo[_this.keyId]) {
+                  index = key
+                }
+              })
+
+              let data = parent.children[index]
+              parent.children.splice(index, 1)
+              // 返回的参数  全部数据/删除的数据
+              _this.$emit('delete-node', _this.$attrs.data, data)
+            }
+          })
         }])
       }
     },
@@ -290,7 +390,7 @@ export default {
     },
     handleDragEnter (root, node, data) {
       const event = window.event || arguments[0]
-      this.overNodeKey = data.value
+      this.overNodeKey = data[this.keyId]
     },
     handleDragOver (root, node, data) {
       const event = window.event || arguments[0]
@@ -303,7 +403,7 @@ export default {
       } else {
         this.nodeIndex = ''
       }
-      if (this.overNodeKey === data.value) {
+      if (this.overNodeKey === data[this.keyId]) {
         this.dropPosition = this.calDropPosition(event) // 放置标识0，-1,1
         this.dragOverClass = this.setDragOverClass(data)
       }
@@ -349,7 +449,7 @@ export default {
     },
     setDragOverClass (data) {
       var pos = this.dropPosition
-      if (this.overNodeKey !== data.value) {
+      if (this.overNodeKey !== data[this.keyId]) {
         return
       }
       if (pos === 0) {
@@ -379,7 +479,7 @@ export default {
       const parentNodes = this.findAllParent(data, [root[0].node], [], 0)
       if (parentNodes && parentNodes.length > 0) {
         for (let i = 0; i < parentNodes.length; i++) {
-          if (parentNodes[i].value === this.dragstartNode.node.value) {
+          if (parentNodes[i][this.keyId] === this.dragstartNode.node[this.keyId]) {
             return
           }
         }
@@ -390,7 +490,7 @@ export default {
         _this.onDragBefore.apply(this, [root, _this.dragstartData, data, function () {
           if (_this.dragOverClass === 0) { // 拖拽到节点上。
             // 拖拽后修改被拖拽节点的parentValue
-            _this.dragstartNode.node.parentValue = data.value
+            _this.dragstartNode.node[_this.parentValue] = data[_this.keyId]
             const target_children = data.children || []
             target_children.push(_this.dragstartData)
             _this.$set(data, 'children', target_children)
@@ -411,12 +511,12 @@ export default {
             let target_parent = []
             if (node.nodeKey === 0) { // 判断目标节点是否是根节点
               target_parent = data.children
-              _this.dragstartNode.node.parentValue = 0 // 改变拖拽节点父节点的值
+              _this.dragstartNode.node[_this.parentValue] = 0 // 改变拖拽节点父节点的值
             } else {
               const target_parentKey = root.find(el => el === node).parent // 目标节点的父节点
               target_parent = root.find(el => el.nodeKey === target_parentKey).node.children
               // 改变拖拽节点父节点的值
-              _this.dragstartNode.node.parentValue = root.find(el => el.nodeKey === target_parentKey).node.value
+              _this.dragstartNode.node[_this.parentValue] = root.find(el => el.nodeKey === target_parentKey).node[_this.keyId]
             }
             const data_index = target_parent.indexOf(data)
             if (_this.dragOverClass === 1) {
@@ -443,7 +543,7 @@ export default {
     findParent (node, parentNodes, tree) {
       for (let i = 0; i < tree.length; i++) {
         let item = tree[i]
-        if (item.value === node.parentValue) {
+        if (item[this.keyId] === node[this.parentValue]) {
           parentNodes.push(item)
           return
         }
@@ -457,27 +557,44 @@ export default {
 </script>
 
 <style lang="less">
-  .tree-wrapper .ivu-tree ul li {
-    margin: 0!important;
-  }
-  .tree-span {
-    padding-top: 5px;
-    padding-bottom: 5px;
-  }
-  .tree-wrapper .ivu-checkbox-wrapper {
-    margin-top: 4px;
-  }
-  .tree-drag-over {
-    background-color: #5295E7;
-    color: white;
-    /*border: 2px #5295E7 solid;*/
-  }
-  .tree-drag-over-top {
-    border-top: 1px red solid!important;
-    border-radius: 0!important;
-  }
-  .tree-drag-over-bottom {
-    border-bottom: 1px #5295E7 solid!important;
-    border-radius: 0!important;
-  }
+    .tree-wrapper{
+        height: 100%;
+        .ivu-tree{
+            /*height: calc(~'100% - 30px');*/
+            height: 100%;
+            overflow: auto;
+        }
+        .ivu-tree ul li {
+            margin: 0!important;
+        }
+        .ivu-checkbox-wrapper {
+            margin-top: 4px;
+        }
+
+        .tree-span {
+            padding-top: 5px;
+            padding-bottom: 5px;
+        }
+        .tree-search-box{
+            height:35px;
+            padding-right:8px;
+        }
+
+        .tree-drag-over {
+            background-color: #5295E7;
+            color: white;
+            /*border: 2px #5295E7 solid;*/
+        }
+        .tree-drag-over-top {
+            border-top: 1px red solid!important;
+            border-radius: 0!important;
+        }
+        .tree-drag-over-bottom {
+            border-bottom: 1px #5295E7 solid!important;
+            border-radius: 0!important;
+        }
+    }
+    .tree-drop-down {
+        margin-left: 50px;
+    }
 </style>

@@ -22,22 +22,22 @@
 </template>
 
 <script>
-    export default {
-        name: 'index-card',
-        components: {
-        },
-        props: {
-            widths: Number,
-        },
-        data () {
-            return {
-            };
-        },
-        mounted () {
-        },
-        methods: {
-        }
-    };
+export default {
+  name: 'index-card',
+  components: {
+  },
+  props: {
+    widths: Number
+  },
+  data () {
+    return {
+    }
+  },
+  mounted () {
+  },
+  methods: {
+  }
+}
 </script>
 
 <style>

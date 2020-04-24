@@ -34,37 +34,37 @@
 </template>
 
 <script>
-    export default {
-        name: 'index-card',
-        components: {
-        },
-        props: {
-            widths:  {
-                type: Number,
-                default: 1450
-            },
-            span: {
-                type: [Function, String, Number],
-            },
-            topHeight:  {
-                type: Number
-            },
-            taskContext: {
-                type: Array,
-                default () {
-                    return [];
-                }
-            }
-        },
-        data () {
-            return {
-            };
-        },
-        mounted () {
-        },
-        methods: {
-        }
-    };
+export default {
+  name: 'index-card',
+  components: {
+  },
+  props: {
+    widths: {
+      type: Number,
+      default: 1450
+    },
+    span: {
+      type: [Function, String, Number]
+    },
+    topHeight: {
+      type: Number
+    },
+    taskContext: {
+      type: Array,
+      default () {
+        return []
+      }
+    }
+  },
+  data () {
+    return {
+    }
+  },
+  mounted () {
+  },
+  methods: {
+  }
+}
 </script>
 
 <style scoped>

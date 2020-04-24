@@ -18,34 +18,34 @@
 </template>
 
 <script>
-    export default {
-        name: 'index-card',
-        components: {
-        },
-        props: {
-            widths: Number,
-            data: {
-                type: Object,
-                default () {
-                    return {};
-                }
-            },
-            styles: {
-                type: Object,
-                default () {
-                    return {};
-                }
-            }
-        },
-        data () {
-            return {
-            };
-        },
-        mounted () {
-        },
-        methods: {
-        }
-    };
+export default {
+  name: 'index-card',
+  components: {
+  },
+  props: {
+    widths: Number,
+    data: {
+      type: Object,
+      default () {
+        return {}
+      }
+    },
+    styles: {
+      type: Object,
+      default () {
+        return {}
+      }
+    }
+  },
+  data () {
+    return {
+    }
+  },
+  mounted () {
+  },
+  methods: {
+  }
+}
 </script>
 
 <style>

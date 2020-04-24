@@ -13,4 +13,4 @@ export default function (lang) {
         }
     }
 };
-/*eslint-enable */
+/* eslint-enable */

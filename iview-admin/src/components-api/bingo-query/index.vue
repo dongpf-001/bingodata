@@ -1,17 +1,16 @@
 <template>
-    <div style="height: 64px;position: relative">
+    <div class="query-box-wrapper">
         <div class="query-box query-box-form" :type="type">
-            <Form class="query" :model="data" ref="form"  :rules="rules" :label-width="labelW" :label-position="labelPosition"
-                  style="margin-top: 0px;" >
-                <Grid v-if="type == 'float'" :col="col" :border="false" justify="end" padding="5px">
+            <Form class="query" :model="data" ref="form"  :rules="rules" :label-width="labelW" :label-position="labelPosition" @submit.native.prevent="handleSubmit">
+                <Grid v-if="type == 'float'" :col="col" :border="false" justify="end" padding="2px">
                     <div class="query-wrapper">
                         <slot></slot>
                         <span v-if="!collapse" ref="more">
                             <!--<slot name="collapse" ref="collapse"></slot>-->
                         </span>
                     </div>
-                    <FormItem class="query-form">
-                        <a style="font-size: 14px" class="ivu-mr-8" @click="collapseClick" v-if="node.length>0">
+                    <div class="query-form">
+                        <a v-font="14" class="ivu-mr-8" @click="collapseClick" v-if="node.length>0">
                             <template v-if="collapse">
                                 <Icon type="ios-arrow-down" />
                             </template>
@@ -19,20 +18,20 @@
                                 <Icon type="ios-arrow-up" />
                             </template>
                         </a>
-                        <Button type="primary" @click="handleSubmit">查询</Button>
-                        <Button class="ivu-ml-8" @click="handleReset">重置</Button>
-                    </FormItem>
+                        <Button type="primary" html-type="submit">{{$t('page.common.search')}}</Button>
+                        <Button class="ivu-ml-8" @click="handleReset">{{$t('page.common.reset')}}</Button>
+                       </div>
                 </Grid>
-                <Grid v-if="type != 'float'" :col="col" :border="false" justify="end" padding="5px">
+                <Grid v-if="type != 'float'" :col="col" :border="false" justify="end" padding="2px">
                     <div class="query-wrapper">
                         <slot></slot>
                         <bingo-modal-form ref="modal" :col="col" :title="$t('page.common.search')" :width="width" :button="false"
                                           :labelWidth="labelWidth" :showDefault="false">
                             <slot></slot>
                             <div slot="footer-button">
-                                <Button type="primary" @click="handleSubmit">{{$t('page.common.search')}}</Button>
+                                <Button type="primary" html-type="submit" @click="handleSubmit">{{$t('page.common.search')}}</Button>
                                 <Button class="ivu-ml-8" @click="handleReset">{{$t('page.common.reset')}}</Button>
-                                <a style="font-size: 14px" class="ivu-ml-8" @click="close">
+                                <a v-font="14" class="ivu-ml-8" @click="close">
                                     <template>
                                         <Icon type="ios-arrow-up" />
                                     </template>
@@ -40,15 +39,15 @@
                             </div>
                         </bingo-modal-form>
                     </div>
-                    <FormItem class="query-form">
-                        <a style="font-size: 14px" class="ivu-mr-8" @click="open"  v-if="node.length>0">
+                    <div class="query-form">
+                        <a v-font="14" class="ivu-mr-8" @click="open"  v-if="node.length>0">
                             <template>
                                 <Icon type="ios-arrow-down" />
                             </template>
                         </a>
-                        <Button type="primary" @click="handleSubmit">{{$t('page.common.search')}}</Button>
+                        <Button type="primary" html-type="submit" >{{$t('page.common.search')}}</Button>
                         <Button class="ivu-ml-8" @click="handleReset">{{$t('page.common.reset')}}</Button>
-                    </FormItem>
+                    </div>
                 </Grid>
             </Form>
             <div style="display: none" ref="cache"></div>
@@ -58,7 +57,6 @@
 <script>
 import { mapState } from 'vuex'
 import bingoModalForm from '@/components-api/bingo-modal-form'
-import Grid from '@/components-api/iview-pro/components/grid'
 export default {
   name: 'query-right',
   props: {
@@ -115,7 +113,7 @@ export default {
     }
   },
   components: {
-    bingoModalForm, Grid
+    bingoModalForm
   },
   methods: {
     getParams () {
@@ -133,6 +131,13 @@ export default {
     },
     handleReset () {
       this.$refs.form.resetFields()
+      for (let item in this.$refs.form.model) {
+        if (typeof this.$refs.form.model[item] === 'object') {
+          this.$refs.form.model[item] = []
+        } else {
+          this.$refs.form.model[item] = ''
+        }
+      }
       this.$emit('on-reset')
       if (this.type != 'float') this.$refs.modal.show = false
     },
@@ -168,22 +173,4 @@ export default {
 }
 </script>
 <style >
-    .query  .ivu-form-item{
-        margin-bottom: 5px;
-    }
-    .query-wrapper {
-        position: relative;
-        padding: 0 180px 8px 8px;
-    }
-    .query-form {
-        position: absolute;
-        top: 5px;
-        right: 0;
-    }
-    .query-box-form {
-        position: absolute;
-        top: 0px;
-        width: 100%;
-        z-index: 2;
-    }
 </style>

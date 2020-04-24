@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import bingoAgTable from '@/components-api/bingo-ag-table'
+import bingoAgTable from '@/components-api/bingo-advance-table'
 import bingoGridItem from '@/components-api/bingo-query/bingo-grid-item'
 import bingoQuery from '@/components-api/bingo-query'
 import bingoActionDrop from '@/components-api/bingo-action-drop'

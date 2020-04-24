@@ -1,2 +1,2 @@
-import Auth from './auth.vue';
-export default Auth;
+import Auth from './auth.vue'
+export default Auth

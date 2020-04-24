@@ -36,41 +36,41 @@
 </template>
 
 <script>
-    export default {
-        name: 'index-card',
-        components: {
+export default {
+  name: 'index-card',
+  components: {
+  },
+  props: {
+    widths: {
+      type: Number,
+      default: 1450
+    }
+  },
+  data () {
+    return {
+      projectInfo2: [ // 项目区域
+        {
+          title: 'SVW361',
+          text: 'NCS',
+          percent: 42,
+          plan: '项目主计划',
+          lf: '里程碑'
         },
-        props: {
-            widths:  {
-                type: Number,
-                default: 1450
-            },
-        },
-        data () {
-            return {
-                projectInfo2: [ // 项目区域
-                    {
-                        title: 'SVW361',
-                        text: 'NCS',
-                        percent: 42,
-                        plan: '项目主计划',
-                        lf: '里程碑'
-                    },
-                    {
-                        title: 'Ab571/1',
-                        text: 'AudiX 20年第二次年型',
-                        percent: 49,
-                        plan: '项目主计划',
-                        lf: '里程碑'
-                    }
-                ],
-            };
-        },
-        mounted () {
-        },
-        methods: {
+        {
+          title: 'Ab571/1',
+          text: 'AudiX 20年第二次年型',
+          percent: 49,
+          plan: '项目主计划',
+          lf: '里程碑'
         }
-    };
+      ]
+    }
+  },
+  mounted () {
+  },
+  methods: {
+  }
+}
 </script>
 
 <style>

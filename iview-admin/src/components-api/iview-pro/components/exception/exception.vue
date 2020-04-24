@@ -13,50 +13,50 @@
     </div>
 </template>
 <script>
-    import { oneOf } from '../../utils/assist.js';
-    import typeConfig from './typeConfig.js';
+import { oneOf } from '../../utils/assist.js'
+import typeConfig from './typeConfig.js'
 
-    export default {
-        name: 'Exception',
-        props: {
-            type: {
-                validator (value) {
-                    return oneOf(value, ['403', '404', '500', 403, 404, 500]);
-                },
-                default: '404'
-            },
-            title: {
-                type: String
-            },
-            desc: {
-                type: String
-            },
-            img: {
-                type: String
-            },
-            imgColor: {
-                type: Boolean,
-                default: false
-            },
-            backText: {
-                type: String,
-                default: '返回首页'
-            },
-            redirect: {
-                type: String,
-                default: '/'
-            }
-        },
-        computed: {
-            imgPath () {
-                return this.img ? this.img : this.imgColor ? typeConfig[this.type].imgColor : typeConfig[this.type].img;
-            },
-            titleText () {
-                return this.title ? this.title : typeConfig[this.type].title;
-            },
-            descText () {
-                return this.desc ? this.desc : typeConfig[this.type].desc;
-            }
-        }
-    };
+export default {
+  name: 'Exception',
+  props: {
+    type: {
+      validator (value) {
+        return oneOf(value, ['403', '404', '500', 403, 404, 500])
+      },
+      default: '404'
+    },
+    title: {
+      type: String
+    },
+    desc: {
+      type: String
+    },
+    img: {
+      type: String
+    },
+    imgColor: {
+      type: Boolean,
+      default: false
+    },
+    backText: {
+      type: String,
+      default: '返回首页'
+    },
+    redirect: {
+      type: String,
+      default: '/'
+    }
+  },
+  computed: {
+    imgPath () {
+      return this.img ? this.img : this.imgColor ? typeConfig[this.type].imgColor : typeConfig[this.type].img
+    },
+    titleText () {
+      return this.title ? this.title : typeConfig[this.type].title
+    },
+    descText () {
+      return this.desc ? this.desc : typeConfig[this.type].desc
+    }
+  }
+}
 </script>

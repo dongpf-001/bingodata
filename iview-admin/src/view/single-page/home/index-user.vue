@@ -29,31 +29,31 @@
 </template>
 
 <script>
-    export default {
-        name: 'index-card',
-        components: {
-        },
-        props: {
-            widths: {
-                type: Number,
-                default: 1450
-            },
-        },
-        data () {
-            return {
-                userInfo: { // 人员信息
-                    name: '吴慈仁',
-                    org: 'EPK 高级经理',
-                    number: '10001'
-                },
-            };
-        },
-        mounted () {
-        },
-        methods: {
-            modalUserInfo () {}
-        }
-    };
+export default {
+  name: 'index-card',
+  components: {
+  },
+  props: {
+    widths: {
+      type: Number,
+      default: 1450
+    }
+  },
+  data () {
+    return {
+      userInfo: { // 人员信息
+        name: '吴慈仁',
+        org: 'EPK 高级经理',
+        number: '10001'
+      }
+    }
+  },
+  mounted () {
+  },
+  methods: {
+    modalUserInfo () {}
+  }
+}
 </script>
 
 <style scoped>

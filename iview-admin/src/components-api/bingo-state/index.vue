@@ -2,8 +2,8 @@
     <div class="state-wrapper">
         <Poptip :trigger="disabled ? 'click' : 'hover'"
                 :disabled="disabled"
-                v-if="type!='select'"
-                placement="right">
+                v-if="type!='select' && type!='vertical'"
+                :placement="placement">
             <span class="traffic-light" :class='showClass' @click="onClick"
                   :style="{width:size+'px',height:size+'px'}"></span>
             <div class="api" slot="content">
@@ -15,28 +15,27 @@
                 </div>
             </div>
         </Poptip>
-<!--        <Dropdown placement="bottom-start" class="down-class" @on-click="change"-->
-<!--                  trigger="click" v-if="type=='drop'" style="width: 100%;">-->
-<!--            <div class="ivu-input">-->
-<!--                <span class="traffic-light" :class='showClass' @click="onClick" :style="{width:size+'px',height:size+'px'}"></span>-->
-<!--            </div>-->
-<!--            <DropdownMenu slot="list" style="width: 100%">-->
-<!--                <DropdownItem v-for='item in states' :key='item.value' :name="item.color">-->
-<!--                    <span class="traffic-light" :class='item.color' :style="{width:size+'px',height:size+'px'}">-->
-<!--&lt;!&ndash;                        <Icon type="md-checkmark" class="state-icon" v-if="showClass == item.color"/>&ndash;&gt;-->
-<!--                    </span>-->
-<!--                </DropdownItem>-->
-<!--            </DropdownMenu>-->
-<!--        </Dropdown>-->
 
-        <Select v-model='state'  @on-change='handleSelectState' v-if="type=='select'">
+        <Select v-model='state' :placeholder="placeholder" :disabled="disabled"  @on-change='handleSelectState' v-if="type=='select'">
             <span :class='stateIcon' class='traffic-light' slot='prefix' :style="{width:size+'px',height:size+'px'}"></span>
-            <Option v-for='item in states' :value='item.value' :key='item.value' label=' '>
+            <Option v-for='item in states' :disabled="item.disabled" :value='item.value' :key='item.value' label=' '>
                 <span class="traffic-light" :class='item.color' :style="{width:size+'px',height:size+'px'}">
                 </span>
                 <span style="float: right;margin-top: 0px;">{{item.msg}}</span>
             </Option>
         </Select>
+
+        <div v-if="type=='vertical'" class="state-vertical">
+            <div class="state-vertical-title">
+                <p>{{title}}</p>
+            </div>
+            <div v-for='item in verticalState' :key='item.value' class="state-vertical-state">
+                <span class="traffic-light" :class='item.color' @click="change(item.color)"
+                      :style="showClass == item.color?styles:styles2">
+<!--                    <Icon type="md-checkmark" size="18" class="state-vertical-icon" v-if="showClass == item.color"/>-->
+                </span>
+            </div>
+        </div>
     </div>
 </template>
 <script>
@@ -49,7 +48,22 @@ export default {
       showRed: false,
       showRedYellow: false,
       showYellow: false,
-      showGreen: false
+      showGreen: false,
+      verticalState: [
+        {
+          value: 'red',
+          color: 'red',
+          msg: ''
+        },
+        {
+          value: 'yellow',
+          color: 'yellow'
+        },
+        {
+          value: 'green',
+          color: 'green'
+        }
+      ]
     }
   },
   props: {
@@ -58,21 +72,21 @@ export default {
       default () {
         return [
           {
-            value: 0,
+            value: 'red',
             color: 'red',
             msg: ''
           },
           {
-            value: 1,
+            value: 'redYellow',
+            color: 'redYellow'
+          },
+          {
+            value: 'yellow',
             color: 'yellow'
           },
           {
-            value: 2,
+            value: 'green',
             color: 'green'
-          },
-          {
-            value: 3,
-            color: 'redYellow'
           }
         ]
       }
@@ -87,18 +101,54 @@ export default {
       type: Boolean,
       default: false
     },
+    isCondition: {
+      type: Boolean,
+      default: false
+    },
     type: {
+      type: String,
+      default: ''
+    },
+    title: {
       type: String,
       default: ''
     },
     size: {
       type: Number,
       default: 22
+    },
+    placement: {
+      type: String,
+      default: 'right'
+    },
+    placeholder: {
+      type: String,
+      default: ''
+    }
+  },
+  watch: {
+    value (value) {
+      this.state = value
     }
   },
   mounted () {
   },
   computed: {
+    styles () {
+      let style = {
+        width: `${this.size}px`,
+        height: `${this.size}px`
+      }
+      return style
+    },
+    styles2 () {
+      let style = {
+        width: `${this.size}px`,
+        height: `${this.size}px`,
+        opacity: 0.2
+      }
+      return style
+    },
     showClass () {
       let showClass = 'white'
       if (this.state === 'red') {
@@ -115,9 +165,19 @@ export default {
   },
   methods: {
     change (type) {
-      this.state = type
-      this.$emit('input', this.state)
-      this.$emit('on-change', this.state)
+      if (!this.disabled) { // 只读状态下不可操作
+        let _this = this
+        if (this.isCondition) { // 判断是否有条件
+          this.$emit('on-change', type, () => {
+            _this.state = type
+          })
+          this.$emit('input', _this.state)
+        } else {
+          _this.state = type
+          this.$emit('on-change', type)
+          this.$emit('input', _this.state)
+        }
+      }
     },
     onClick () {
       this.$emit('on-click')
@@ -130,6 +190,7 @@ export default {
           break
         }
       }
+      this.$emit('input', this.state)
     }
   }
 }
@@ -139,6 +200,7 @@ export default {
         margin-top: 4px;
         border-radius: 50%;
         display: inline-block;
+        overflow: hidden;
     }
     .state-content {
         float: left;
@@ -153,20 +215,20 @@ export default {
         margin-left: 8px;
     }
     .white {
-        background-color: #C0C0C0;
+        background-color: #8e8f90;
     }
     .red {
-        background-color: red;
+        background-color: #cb333b;
     }
 
     .yellow {
-        background-color: yellow;
+        background-color: #ffc72c;
     }
     .green {
-        background-color: green;
+        background-color: #84bd00;
     }
     .redYellow {
-        background: linear-gradient(to bottom, red 0%, red, red, yellow, yellow, yellow 100%);
+        background: linear-gradient(to bottom, #cb333b 0%, #cb333b, #cb333b, #cb333b, #ffc72c, #ffc72c, #ffc72c, #ffc72c 100%);
     }
     .state-icon {
         color: white;
@@ -188,5 +250,47 @@ export default {
         border-left-width: 0;
         border-right-width: 7px;
         border-right-color: rgba(0 ,0 ,0 , 0.1);
+    }
+    .state-wrapper .ivu-poptip-popper[x-placement^="left"] .ivu-poptip-arrow:after {
+        content: " ";
+        right: 1px;
+        border-right-width: 0;
+        border-left-width: 7px;
+        border-left-color: rgba(0 ,0 ,0 , 0.1);
+        bottom: -7px;
+    }
+    .state-wrapper .ivu-poptip-popper[x-placement^="top"] .ivu-poptip-arrow:after {
+        content: " ";
+        bottom: 1px;
+        margin-left: -7px;
+        border-bottom-width: 0;
+        border-top-width: 7px;
+        border-top-color: rgba(0 ,0 ,0 , 0.1);
+    }
+    .state-vertical { // 纵向状态
+        width: 50px;
+        /*border: 1px solid red;*/
+        background: #d2dde3;
+        border-radius: 10px;
+        .state-vertical-title {
+            height: 32px;
+            text-align: center;
+            color: #fff;
+            background: #0077c8;
+            border-top-left-radius: 7px;
+            border-top-right-radius: 7px;
+            p {
+                padding-top: 6px;
+            }
+        }
+        .state-vertical-state {
+            margin-top: 4px;
+            margin-bottom: 4px;
+            text-align: center;
+            .state-vertical-icon {
+                color: #0077c8;
+                margin-top: 5px;
+            }
+        }
     }
 </style>

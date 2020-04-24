@@ -63,209 +63,208 @@
 </template>
 
 <script>
-    import bingoShrink from '../bingo-shrink';
-    import bingoToolbar from '../bingo-toolbar';
-    export default {
-        data() {
-            return {
-                activeName: 'one', // 右侧定位的name
-                selectName: '', // 全屏时选中的name
-                tabName: 'one',
-                fullFlag: false,
-                showButton: {
-                    showOpenButton: false,
-                    showAllButton: false
-                },
-            };
-        },
-        props: {
-            showToolbar: {
-                type: Boolean,
-                default: true
-            },
-            title:{
-                type: Boolean,
-                default: false
-            },
-            tabs: {
-                type: Array,
-                default: []
-            },
-            mode: {
-                type: String,
-                default: 'vertical'
-            },
-            active: {
-                type: String,
-            }
-        },
-        components: {bingoShrink, bingoToolbar},
-        created() {
-            for (let tab of this.tabs) {
-                this.$set(tab, 'expend', true)
-            }
-            this.$set(this.tabs[0], 'show', true)
-        },
-        mounted() {
-            this.activeName=this.active;
-            //this.initTabs();
-            // 初始化
-            if (this.mode == 'horizontal') {
-                for (let tab of this.tabs) {
-                    if (tab.drop) {
-                        tab.show = false
-                    } else {
-                        if (tab.name==this.activeName || tab.parentName==this.activeName) {
-                            tab.show = true
-                        } else {
-                            tab.show = false
-                        }
-                    }
-                }
-            }
-        },
-        computed: {
-            sHeight(){
-                /*if(this.showToolbar){
+import bingoShrink from '../bingo-shrink'
+import bingoToolbar from '../bingo-toolbar'
+export default {
+  data () {
+    return {
+      activeName: 'one', // 右侧定位的name
+      selectName: '', // 全屏时选中的name
+      tabName: 'one',
+      fullFlag: false,
+      showButton: {
+        showOpenButton: false,
+        showAllButton: false
+      }
+    }
+  },
+  props: {
+    showToolbar: {
+      type: Boolean,
+      default: true
+    },
+    title: {
+      type: Boolean,
+      default: false
+    },
+    tabs: {
+      type: Array,
+      default: []
+    },
+    mode: {
+      type: String,
+      default: 'vertical'
+    },
+    active: {
+      type: String
+    }
+  },
+  components: { bingoShrink, bingoToolbar },
+  created () {
+    for (let tab of this.tabs) {
+      this.$set(tab, 'expend', true)
+    }
+    this.$set(this.tabs[0], 'show', true)
+  },
+  mounted () {
+    this.activeName = this.active
+    // this.initTabs();
+    // 初始化
+    if (this.mode == 'horizontal') {
+      for (let tab of this.tabs) {
+        if (tab.drop) {
+          tab.show = false
+        } else {
+          if (tab.name == this.activeName || tab.parentName == this.activeName) {
+            tab.show = true
+          } else {
+            tab.show = false
+          }
+        }
+      }
+    }
+  },
+  computed: {
+    sHeight () {
+      /* if(this.showToolbar){
                     return 93-this.titelHeiht
                 }else {
                     return 56-this.titelHeiht
-                }*/
-                return this.toolbarHeight + this.titelHeiht
-            },
-            titelHeiht(){
-                if(this.title){
-                    return 32
-                }else {
-                    return 0
-                }
-            },
-            toolbarHeight(){
-                if(this.showToolbar){
-                    return 48
-                }else {
-                    return 0
-                }
-            },
-            billClass() {
-                return [{
-                    ['bill-vertical']: this.mode === 'vertical',
-                    ['bill-horizontal']: this.mode === 'horizontal',
-                    ['bill-full']: this.fullFlag,
-                }];
-            },
-            contentClass() {
-                return [{
-                    ['hContent']: this.mode === 'horizontal' && !this.$slots.base,
-                    ['hContent-hy']: this.mode === 'horizontal' && this.$slots.base && this.$slots.base.length>0,
-                    ['content i-scrollbar']: this.mode !== 'horizontal',
-                }];
-            },
-            cardClass() {
-                return [{
-                    ['card-full']: this.fullFlag,
-                }];
-            }
-        },
-        watch: {},
-        methods: {
-            initTabs() {  //初始化显示几个tab
-                let tabHeight = 0, flag = true;
-                if (this.mode == 'horizontal') {
-                    for (let tab of this.tabs) {
-                        if (tab.name==this.activeName) {
-                            tab.show = true
-                        } else {
-                            tab.show = false
-                        }
-                    }
-                } else {
-                    for (let tab of this.tabs) {
-                        if (flag) {
-                            this.$set(tab, 'show', true)
-                            tabHeight = tabHeight + this.$refs[tab.name][0].$el.offsetHeight
-                            if (tabHeight > this.$refs.content.offsetHeight) {
-                                flag = false
-                            }
-                        } else {
-                            tab.show = false
-                        }
-                    }
-                    this.handleScroll(this.activeName)
-                }
-
-            },
-            handleScroll(ref) {
-                this.tabName = ref;
-                if (this.mode == 'horizontal') {
-                    for (let tab of this.tabs) {
-                        if (tab.name == ref) {
-                            tab.show = true
-                        } else {
-                            tab.show = false
-                        }
-                    }
-                } else {
-                    for (let tab of this.tabs) {
-                        if (tab.name == ref) {
-                            this.$set(tab, 'show', true)
-                        }
-                    }
-                    this.$nextTick(() => {
-                        this.$ScrollTop(this.$refs.content, {
-                            to: this.$refs[ref][0].$el.offsetTop,
-                            time: 600
-                        })
-                    });
-                }
-                this.$emit('handle-scroll', ref);
-            },
-            loadMore(el) {
-                //判断滚动到最下方
-                if(this.mode == 'vertical'){
-                    if (el.clientHeight + el.scrollTop >= el.scrollHeight-10) {
-                        for (let tab of this.tabs) {
-                            if (!tab.show) {
-                                this.$set(tab, 'show', true)
-                                return
-                            }
-                            setTimeout(() => {
-                                if (this.tabs[this.tabs.length - 1].name == tab.name) {
-                                    this.activeName = tab.name
-                                    this.tabName = tab.name;
-                                }
-                            }, 100)
-                        }
-                    }
-                }
-                // 滚动位置判断显示到哪个tab
-                for (let tab of this.tabs) {
-                    if (this.$refs[tab.name] && this.$refs[tab.name][0] && this.$refs[tab.name][0].$el && (this.$refs[tab.name][0].$el.getBoundingClientRect().top < 200)) {
-                        setTimeout(() => {
-                            this.$nextTick(() => {
-                                this.activeName = tab.name
-                                this.tabName = tab.name;
-                            });
-                        }, 120)
-                    }
-                }
-            },
-            fullOpen (name) { // 全屏
-                this.selectName = name;
-                this.fullFlag = !this.fullFlag;
-                this.$emit('fullOpen',this.fullFlag,name);
-                this.handleScroll(name)
-            },
-            showTab (tab) {
-                tab.expend = !tab.expend
-            },
-            onSave () {
-                this.$emit('on-save');
-            },
-            selectClick () {
-            }
+                } */
+      return this.toolbarHeight + this.titelHeiht
+    },
+    titelHeiht () {
+      if (this.title) {
+        return 32
+      } else {
+        return 0
+      }
+    },
+    toolbarHeight () {
+      if (this.showToolbar) {
+        return 48
+      } else {
+        return 0
+      }
+    },
+    billClass () {
+      return [{
+        'bill-vertical': this.mode === 'vertical',
+        'bill-horizontal': this.mode === 'horizontal',
+        'bill-full': this.fullFlag
+      }]
+    },
+    contentClass () {
+      return [{
+        'hContent': this.mode === 'horizontal' && !this.$slots.base,
+        'hContent-hy': this.mode === 'horizontal' && this.$slots.base && this.$slots.base.length > 0,
+        'content i-scrollbar': this.mode !== 'horizontal'
+      }]
+    },
+    cardClass () {
+      return [{
+        'card-full': this.fullFlag
+      }]
+    }
+  },
+  watch: {},
+  methods: {
+    initTabs () { // 初始化显示几个tab
+      let tabHeight = 0, flag = true
+      if (this.mode == 'horizontal') {
+        for (let tab of this.tabs) {
+          if (tab.name == this.activeName) {
+            tab.show = true
+          } else {
+            tab.show = false
+          }
         }
-    };
+      } else {
+        for (let tab of this.tabs) {
+          if (flag) {
+            this.$set(tab, 'show', true)
+            tabHeight = tabHeight + this.$refs[tab.name][0].$el.offsetHeight
+            if (tabHeight > this.$refs.content.offsetHeight) {
+              flag = false
+            }
+          } else {
+            tab.show = false
+          }
+        }
+        this.handleScroll(this.activeName)
+      }
+    },
+    handleScroll (ref) {
+      this.tabName = ref
+      if (this.mode == 'horizontal') {
+        for (let tab of this.tabs) {
+          if (tab.name == ref) {
+            tab.show = true
+          } else {
+            tab.show = false
+          }
+        }
+      } else {
+        for (let tab of this.tabs) {
+          if (tab.name == ref) {
+            this.$set(tab, 'show', true)
+          }
+        }
+        this.$nextTick(() => {
+          this.$ScrollTop(this.$refs.content, {
+            to: this.$refs[ref][0].$el.offsetTop,
+            time: 600
+          })
+        })
+      }
+      this.$emit('handle-scroll', ref)
+    },
+    loadMore (el) {
+      // 判断滚动到最下方
+      if (this.mode == 'vertical') {
+        if (el.clientHeight + el.scrollTop >= el.scrollHeight - 10) {
+          for (let tab of this.tabs) {
+            if (!tab.show) {
+              this.$set(tab, 'show', true)
+              return
+            }
+            setTimeout(() => {
+              if (this.tabs[this.tabs.length - 1].name == tab.name) {
+                this.activeName = tab.name
+                this.tabName = tab.name
+              }
+            }, 100)
+          }
+        }
+      }
+      // 滚动位置判断显示到哪个tab
+      for (let tab of this.tabs) {
+        if (this.$refs[tab.name] && this.$refs[tab.name][0] && this.$refs[tab.name][0].$el && (this.$refs[tab.name][0].$el.getBoundingClientRect().top < 200)) {
+          setTimeout(() => {
+            this.$nextTick(() => {
+              this.activeName = tab.name
+              this.tabName = tab.name
+            })
+          }, 120)
+        }
+      }
+    },
+    fullOpen (name) { // 全屏
+      this.selectName = name
+      this.fullFlag = !this.fullFlag
+      this.$emit('fullOpen', this.fullFlag, name)
+      this.handleScroll(name)
+    },
+    showTab (tab) {
+      tab.expend = !tab.expend
+    },
+    onSave () {
+      this.$emit('on-save')
+    },
+    selectClick () {
+    }
+  }
+}
 </script>
 <style >
     .expendClass .ivu-card-body{

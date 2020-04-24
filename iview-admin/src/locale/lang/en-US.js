@@ -62,7 +62,7 @@ export default {
   'bingo-state': 'Select State',
   'bingo-date': 'Date',
   'bingo-demo': 'Demo',
-  'bingo-ag-table': 'Ag-Grid',
+  'bingo-advance-table': 'Ag-Grid',
   'bingo-run': 'Run Code',
   'demo': 'Demo',
   'form-demo': 'Form Cache',

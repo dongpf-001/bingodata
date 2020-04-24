@@ -1,2 +1,2 @@
-import Result from './result.vue';
-export default Result;
+import Result from './result.vue'
+export default Result

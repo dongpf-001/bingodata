@@ -1,6 +1,6 @@
-import TagSelect from './tag-select.vue';
-import TagSelectOption from './tag-select-option.vue';
+import TagSelect from './tag-select.vue'
+import TagSelectOption from './tag-select-option.vue'
 
-TagSelect.Option = TagSelectOption;
+TagSelect.Option = TagSelectOption
 
-export default TagSelect;
+export default TagSelect

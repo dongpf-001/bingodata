@@ -23,27 +23,27 @@
 </template>
 
 <script>
-    export default {
-        name: 'index-card',
-        components: {
-        },
-        props: {
-            projectInfo: {
-                type: Array,
-                default () {
-                    return [];
-                }
-            }
-        },
-        data () {
-            return {
-            };
-        },
-        mounted () {
-        },
-        methods: {
-        }
-    };
+export default {
+  name: 'index-card',
+  components: {
+  },
+  props: {
+    projectInfo: {
+      type: Array,
+      default () {
+        return []
+      }
+    }
+  },
+  data () {
+    return {
+    }
+  },
+  mounted () {
+  },
+  methods: {
+  }
+}
 </script>
 
 <style scoped>

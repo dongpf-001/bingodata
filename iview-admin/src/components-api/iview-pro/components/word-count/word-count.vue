@@ -19,49 +19,49 @@
     </div>
 </template>
 <script>
-    export default {
-        name: 'WordCount',
-        props: {
-            value: {
-                type: [String, Number],
-                default: ''
-            },
-            total: {
-                type: Number,
-                default: 0
-            },
-            hideTotal: {
-                type: Boolean,
-                default: false
-            },
-            // 当超出 total 时，是否显示为溢出的个数
-            overflow: {
-                type: Boolean,
-                default: false
-            },
-            // 是否以圆环的形式显示
-            circle: {
-                type: Boolean,
-                default: false
-            },
-            // circle 模式下的尺寸
-            size: {
-                type: [String, Number],
-                default: 14
-            }
-        },
-        computed: {
-            isOverflow () {
-                return this.value.length > this.total;
-            },
-            percent () {
-                let percent = this.value.length / this.total * 100;
-                if (percent > 100) percent = 100;
-                return percent;
-            },
-            strokeColor () {
-                return this.isOverflow ? '#ed4014' : '#2d8cf0';
-            }
-        }
-    };
+export default {
+  name: 'WordCount',
+  props: {
+    value: {
+      type: [String, Number],
+      default: ''
+    },
+    total: {
+      type: Number,
+      default: 0
+    },
+    hideTotal: {
+      type: Boolean,
+      default: false
+    },
+    // 当超出 total 时，是否显示为溢出的个数
+    overflow: {
+      type: Boolean,
+      default: false
+    },
+    // 是否以圆环的形式显示
+    circle: {
+      type: Boolean,
+      default: false
+    },
+    // circle 模式下的尺寸
+    size: {
+      type: [String, Number],
+      default: 14
+    }
+  },
+  computed: {
+    isOverflow () {
+      return this.value.length > this.total
+    },
+    percent () {
+      let percent = this.value.length / this.total * 100
+      if (percent > 100) percent = 100
+      return percent
+    },
+    strokeColor () {
+      return this.isOverflow ? '#ed4014' : '#2d8cf0'
+    }
+  }
+}
 </script>
