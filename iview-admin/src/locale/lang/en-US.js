@@ -66,5 +66,6 @@ export default {
   'bingo-run': 'Run Code',
   'demo': 'Demo',
   'form-demo': 'Form Cache',
-  'table-demo': 'Table Demo'
+  'table-demo': 'Table Demo',
+  'bingo-tree-chart': 'Tree Chart'
 }

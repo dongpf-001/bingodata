@@ -20,61 +20,61 @@
 </template>
 
 <script>
-export default {
-  name: 'splitPane',
-  props: {
-    value: {
-      type: Number,
-      default: 0.5,
-      validator: value => {
-        return value > 0 && value < 1
-      }
-    }
-  },
-  data () {
-    return {
-      canMove: false
-    }
-  },
-  methods: {
-    setWidth () {
-      // 根据传入的left right 计算宽度比例
-      let leftWidth = `${this.value * 100}%`
-      let rightWidth = `${(1 - this.value) * 100}%`
-      this.$refs.left.style = `right:${rightWidth}`
-      this.$refs.right.style = `left:${leftWidth}`
-      this.$refs.line.style = `left:${leftWidth}`
-    },
-    beginMove () {
-      console.log('beginMove')
-      this.canMove = true
-    },
-    lineMove (e) {
-      if (this.canMove) {
-        let splitPane = this.splitPaneEl.getBoundingClientRect(),
-          splitPaneWidth = splitPane.width,
-          splitPaneX = splitPane.x
+    export default {
+        name: 'splitPane',
+        props: {
+            value: {
+                type: Number,
+                default: 0.5,
+                validator: value => {
+                    return value > 0 && value < 1
+                }
+            }
+        },
+        data () {
+            return {
+                canMove: false
+            }
+        },
+        methods: {
+            setWidth () {
+                // 根据传入的left right 计算宽度比例
+                let leftWidth = `${this.value * 100}%`
+                let rightWidth = `${(1 - this.value) * 100}%`
+                this.$refs.left.style = `right:${rightWidth}`
+                this.$refs.right.style = `left:${leftWidth}`
+                this.$refs.line.style = `left:${leftWidth}`
+            },
+            beginMove () {
+                console.log('beginMove')
+                this.canMove = true
+            },
+            lineMove (e) {
+                if (this.canMove) {
+                    let splitPane = this.splitPaneEl.getBoundingClientRect();
+                    let splitPaneWidth = splitPane.width;
+                    let splitPaneX = splitPane.x
 
-        let mouseX = e.pageX
+                    let mouseX = e.pageX
 
-        let value = (mouseX - splitPaneX) / splitPaneWidth,
-          leftWidth = `${value * 100}%`,
-          rightWidth = `${(1 - value) * 100}%`
-        this.$refs.left.style = `right:${rightWidth}`
-        this.$refs.right.style = `left:${leftWidth}`
-        this.$refs.line.style = `left:${leftWidth}`
-      }
-    },
-    endMove () {
-      console.log('endMove')
-      this.canMove = false
+                    let value = (mouseX - splitPaneX) / splitPaneWidth;
+                    let leftWidth = `${value * 100}%`;
+                    let rightWidth = `${(1 - value) * 100}%`
+                    this.$refs.left.style = `right:${rightWidth}`
+                    this.$refs.right.style = `left:${leftWidth}`
+                    this.$refs.line.style = `left:${leftWidth}`
+                }
+            },
+            endMove () {
+                console.log('endMove')
+                this.canMove = false
+            }
+        },
+        mounted () {
+            this.setWidth()
+            this.splitPaneEl = document.getElementById('split-pane')
+        }
     }
-  },
-  mounted () {
-    this.setWidth()
-    this.splitPaneEl = document.getElementById('split-pane')
-  }
-}
 </script>
 
 <style lang="less">

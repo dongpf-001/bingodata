@@ -26,17 +26,17 @@
 </template>
 
 <script>
-export default {
-  name: 'onlineHeader',
-  data () {
-    return {}
-  },
-  methods: {
-    handleAction (type) {
-      this.$emit(type)
+    export default {
+        name: 'onlineHeader',
+        data () {
+            return {}
+        },
+        methods: {
+            handleAction (type) {
+                this.$emit(type)
+            }
+        }
     }
-  }
-}
 </script>
 
 <style lang="less" scoped>

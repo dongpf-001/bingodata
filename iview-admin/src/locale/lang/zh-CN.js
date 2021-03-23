@@ -66,5 +66,6 @@ export default {
   'bingo-run': '在线编辑',
   'demo': '样例',
   'form-demo': '表单缓存样例',
-  'table-demo': '正常表格样例'
+  'table-demo': '正常表格样例',
+  'bingo-tree-chart': '组织结构'
 }

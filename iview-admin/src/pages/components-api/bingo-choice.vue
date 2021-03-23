@@ -1,25 +1,32 @@
 <template>
-  <div class="content-inner">
-    <Card>
-      <div class="demo-split" style="height: 550px">
-        <Split v-model="split" mode="vertical">
-          <div slot="top" class="demo-split-pane">
-            <bingo-choice types="radio" v-model="radioModel" :datas="datas" :label-in-value="true"
-                          @on-change="onChange">
-            </bingo-choice>
-            <bingo-choice v-model="checkboxModel" :datas="datasCheck" :label-in-value="false" @on-change="onChange">
-            </bingo-choice>{{checkboxModel}}
-            <Button @click="clearClick">清空</Button>
-          </div>
-          <div slot="bottom" class="demo-split-pane">
-            <Button class="btn-copy" @click="handleCopy">copy</Button>
-            <pre v-highlight>
-                <code >{{html1}}</code>
-                <code >{{html2}}</code>
-            </pre>
-          </div>
-        </Split>
-      </div>
+  <div>
+    <div class="i-layout-page-header">
+      <PageHeader title="bingo-choice组件" hidden-breadcrumb></PageHeader>
+      <Icon type="ios-film" class="film" @click.native="clickPlayer"/>
+    </div>
+    <Card :bordered="false" dis-hover class="ivu-mt">
+      <!-- 单选 -->
+      <split-template :html="html1" codeTemplate="bingoChoiceRadio">
+                <span slot="components">
+                    <bingo-choice types="radio" v-model="radioModel" :datas="datas" :label-in-value="true">
+                    </bingo-choice>{{radioModel}}
+                </span>
+        <span slot="describe">
+                    <p><strong>types</strong> 属性用来区分单选还是多选，为<strong>radio</strong>的时候单选，
+                    为<strong>checkbox</strong>的时候多选</p>
+                    <p><strong>type</strong> 属性指选框的样式，可选值为button，只有在types="radio"有效</p>
+                </span>
+      </split-template>
+      <!-- 多选 -->
+      <split-template :html="html2" codeTemplate="bingoChoiceCheckbox">
+                <span slot="components">
+                    <bingo-choice v-model="checkboxModel" :datas="datasCheck" :label-in-value="false" @on-change="onChange">
+                    </bingo-choice>{{checkboxModel}}
+                </span>
+        <span slot="describe">
+                </span>
+      </split-template>
+
       <Divider>详细描述</Divider>
       <h3>props</h3>
       <Table border :columns="columns1" :data="data1"></Table>
@@ -27,28 +34,21 @@
       <h3>event</h3>
       <Table border :columns="columns2" :data="data2"></Table>
     </Card>
+    <my-video v-if="showPlayer" :viSrc="viSrc" @closePlayer="showPlayer=false"></my-video>
   </div>
 </template>
 
 <script>
-import bingoChoice from '@/components-api/bingo-choice'
-// import * as Api from '@/api/bmsa/demo'
+import SplitTemplate from '@/components-api/splitTemplate'
+import myVideo from '@/components-api/my-video'
 export default {
-  name: 'bingo-radio2',
+  name: 'bingo-choice-demo',
   data () {
     return {
-      radioModel: 1,
-      returnModel: {},
-      returnCheckModel: [],
-      checkboxModel: [1],
-      sexData: [],
-      html1: '<!--radio-单选-->\n' +
-        '<bingo-choice types="radio" v-model="radioModel" :datas="sexData" @on-change="onChange">\n' +
-        '</bingo-choice>',
-      html2: '<!--checkbox-多选-->\n' +
-        '<bingo-choice types="checkbox" v-model="checkboxModel" :datas="sexData" @on-change="onChange">\n' +
-        '</bingo-choice>',
-      split: 0.2,
+      showPlayer: false,
+      viSrc: 'video/bingo-choice.mp4',
+      radioModel: 0,
+      checkboxModel: [2],
       datas: [
         {
           label: 1,
@@ -78,6 +78,18 @@ export default {
           border: false
         }
       ],
+      html1: '<!--radio-单选-->\n' +
+          '<bingo-choice types="radio"\n' +
+          '               v-model="radioModel"\n' +
+          '               :datas="sexData"\n' +
+          '               @on-change="onChange">\n' +
+          '</bingo-choice>',
+      html2: '<!--checkbox-多选-->\n' +
+          '<bingo-choice types="checkbox"\n' +
+          '               v-model="checkboxModel"\n' +
+          '               :datas="sexData"\n' +
+          '               @on-change="onChange">\n' +
+          '</bingo-choice>',
       columns1: [
         {
           title: '属性',
@@ -86,8 +98,7 @@ export default {
         },
         {
           title: '说明',
-          key: 'props-decp',
-          width: 700
+          key: 'props-decp'
         },
         {
           title: '类型',
@@ -115,7 +126,7 @@ export default {
         },
         {
           'props-name': 'label-in-value',
-          'props-decp': '绑定的数据是否键值的形式',
+          'props-decp': 'v-model绑定的数据是否键值的形式展示',
           'props-type': 'Boolean',
           'props-default': 'true'
         },
@@ -123,13 +134,13 @@ export default {
           'props-name': 'datas',
           'props-decp': '显示的数据源，例如：datas: [{ label: 1, value: \'男\', disabled: false, border: false},]',
           'props-type': 'JSON',
-          'props-default': '-'
+          'props-default': '[]'
         },
         {
           'props-name': 'size',
           'props-decp': '尺寸，可选值为large、small、default或者不设置',
           'props-type': 'String',
-          'props-default': '-'
+          'props-default': 'default或者不设置'
         },
         {
           'props-name': 'label',
@@ -164,8 +175,7 @@ export default {
         },
         {
           title: '说明',
-          key: 'event-decp',
-          width: 870
+          key: 'event-decp'
         },
         {
           title: '返回值',
@@ -183,46 +193,25 @@ export default {
     }
   },
   created () {
-    this.getData()
   },
   components: {
-    bingoChoice
+    SplitTemplate, myVideo
   },
   methods: {
-    getData () {
-      // Api.getRadioData().then(res => {
-      //   debugger
-      //   if (res.success) {
-      //     res.data.forEach((item) => {
-      //       this.sexData.push({
-      //         label: item.itemValue,
-      //         value: item.itemText
-      //       })
-      //     })
-      //   }
-      // })
-    },
-    handleCopy (html) {
-      let that = this
-      this.$Copy({
-        text: that.html1
-      })
-    },
-    getModel (msg) {
-      this.$Message.info(msg.join(','))
-    },
-    getModelRedio (msg) {
-      this.$Message.info(msg + '')
+    clearClick () {
+      this.checkboxModel = []
+      this.radioModel = 1
     },
     onChange (value) {
       if (value) {
         this.$Message.info(JSON.stringify(value))
       }
     },
-    clearClick () {
-      this.checkboxModel = []
-      this.radioModel = ''
+    clickPlayer () {
+      this.showPlayer = true
     }
   }
 }
 </script>
+<style lang="less" scoped>
+</style>

@@ -1,21 +1,39 @@
 <template>
-  <bingo-run></bingo-run>
+    <bingo-run :code="code"></bingo-run>
 </template>
 
 <script>
 import bingoRun from '@/components-api/bingo-run'
 export default {
-  name: 'codeMirror1',
+  name: 'bingo-run-demo',
+  data () {
+    return {
+      code: ''
+    }
+  },
   components: {
     bingoRun
   },
-  data () {
-    return {
-      content: 'asdas'
+  created () {
+  },
+  mounted () {
+    this.$nextTick(() => {
+      this.getTemplate()
+    })
+  },
+  methods: {
+    getTemplate () {
+      const name = this.$route.query.templateName
+      Promise.all([
+                    import('@/components-api/bingo-run/template/' + name + '.js')
+      ]).then(([
+        codeTemplate
+      ]) => {
+        this.code = codeTemplate.default
+      })
     }
   }
 }
 </script>
-
-<style>
+<style lang="less" scoped>
 </style>

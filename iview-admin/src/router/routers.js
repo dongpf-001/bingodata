@@ -282,6 +282,15 @@ export default [
           title: 'Run Code'
         },
         component: () => import('@/pages/components-api/bingo-run')
+      },
+      {
+        path: 'bingo-tree-chart',
+        name: 'bingo-tree-chart',
+        meta: {
+          icon: 'md-arrow-dropdown-circle',
+          title: 'Tree Chart'
+        },
+        component: () => import('@/pages/components-api/bingo-tree-chart')
       }
     ]
   },
