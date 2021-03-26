@@ -283,15 +283,6 @@ export default [
                 },
                 component: () => import('@/pages/components-api/bingo-run')
             },
-            {
-                path: 'bingo-tree-chart',
-                name: 'bingo-tree-chart',
-                meta: {
-                    icon: 'md-arrow-dropdown-circle',
-                    title: 'Tree Chart'
-                },
-                component: () => import('@/pages/components-api/bingo-tree-chart')
-            }
         ]
     },
     {
@@ -338,15 +329,6 @@ export default [
                     title: '可拖拽抽屉'
                 },
                 component: () => import('@/view/components/drag-drawer')
-            },
-            {
-                path: 'org_tree_page',
-                name: 'org_tree_page',
-                meta: {
-                    icon: 'ios-people',
-                    title: '组织结构树'
-                },
-                component: () => import('@/view/components/org-tree')
             },
             {
                 path: 'tree_table_page',
