@@ -2,22 +2,22 @@
 @drag-drawer-trigger-height: 100px;
 @drag-drawer-trigger-width: 8px;
 
-.@{prefix}-wrapper{
-  &.no-select{
+.@{prefix}-wrapper {
+  &.no-select {
     user-select: none;
   }
-  &.pointer-events-none{
+  &.pointer-events-none {
     pointer-events: none;
-    & .@{prefix}-trigger-wrapper{
+    & .@{prefix}-trigger-wrapper {
       pointer-events: all;
     }
   }
-  .ivu-drawer{
-    &-header{
+  .ivu-drawer {
+    &-header {
       overflow: hidden !important;
       box-sizing: border-box;
     }
-    &-body{
+    &-body {
       padding: 0;
       overflow: visible;
       position: static;
@@ -25,17 +25,17 @@
       flex-direction: column;
     }
   }
-  .@{prefix}-body-wrapper{
+  .@{prefix}-body-wrapper {
     width: 100%;
     height: 100%;
     padding: 16px;
     overflow: auto;
   }
-  .@{prefix}-trigger-wrapper{
+  .@{prefix}-trigger-wrapper {
     top: 0;
     height: 100%;
     width: 0;
-    .@{prefix}-move-trigger{
+    .@{prefix}-move-trigger {
       position: absolute;
       top: 50%;
       height: @drag-drawer-trigger-height;
@@ -46,11 +46,11 @@
       box-shadow: 0 0 1px 1px rgba(0, 0, 0, .2);
       line-height: @drag-drawer-trigger-height;
       cursor: col-resize;
-      &-point{
+      &-point {
         display: inline-block;
         width: 50%;
         transform: translateX(50%);
-        i{
+        i {
           display: block;
           border-bottom: 1px solid rgb(192, 192, 192);
           padding-bottom: 2px;
@@ -58,7 +58,7 @@
       }
     }
   }
-  .@{prefix}-footer{
+  .@{prefix}-footer {
     flex-grow: 1;
     width: 100%;
     bottom: 0;

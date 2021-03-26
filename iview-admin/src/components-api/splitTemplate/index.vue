@@ -46,21 +46,19 @@
                 default: 180
             }
         },
-        data () {
-            return {
-            }
+        data() {
+            return {}
         },
-        computed: {
-        },
+        computed: {},
         methods: {
-            handleCopy () { // 复制方法
+            handleCopy() { // 复制方法
                 const copyHtml = this.html
                 this.$Copy({
                     text: copyHtml
                 })
             },
-            goRun () { // 打开在线编辑功能
-                const { href } = this.$router.resolve({
+            goRun() { // 打开在线编辑功能
+                const {href} = this.$router.resolve({
                     path: '/bingo-run',
                     query: {
                         templateName: this.codeTemplate
@@ -69,7 +67,7 @@
                 window.open(href, '_blank');
             }
         },
-        mounted () {
+        mounted() {
         }
     }
 </script>
@@ -77,20 +75,24 @@
     .splitTemplate-wrapper {
         margin-bottom: 16px
     }
+    
     .split-pane-div {
         width: 100%;
         position: relative;
     }
+    
     .split-pane-tip {
         position: absolute;
         right: 0;
     }
+    
     .split-pane-tip2 {
         position: absolute;
         right: 30px;
     }
+    
     .split-templte-pre {
-        margin: 0!important;
-        margin-left: 16px!important;
+        margin: 0 !important;
+        margin-left: 16px !important;
     }
 </style>

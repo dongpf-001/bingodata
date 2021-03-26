@@ -20,57 +20,56 @@
     </bingo-modal>
 </template>
 <script>
-import bingoModal from '../bingo-modal'
-import bingoToolbar from '../bingo-toolbar'
+    import bingoModal from '../bingo-modal'
+    import bingoToolbar from '../bingo-toolbar'
 
-export default {
-  name: 'bingo-modal-select',
-  data () {
-    return {
+    export default {
+        name: 'bingo-modal-select',
+        data() {
+            return {}
+        },
+        props: {
+            title: {
+                type: String,
+                default: '编辑1'
+            },
+            width: {
+                type: Number,
+                default: 900
+            },
+            height: {
+                type: Number,
+                default: ''
+            },
+            footerHide: {
+                type: Boolean,
+                default: true
+            },
+            showToolbar: {
+                type: Boolean,
+                default: true
+            }
+        },
+        components: {
+            bingoModal, bingoToolbar
+        },
+        created() {
+        },
+        methods: {
+            ok() {
+                this.$emit('on-ok')
+            },
+            cancel() {
+                this.$refs.modal.show = false
+            },
+            save() {
+                this.$emit('on-save', this)
+            },
+            saveCancel() {
+                this.$emit('on-save-cancel', this)
+            }
+        }
     }
-  },
-  props: {
-    title: {
-      type: String,
-      default: '编辑1'
-    },
-    width: {
-      type: Number,
-      default: 900
-    },
-    height: {
-      type: Number,
-      default: ''
-    },
-    footerHide: {
-      type: Boolean,
-      default: true
-    },
-    showToolbar: {
-      type: Boolean,
-      default: true
-    }
-  },
-  components: {
-    bingoModal, bingoToolbar
-  },
-  created () {
-  },
-  methods: {
-    ok () {
-      this.$emit('on-ok')
-    },
-    cancel () {
-      this.$refs.modal.show = false
-    },
-    save () {
-      this.$emit('on-save', this)
-    },
-    saveCancel () {
-      this.$emit('on-save-cancel', this)
-    }
-  }
-}
 </script>
 <style lang="less">
     /*原样式已转移到styles/style/toolbar  --  modyfy by yuannnan*/

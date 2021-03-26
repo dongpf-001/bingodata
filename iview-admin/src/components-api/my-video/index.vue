@@ -1,28 +1,29 @@
 <template>
     <div class="my_video">
         <div class="player" @mouseover="overPlayer($event)" @mouseout="outPlayer($event)">
-            <div class="icon-close" v-show="closeIcon"  @click="closePlayer">
-                <Icon color="#fff" type="ios-close" size="24" />
+            <div class="icon-close" v-show="closeIcon" @click="closePlayer">
+                <Icon color="#fff" type="ios-close" size="24"/>
             </div>
-            <video-player  class="video-player vjs-custom-skin"
-                            ref="videoPlayer"
-                            :playsinline="true"
-                            :options="playerOptions"
-                            @play="onPlayerPlay($event)"
-                            @pause="onPlayerPause($event)"
+            <video-player class="video-player vjs-custom-skin"
+                          ref="videoPlayer"
+                          :playsinline="true"
+                          :options="playerOptions"
+                          @play="onPlayerPlay($event)"
+                          @pause="onPlayerPause($event)"
             >
             </video-player>
         </div>
     </div>
 </template>
 <script>
-    import { videoPlayer } from 'vue-video-player';
+    import {videoPlayer} from 'vue-video-player';
+
     export default {
         name: 'my-video',
         props: {
             viSrc: [String]
         },
-        data () {
+        data() {
             return {
                 closeIcon: false,
                 // 参考修改属性的地址 https://docs.videojs.com/tutorial-options.html
@@ -52,30 +53,30 @@
             }
         },
         computed: {
-            player () {
+            player() {
                 return this.$refs.videoPlayer.player
             }
         },
         methods: {
-            onPlayerPlay (player) {
+            onPlayerPlay(player) {
                 // console.log('play');
             },
-            onPlayerPause (player) {
+            onPlayerPause(player) {
                 // console.log('pause');
             },
-            overPlayer (e) {
+            overPlayer(e) {
                 if (e.currentTarget.className === 'icon-close' || e.currentTarget.tagName === 'i') {
                     return false;
                 }
                 this.closeIcon = true;
             },
-            outPlayer (e) {
+            outPlayer(e) {
                 if (e.currentTarget.className === 'icon-close' || e.currentTarget.tagName === 'i') {
                     return false;
                 }
                 this.closeIcon = false;
             },
-            closePlayer () {
+            closePlayer() {
                 this.$emit('closePlayer')
             }
         },
@@ -85,22 +86,22 @@
     }
 </script>
 <style lang="less">
-.my_video{
-    position: fixed;
-    top: 141px;
-    right: 0;
-    width: 500px;
-    z-index: 20;
-    .icon-close{
-        width: 34px;
-        height: 24px;
-        padding:0 5px;
-        position: absolute;
+    .my_video {
+        position: fixed;
+        top: 141px;
         right: 0;
-        top: 0;
-        z-index: 6;
-        background-color: rgba(43, 51, 63, 0.7);
-        cursor: pointer;
+        width: 500px;
+        z-index: 20;
+        .icon-close {
+            width: 34px;
+            height: 24px;
+            padding: 0 5px;
+            position: absolute;
+            right: 0;
+            top: 0;
+            z-index: 6;
+            background-color: rgba(43, 51, 63, 0.7);
+            cursor: pointer;
+        }
     }
-}
 </style>

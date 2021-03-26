@@ -21,14 +21,13 @@
 <script>
     export default {
         name: 'bing-select-icon',
-        data () {
-            return {
-            }
+        data() {
+            return {}
         },
         props: {
             showValue: {
                 type: Object,
-                default () {
+                default() {
                     return {
                         model: 'icon',
                         type: '',
@@ -38,12 +37,10 @@
                 }
             }
         },
-        watch: {
-        },
+        watch: {},
         created() {
         },
-        methods: {
-        }
+        methods: {}
     }
 </script>
 <style lang="less">

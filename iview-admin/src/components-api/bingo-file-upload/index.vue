@@ -6,7 +6,8 @@
             <div class="file-header-title" v-show="!folderRootName">
                 <div class="ivu-breadcrumb" ref="fileHeaderTitle">
                     <span @click="goBackFolder(item.id, index)" v-for="(item, index) in folderNameList" :key="item.id">
-                        <span class="ivu-breadcrumb-item-link">{{item.name}}</span> <span class="ivu-breadcrumb-item-separator">&gt;</span>
+                        <span class="ivu-breadcrumb-item-link">{{item.name}}</span> <span
+                            class="ivu-breadcrumb-item-separator">&gt;</span>
                     </span>
                 </div>
             </div>
@@ -69,11 +70,14 @@
                     <!--文件夹-->
                     <!--<li class="file-item" @click="goFolder(item)" v-for="item in folderList" :key="item.id">-->
                     <li class="file-item" v-for="item in folderList" :key="item.id">
-                        <Checkbox @click.native.stop size="large" class="file-item-label" :label="`folder.${item.id}`" disabled></Checkbox>
+                        <Checkbox @click.native.stop size="large" class="file-item-label" :label="`folder.${item.id}`"
+                                  disabled></Checkbox>
                         <div class="file-item-display">
                             <div class="file-item-content">
                                 <div class="file-item-info">
-                                    <div class="img-wrapper"><Icon type="ios-folder"/></div>
+                                    <div class="img-wrapper">
+                                        <Icon type="ios-folder"/>
+                                    </div>
                                     <Tooltip :disabled="!item.name" v-if="!item.edit" transfer placement="top"
                                              max-width="300" :content="item.name">
                                         <span class="file-item-title" @click="goFolder(item)">{{item.name}}</span>
@@ -83,7 +87,7 @@
                                            :maxlength="200"
                                            v-model="item.name"
                                            @keydown.enter.native.prevent="renameEnter(item, 0)"
-                                           @blur.native.capture="renameOnBlur(item, 0)" />
+                                           @blur.native.capture="renameOnBlur(item, 0)"/>
                                 </div>
                                 <div class="file-item-desc">
                                     <span class="desc-size">-</span>
@@ -107,7 +111,8 @@
                                     </span>
                                 <span v-show="authDelete">
                                 <Tooltip transfer placement="top" max-width="60" content="删除">
-                                    <Icon class="file-item-btns" @click.stop="singleModalShow(item, 0)" type="ios-trash-outline"/>
+                                    <Icon class="file-item-btns" @click.stop="singleModalShow(item, 0)"
+                                          type="ios-trash-outline"/>
                                 </Tooltip>
                                 </span>
                             </div>
@@ -115,13 +120,14 @@
                     </li>
                     <!--文件-->
                     <li class="file-item" v-for="(item, key) in fileList" :key="key" :id="item.documentId">
-                        <Checkbox @click.native.stop size="large" class="file-item-label" :label="`file.${item.documentId}`"></Checkbox>
+                        <Checkbox @click.native.stop size="large" class="file-item-label"
+                                  :label="`file.${item.documentId}`"></Checkbox>
                         <div class="file-item-display">
                             <div class="file-item-content">
                                 <div class="file-item-info" @click="downFile(item)">
                                     <div class="img-wrapper">
                                         <span v-if="item.extName == 'gif' || item.extName == 'jpg' || item.extName == 'jpeg' || item.extName == 'bmp' || item.extName == 'png'">
-                                            <img :src=item.previewImage width="30" height="30" />
+                                            <img :src=item.previewImage width="30" height="30"/>
                                         </span>
                                         <span v-else>
                                             <bingoFileIcon :type="item.extName"></bingoFileIcon>
@@ -138,7 +144,7 @@
                                            @keyup.enter.native="$event.target.blur"
                                            @on-blur="renameOnBlur(item, 1)"
                                            :placeholder="item.name"/>
-
+                                
                                 </div>
                                 <div class="file-item-desc">
                                     <span class="desc-size">{{_formatSize(item.size)}}</span>
@@ -153,12 +159,14 @@
                             <div class="file-item-handler">
                                 <span v-show="authDown">
                                 <Tooltip transfer placement="top" max-width="60" content="下载">
-                                    <a :href="item.download" class="file-item-btns" :download="item.name" @click.native.stop><Icon type="md-cloud-download"/></a>
+                                    <a :href="item.download" class="file-item-btns" :download="item.name"
+                                       @click.native.stop><Icon type="md-cloud-download"/></a>
                                 </Tooltip>
                                 </span>
                                 <span v-show="authUpload">
                                 <Tooltip transfer placement="top" max-width="60" content="更新">
-                                    <span :id="`uploadFile${item.documentId}`" class="file-item-btns" @click="_getCurrentData(item)"></span>
+                                    <span :id="`uploadFile${item.documentId}`" class="file-item-btns"
+                                          @click="_getCurrentData(item)"></span>
                                 </Tooltip>
                                 </span>
                                 <span v-show="authRename">
@@ -166,12 +174,14 @@
                                     <Icon @click.stop type="md-move"/>
                                 </Tooltip>-->
                                 <Tooltip transfer placement="top" max-width="90" content="重命名">
-                                    <Icon class="file-item-btns" @click.native.stop="renameFile(item, 1)" type="md-create"/>
+                                    <Icon class="file-item-btns" @click.native.stop="renameFile(item, 1)"
+                                          type="md-create"/>
                                 </Tooltip>
                                     </span>
                                 <span v-show="authDelete">
                                 <Tooltip transfer placement="top" max-width="60" content="删除">
-                                    <Icon class="file-item-btns" @click.stop="singleModalShow(item, 1)" type="ios-trash-outline"/>
+                                    <Icon class="file-item-btns" @click.stop="singleModalShow(item, 1)"
+                                          type="ios-trash-outline"/>
                                 </Tooltip>
                                     </span>
                                 <span v-show="authSee">
@@ -222,13 +232,14 @@
     import bingoAlert from '@/components-api/bingo-alert/index.vue';
     import util from '@/libs/util';
     import Setting from '../../setting'
+
     const rootFolderId = '0001'
     const rootNoDataTxt = '你可以创建文件夹或上传文件'
     const noDataTxt = '文件夹中还没有内容哦'
     const officeExtName = ['doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx', 'pdf']
-    const imgExtName = ['jpg','jpeg','gif','png','bmp'];
+    const imgExtName = ['jpg', 'jpeg', 'gif', 'png', 'bmp'];
     const video = ['mp4', 'webm', 'ogg']
-    const audio = ['mp3','wav']
+    const audio = ['mp3', 'wav']
     const token = util.cookies.get('token');
 
     export default {
@@ -245,35 +256,35 @@
                 type: Object,
                 required: true
             },
-            auth:{
+            auth: {
                 type: Array,
                 default: () => {
                     return [true, true, true, true, true]//下载、上传、重命名、删除、查看
                 }
             },
             //权限--下载
-            authDown:{
-                type:Boolean,
+            authDown: {
+                type: Boolean,
                 default: true
             },
             //权限--上传
-            authUpload:{
-                type:Boolean,
+            authUpload: {
+                type: Boolean,
                 default: true
             },
             //权限--重命名
-            authRename:{
-                type:Boolean,
+            authRename: {
+                type: Boolean,
                 default: true
             },
             //权限--删除
-            authDelete:{
-                type:Boolean,
+            authDelete: {
+                type: Boolean,
                 default: true
             },
             //权限--预览
-            authSee:{
-                type:Boolean,
+            authSee: {
+                type: Boolean,
                 default: true
             }
         },
@@ -300,48 +311,48 @@
                 deleteMultipleModelLoading: false,
                 fileList: [],
                 folderList: [],
-                oldIndex:0,
+                oldIndex: 0,
                 checkAll: false,
                 checkAllGroup: [],
                 checkFileParams: [],
                 checkFoladParams: [],
                 height: '100%',
                 isRename: false,
-                getCurrentData:{},
-                modalMsg1:{
+                getCurrentData: {},
+                modalMsg1: {
                     title: '请确认',
                     content: ''
                 },
                 isDeleteMultiple: true,
-                checkFileData:[],
-                checkFolderData:[],
-                showImageModal:false,
-                showBigImage:'',
+                checkFileData: [],
+                checkFolderData: [],
+                showImageModal: false,
+                showBigImage: '',
                 showVideo: {},
                 showAudio: {},
-                isInitFolder:false,
+                isInitFolder: false,
             }
         },
         watch: {
             checkDisabled() {
                 this.checkAll = false
             },
-            checkFileCount(val){
+            checkFileCount(val) {
                 this.checkFileCount = val
             },
-            authDown(val){
+            authDown(val) {
                 this.auDown = val;
             },
-            authUpload(val){
+            authUpload(val) {
                 this.authUpload = val;
             },
-            authRename(val){
+            authRename(val) {
                 this.authRename = val;
             },
-            authDelete(val){
+            authDelete(val) {
                 this.authDelete = val;
             },
-            authSee(val){
+            authSee(val) {
                 this.authSee = val;
             }
         },
@@ -384,8 +395,8 @@
             //this._uploadGetContent();
         },
         methods: {
-            initServeOption(){
-                if(this.serveOption.height != null && this.serveOption.height != undefined) {
+            initServeOption() {
+                if (this.serveOption.height != null && this.serveOption.height != undefined) {
                     this.height = this.serveOption.height + 'px';
                 }
                 this.serveOption.uploadCheckFile = Api.uploadCheckFile;
@@ -442,21 +453,21 @@
                 }
                 let that = this;
                 //setTimeout(function () {
-                    let data = that.folderDetail
-                    data.parentId = that.folderDetail.id
-                    data.id = that._setFolderId()
-                    data.createTime = that._getCurrentTime()
-                    data.modifyTime = that._getCurrentTime()
-                    data.name = that.newFolderName
-                    data.creatorId = that.$user.userId
-                    data.creator = that.$user.name
-                    data.edit = false
-                    that.isInitFolder = false
-                    that._uploadNewFolder(data)
+                let data = that.folderDetail
+                data.parentId = that.folderDetail.id
+                data.id = that._setFolderId()
+                data.createTime = that._getCurrentTime()
+                data.modifyTime = that._getCurrentTime()
+                data.name = that.newFolderName
+                data.creatorId = that.$user.userId
+                data.creator = that.$user.name
+                data.edit = false
+                that.isInitFolder = false
+                that._uploadNewFolder(data)
                 //}, 00)
             },
             // 修改文件夹名称
-            renameFolder(folder){
+            renameFolder(folder) {
                 this.$set(folder, 'edit', true)
                 this.$nextTick(() => {
                     this.$refs[`fileInput${folder.id}`][0].focus()
@@ -468,7 +479,7 @@
                 let docType = this.FileType(item.extName)
                 switch (docType) {
                     case 'doc':
-                        if(item.size>10000000){
+                        if (item.size > 10000000) {
                             this.$BMessage.warning('你所查看的文件已超过10M，不支持在线预览，请下载查看！')
                             return
                         }
@@ -484,15 +495,15 @@
                 }
             },
             //是否是支持类型的文件
-            FileType(ext){
+            FileType(ext) {
                 let extName = ext.toLowerCase()
                 let fileType = officeExtName.find(c => c == extName);
                 let imgType = imgExtName.find(c => c == extName);
 
-                if(imgType){
+                if (imgType) {
                     //this.isImage = true
                     return 'image'
-                } else if(fileType){
+                } else if (fileType) {
                     //this.isImage = false
                     return 'doc'
                 } else {
@@ -501,7 +512,7 @@
                 }
             },
             //拼下载地址
-            FileUrl(url){
+            FileUrl(url) {
                 return Setting.apiBaseURL + '/docservice' + url
             },
             formatSize(size) {
@@ -514,12 +525,12 @@
                 return fileSize
             },
             // 成功
-            onSuccess(file){
+            onSuccess(file) {
                 let that = this;
                 let item = file.item
                 let fileModel = item.model
                 let selectId = 0
-                if(this.getCurrentData.id){
+                if (this.getCurrentData.id) {
                     file.id = file.documentId
                 } else {
                     file.id = ''
@@ -541,9 +552,9 @@
                     creator: this.$user.name,
                     modifyTime: this._getCurrentTime()
                 }
-                if(this.getCurrentData.id){
+                if (this.getCurrentData.id) {
                     this.fileList.forEach(function (item, index) {
-                        if(item.documentId == that.getCurrentData.documentId) {
+                        if (item.documentId == that.getCurrentData.documentId) {
                             selectId = index;
                             return
                         }
@@ -566,10 +577,10 @@
 
             },
             //
-            fileMergeSuccess(file, item){
+            fileMergeSuccess(file, item) {
                 file.download = this.FileUrl(item.downloadUrl)
                 let index = 0
-                if(this.getCurrentData.id){
+                if (this.getCurrentData.id) {
                     index = this.oldIndex
                 } else {
                     index = this.fileList.findIndex(el => el.id === file.id)
@@ -580,14 +591,14 @@
                 this.$set(this.fileList[index], "fileUrl", item.downloadUrl);
                 this.$set(this.fileList[index], "previewImage", item.previewUrl);
                 this.checkAllGroupList.push(`file.${item.documentId}`)
-                if(this.checkAll){
+                if (this.checkAll) {
                     this.checkAll = false
                 }
                 this.updateAddButton(item.documentId);
                 //this.fileList.splice(this.oldIndex, 1, option)
             },
             //
-            _getCurrentData(item){
+            _getCurrentData(item) {
                 item.documentId = item.id
                 this.getCurrentData = item
                 this.serveOption.getCurrentData = item;
@@ -596,7 +607,7 @@
             singleModalShow(item, type) {
                 this.isDeleteMultiple = false;
                 let str = ''
-                if(!type){
+                if (!type) {
                     str = '夹'
                     this.deleteSingleId = item.id
                 } else {
@@ -606,7 +617,7 @@
                 //this.modalMsg1.content = '您确定要删除该文件'+str+'吗？'//您确定要删除该文件{{deleteSingleType?'':'夹'}}吗？
                 this.modalMsg1 = {
                     title: '删除确认',
-                    content: '确认要删除名称为 ' + item.name + '的文件'+str+'吗？',
+                    content: '确认要删除名称为 ' + item.name + '的文件' + str + '吗？',
                     loading: true,
                     duration: '3'
                 }
@@ -633,12 +644,12 @@
                     this._uploadGetContent(this.folderDetail.id)
                 })
             },
-            ok () {
-                if(this.isDeleteMultiple){ //批量删除
-                    if(this.checkFolderData.length){
+            ok() {
+                if (this.isDeleteMultiple) { //批量删除
+                    if (this.checkFolderData.length) {
                         this._uploadDeleteMultipleFolders(this.checkFolderData)
                     }
-                    if(this.checkFileData.length){
+                    if (this.checkFileData.length) {
                         this._deleteMultipleDocument(this.checkFileData)
                     }
                 } else {  //单文件删除
@@ -664,7 +675,7 @@
                 //this.fileList[index].name = file.name
             },
             // 确认按钮
-            renameEnter(file,type) {
+            renameEnter(file, type) {
                 this.sendRequestDocumentsRename(file, type)
             },
             // 失去焦点
@@ -672,10 +683,10 @@
                 this.sendRequestDocumentsRename(file, type)
             },
             //重命名
-            sendRequestDocumentsRename(file,type){
+            sendRequestDocumentsRename(file, type) {
                 let renameFile = file
                 this.$set(file, 'edit', false)
-                if(type){ //重命名文档
+                if (type) { //重命名文档
                     renameFile.id = renameFile.documentId
                     renameFile.name = file.name + '.' + file.extName;
                     this.serveOption.renameDocuments(renameFile).then((res) => {
@@ -688,9 +699,9 @@
                         this.fileList[index].name = file.name
                         this.$refs.modal.success('文件重命名成功!')
                     })*/
-                } else{  //重命名文件夹
+                } else {  //重命名文件夹
                     this.serveOption.renameFolder(renameFile).then((res) => {
-                        if(res){
+                        if (res) {
                             let index = this.folderList.findIndex(item => item.id === file.id)
                             this.folderList[index].name = file.name
                             this.$refs.modal.success('文件夹重命名成功！')
@@ -709,21 +720,22 @@
                     this.checkAllGroup = this.checkAllGroupList
                     this.checkAll = true
                     this.fileList.forEach(function (item) {
-                        if(item.typeId === 'file'){
+                        if (item.typeId === 'file') {
                             that.checkAllGroup.forEach(function (item1) {//item.split('.')[0]
                                 let id = item1.split('.')[1]
-                                if(item.id == id){
+                                if (item.id == id) {
                                     that.checkFileParams.push(item);
                                 }
                             })
-                        } /*else {
-                            that.checkAllGroup.forEach(function (item1) {
-                                if(item.id == item1){
-                                    that.checkFoladParams.push(item);
-                                }
-                            })
-
-                        }*/
+                        }
+                        /*else {
+                                                   that.checkAllGroup.forEach(function (item1) {
+                                                       if(item.id == item1){
+                                                           that.checkFoladParams.push(item);
+                                                       }
+                                                   })
+                       
+                                               }*/
                     })
                 } else {
                     this.checkAllGroup = []
@@ -739,8 +751,8 @@
                     this.checkAll = false
                     data.forEach(function (item) {
                         let type = item.split('.')[0]
-                        let id   = item.split('.')[1]
-                        if(type === 'file'){
+                        let id = item.split('.')[1]
+                        if (type === 'file') {
                             let indexFile = that.fileList.findIndex(el => el.id === id)
                             that.checkFileData.push(id)
                             that.checkFileParams.push(that.fileList[indexFile]);
@@ -760,7 +772,7 @@
             _uploadNewFolder(data) {
                 this.serveOption.uploadNewFolder(data).then((res) => {
                     if (res) {
-                        if(!this.isInitFolder){
+                        if (!this.isInitFolder) {
                             this.$Message.success('文件夹创建成功！')
                         }
                         this._uploadGetContent(data.folderId)
@@ -770,10 +782,10 @@
                 })
             },
             // 判断文件夹是否存在
-            _isFolder(){
+            _isFolder() {
                 let that = this;
                 this.serveOption.getFoldersList(this.serveOption.folderId).then((res) => {
-                    if(res.length){  //存在文件夹 -- 查
+                    if (res.length) {  //存在文件夹 -- 查
                         that._uploadGetContent();
                     } else {  //不存在文件夹 -- 新建
                         this.serveOption.id = this.serveOption.folderId;
@@ -815,7 +827,7 @@
                                 let index = this.folderNameList.findIndex(el => el.id === id)
                                 if (index > 0) {
                                     this.folderNameList.splice(index, (this.folderNameList.length - index))
-                                } else if(index == 0){
+                                } else if (index == 0) {
                                     this.folderNameList.splice(0, this.folderNameList.length)
                                 }
                                 this.folderNameList.push(item)
@@ -856,7 +868,7 @@
                 }
                 file.edit = false
                 file.download = this.FileUrl(file.fileUrl)
-                file.documentId  = file.id
+                file.documentId = file.id
                 file.typeId = "file"
                 //this.listUploadFile.push(file)
                 this.checkAllGroupList.push(`file.${file.documentId}`)
@@ -866,28 +878,28 @@
                 //this.addFile(oldFile)
             },
             //更新单文件上传
-            updateAddButton(id){
+            updateAddButton(id) {
                 //if(this.authUpload){
-                    this.$nextTick(() => {
-                        this.$refs.uploader.addButton({
-                            id: `#uploadFile${id}`,
-                            innerHTML: '<i data-v-425b7c77="" class="ivu-icon ivu-icon-md-cloud-upload webuploader-container"></i>',
-                            multiple: false
-                        })
+                this.$nextTick(() => {
+                    this.$refs.uploader.addButton({
+                        id: `#uploadFile${id}`,
+                        innerHTML: '<i data-v-425b7c77="" class="ivu-icon ivu-icon-md-cloud-upload webuploader-container"></i>',
+                        multiple: false
                     })
+                })
                 //}
             },
             // 删除单个Document
             _uploadDeleteSingleDocument(id) {
                 let that = this;
                 this.serveOption.deleteDocument(id).then((res) => {
-                    if(res){
+                    if (res) {
                         this.$refs.alert.onCanel();
                         //let index = this.checkAllGroup.findIndex(el => el === `file.${id}`)
                         let index = that.checkAllGroup.findIndex(el => el === id)
                         let index1 = that.fileList.findIndex(item => item.id === id)
                         that.checkAllGroup.splice(index, 1)
-                        that.fileList.splice(index1,1)
+                        that.fileList.splice(index1, 1)
                         //this.deleteSingleModelLoading = false
                         //this.deleteSingleModel = false
                         this.filterMsg();
@@ -911,7 +923,7 @@
                 })
             },
             //删除文件成功时，过滤弹出，只显示一个
-            filterMsg(){
+            filterMsg() {
                 let that = this;
                 setTimeout(that.$Message.success('删除成功！'), 2000)
             },
@@ -930,7 +942,7 @@
                 })
             },
             //批量选择
-            checkMultiple(){
+            checkMultiple() {
                 let checkFileData = []
                 let checkFolderData = []
                 this.isDeleteMultiple = true
@@ -949,11 +961,11 @@
                 that.checkMultiple();
                 let folderStr = '';
                 let fildStr = '';
-                if(this.checkFolderData.length){
+                if (this.checkFolderData.length) {
                     //folderStr = this.checkFolderData.length + '个文件夹'
-                    folderStr = this.checkFolderData.length+'个文件夹'
+                    folderStr = this.checkFolderData.length + '个文件夹'
                 }
-                if(this.checkFileData.length){
+                if (this.checkFileData.length) {
                     fildStr = this.checkFileData.length + '个文件'
                 }
                 this.modalMsg1.title = '请确认'
@@ -967,14 +979,14 @@
             batchDownFiles() {
                 let that = this;
                 that.checkMultiple();
-                if(this.checkFileData.length){
-                        this.checkFileParams.forEach((item) => {
-                            this.downFile(item)
-                        })
+                if (this.checkFileData.length) {
+                    this.checkFileParams.forEach((item) => {
+                        this.downFile(item)
+                    })
                 }
             },
             //下载
-            downFile(item){
+            downFile(item) {
                 var a = document.createElement('a')
                 var e = document.createEvent('MouseEvents')  // 创建鼠标事件对象
                 e.initEvent('click', false, false) // 初始化事件对象

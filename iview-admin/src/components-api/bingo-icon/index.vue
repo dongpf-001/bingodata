@@ -19,32 +19,29 @@
     </div>
 </template>
 <script>
-export default {
-  name: 'bing-select-icon',
-  data () {
-    return {
+    export default {
+        name: 'bing-select-icon',
+        data() {
+            return {}
+        },
+        props: {
+            showValue: {
+                type: Object,
+                default() {
+                    return {
+                        model: 'icon',
+                        type: '',
+                        before: '',
+                        after: ''
+                    }
+                }
+            }
+        },
+        watch: {},
+        created() {
+        },
+        methods: {}
     }
-  },
-  props: {
-    showValue: {
-      type: Object,
-      default () {
-        return {
-          model: 'icon',
-          type: '',
-          before: '',
-          after: ''
-        }
-      }
-    }
-  },
-  watch: {
-  },
-  created () {
-  },
-  methods: {
-  }
-}
 </script>
 <style lang="less">
 </style>

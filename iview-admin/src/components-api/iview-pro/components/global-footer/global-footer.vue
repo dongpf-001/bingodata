@@ -3,14 +3,14 @@
         <div class="ivu-global-footer-links" v-if="links.length || $slots.links">
             <slot name="links">
                 <a
-                    v-for="item in links"
-                    :href="item.href"
-                    :target="item.blankTarget ? '_blank' : '_self'"
-                    :key="item.key"
-                    :title="item.title"
+                        v-for="item in links"
+                        :href="item.href"
+                        :target="item.blankTarget ? '_blank' : '_self'"
+                        :key="item.key"
+                        :title="item.title"
                 >
-                    <Icon :type="item.icon" v-if="item.icon" />
-                    <Icon :custom="item.customIcon" v-else-if="item.customIcon" />
+                    <Icon :type="item.icon" v-if="item.icon"/>
+                    <Icon :custom="item.customIcon" v-else-if="item.customIcon"/>
                     {{ item.title }}</a>
             </slot>
         </div>
@@ -20,18 +20,18 @@
     </footer>
 </template>
 <script>
-export default {
-  name: 'GlobalFooter',
-  props: {
-    links: {
-      type: Array,
-      default () {
-        return []
-      }
-    },
-    copyright: {
-      type: String
+    export default {
+        name: 'GlobalFooter',
+        props: {
+            links: {
+                type: Array,
+                default() {
+                    return []
+                }
+            },
+            copyright: {
+                type: String
+            }
+        }
     }
-  }
-}
 </script>

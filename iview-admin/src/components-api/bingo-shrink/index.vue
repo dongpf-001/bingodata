@@ -5,48 +5,48 @@
 </template>
 
 <script>
-export default {
-  props: {
-    value: {
-      type: Boolean,
-      default: true
-    },
-    height: {
-      type: String
+    export default {
+        props: {
+            value: {
+                type: Boolean,
+                default: true
+            },
+            height: {
+                type: String
+            }
+        },
+        updated() {
+            this.init()
+        },
+        mounted() {
+            this.init()
+        },
+        methods: {
+            init() {
+                if (this.height) {
+                    this.contentHeight = this.height
+                } else {
+                    this.$nextTick(() => {
+                        this.contentHeight = this.$el.scrollHeight
+                    })
+                }
+            }
+        },
+        watch: {
+            value(newValue) {
+                this.mIsOpen = newValue
+            },
+            mIsOpen(newValue) {
+                this.$emit('input', newValue)
+            }
+        },
+        data() {
+            return {
+                contentHeight: 0,
+                mIsOpen: this.value
+            }
+        }
     }
-  },
-  updated () {
-    this.init()
-  },
-  mounted () {
-    this.init()
-  },
-  methods: {
-    init () {
-      if (this.height) {
-        this.contentHeight = this.height
-      } else {
-        this.$nextTick(() => {
-          this.contentHeight = this.$el.scrollHeight
-        })
-      }
-    }
-  },
-  watch: {
-    value (newValue) {
-      this.mIsOpen = newValue
-    },
-    mIsOpen (newValue) {
-      this.$emit('input', newValue)
-    }
-  },
-  data () {
-    return {
-      contentHeight: 0,
-      mIsOpen: this.value
-    }
-  }
-}
 </script>
 
 <style scoped>
@@ -56,7 +56,7 @@ export default {
         -ms-transition-duration: 300ms;
         -o-transition-duration: 300ms;
         transition-duration: 300ms;
-
+        
         overflow: hidden;
     }
 </style>

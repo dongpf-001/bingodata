@@ -7,7 +7,8 @@
         </div>
         <div :class="[ widths>1440 ? 'user-right' : 'user-right1']">
             <p :class="[ widths>1440 ? 'user-name' : 'user-name1']">{{userInfo.name}}</p>
-            <p :class="[ widths>1440 ? 'user-position' : 'user-position1']">{{userInfo.org}}<span class="user-id">员工号：{{userInfo.number}}</span></p>
+            <p :class="[ widths>1440 ? 'user-position' : 'user-position1']">{{userInfo.org}}<span class="user-id">员工号：{{userInfo.number}}</span>
+            </p>
             <div class="user-button">
                 <ul>
                     <li>
@@ -29,31 +30,31 @@
 </template>
 
 <script>
-export default {
-  name: 'index-card',
-  components: {
-  },
-  props: {
-    widths: {
-      type: Number,
-      default: 1450
+    export default {
+        name: 'index-card',
+        components: {},
+        props: {
+            widths: {
+                type: Number,
+                default: 1450
+            }
+        },
+        data() {
+            return {
+                userInfo: { // 人员信息
+                    name: '吴慈仁',
+                    org: 'EPK 高级经理',
+                    number: '10001'
+                }
+            }
+        },
+        mounted() {
+        },
+        methods: {
+            modalUserInfo() {
+            }
+        }
     }
-  },
-  data () {
-    return {
-      userInfo: { // 人员信息
-        name: '吴慈仁',
-        org: 'EPK 高级经理',
-        number: '10001'
-      }
-    }
-  },
-  mounted () {
-  },
-  methods: {
-    modalUserInfo () {}
-  }
-}
 </script>
 
 <style scoped>

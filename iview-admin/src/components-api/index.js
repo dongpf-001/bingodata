@@ -34,51 +34,51 @@ import bingoMessage from './bingo-message'
 // import bingoAlert from './bingo-alert';
 
 const components = {
-  bingoActionDrop,
-  bingoBillPage,
-  bingoCalendar,
-  bingoChoice,
-  bingoCreateInfo,
-  bingoDatePicker,
-  bingoDateWeek,
-  bingoDropGrid,
-  bingoModal,
-  bingoModalEdit,
-  bingoModalForm,
-  bingoModalOrganization,
-  bingoModalSelect,
-  bingoQuery,
-  bingoForm,
-  bingoFormItem,
-  bingoGridItem,
-  bingoSelect,
-  bingoSelectIcon,
-  bingoIcon,
-  bingoIssue,
-  bingoSelectOrganization,
-  bingoShrink,
-  bingoShrinkCard,
-  bingoStaffCard,
-  bingoState,
-  bingoTable,
-  bingoTabs,
-  bingoTagSelect,
-  bingoToolbar,
-  bingoTree,
-  bingoUpload,
-  bingoMessage
-  // bingoAlert,
+    bingoActionDrop,
+    bingoBillPage,
+    bingoCalendar,
+    bingoChoice,
+    bingoCreateInfo,
+    bingoDatePicker,
+    bingoDateWeek,
+    bingoDropGrid,
+    bingoModal,
+    bingoModalEdit,
+    bingoModalForm,
+    bingoModalOrganization,
+    bingoModalSelect,
+    bingoQuery,
+    bingoForm,
+    bingoFormItem,
+    bingoGridItem,
+    bingoSelect,
+    bingoSelectIcon,
+    bingoIcon,
+    bingoIssue,
+    bingoSelectOrganization,
+    bingoShrink,
+    bingoShrinkCard,
+    bingoStaffCard,
+    bingoState,
+    bingoTable,
+    bingoTabs,
+    bingoTagSelect,
+    bingoToolbar,
+    bingoTree,
+    bingoUpload,
+    bingoMessage
+    // bingoAlert,
 }
 
 const install = Vue => {
-  Object.keys(components).forEach((key) => {
-    Vue.component(key, components[key])
-  })
+    Object.keys(components).forEach((key) => {
+        Vue.component(key, components[key])
+    })
 }
 
 // 判断是否是直接引入文件
 if (typeof window !== 'undefined' && window.Vue) {
-  install(window.Vue)
+    install(window.Vue)
 }
 
 // module.exports.default = module.exports = API;

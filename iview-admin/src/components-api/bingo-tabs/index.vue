@@ -1,22 +1,20 @@
 <template>
-    <Tabs  v-bind="$attrs" v-on="$listeners">
+    <Tabs v-bind="$attrs" v-on="$listeners">
         <slot></slot>
     </Tabs>
 </template>
 
 <script>
-export default {
-  data () {
-    return {
-
+    export default {
+        data() {
+            return {}
+        },
+        created() {
+        },
+        mounted() {
+        },
+        computed: {}
     }
-  },
-  created () {
-  },
-  mounted () {
-  },
-  computed: {}
-}
 </script>
 
 <style>

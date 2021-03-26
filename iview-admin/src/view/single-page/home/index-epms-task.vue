@@ -1,7 +1,10 @@
 <template>
     <div class="ivu-card index-modular">
         <div class="ivu-card-head">ETMS任务</div>
-        <div class="ivu-card-extra"><div class="ivu-dropdown-rel"><i class="ivu-icon ivu-icon-ios-options"></i><span>更多视图</span><i class="ivu-icon ivu-icon-ios-arrow-down"></i></div></div>
+        <div class="ivu-card-extra">
+            <div class="ivu-dropdown-rel"><i class="ivu-icon ivu-icon-ios-options"></i><span>更多视图</span><i
+                    class="ivu-icon ivu-icon-ios-arrow-down"></i></div>
+        </div>
         <div class="ivu-card-body" :style="widths>1440?'max-height: 600px;height:'+(topHeight+160) + 'px': ''">
             <div class="index-modular-listbox">
                 <ul>
@@ -12,7 +15,8 @@
                             <div class="text">{{item.c}}</div>
                             <div class="bottom-div">
                                 <div class="date"><i class="ivu-icon ivu-icon-ios-calendar-outline"></i>{{item.d}}</div>
-                                <div class="user"><img src="../../../assets/images/user.jpg"/><span>{{item.e}}</span></div>
+                                <div class="user"><img src="../../../assets/images/user.jpg"/><span>{{item.e}}</span>
+                                </div>
                             </div>
                         </div>
                     </li>
@@ -23,48 +27,46 @@
 </template>
 
 <script>
-export default {
-  name: 'index-card',
-  components: {
-  },
-  props: {
-    widths: Number,
-    topHeight: {
-      type: Number
-    }
-  },
-  data () {
-    return {
-      etmsTask: [
-        {
-          a: '2019XMHT',
-          b: 'BPM',
-          c: 'ISO-TP通信记录',
-          d: '2019-10-09',
-          e: '张三'
+    export default {
+        name: 'index-card',
+        components: {},
+        props: {
+            widths: Number,
+            topHeight: {
+                type: Number
+            }
         },
-        {
-          a: '2019XMHT',
-          b: 'BPM',
-          c: 'ISO-TP通信记录',
-          d: '2019-10-09',
-          e: '李四'
+        data() {
+            return {
+                etmsTask: [
+                    {
+                        a: '2019XMHT',
+                        b: 'BPM',
+                        c: 'ISO-TP通信记录',
+                        d: '2019-10-09',
+                        e: '张三'
+                    },
+                    {
+                        a: '2019XMHT',
+                        b: 'BPM',
+                        c: 'ISO-TP通信记录',
+                        d: '2019-10-09',
+                        e: '李四'
+                    },
+                    {
+                        a: '2019XMHT',
+                        b: 'BPM',
+                        c: 'ISO-TP通信记录',
+                        d: '2019-10-09',
+                        e: '王五'
+                    }
+                ]
+            }
         },
-        {
-          a: '2019XMHT',
-          b: 'BPM',
-          c: 'ISO-TP通信记录',
-          d: '2019-10-09',
-          e: '王五'
-        }
-      ]
+        mounted() {
+        },
+        methods: {}
     }
-  },
-  mounted () {
-  },
-  methods: {
-  }
-}
 </script>
 
 <style>

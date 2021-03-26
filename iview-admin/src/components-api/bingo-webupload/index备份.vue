@@ -12,7 +12,8 @@
                     <p>或将文件拖到这里，单次最多可选{{multiple?fileNumLimit:1}}个</p>
                 </div>
             </div>
-            <div class="queueList oneQueueList" :style="'width:'+pictureSize+'px;height:'+pictureSize+'px;'" v-else> <!-- 单文件上传 -->
+            <div class="queueList oneQueueList" :style="'width:'+pictureSize+'px;height:'+pictureSize+'px;'" v-else>
+                <!-- 单文件上传 -->
                 <div class="placeholder">
                     <div :id="`filePicker3${randomNum}`"></div>
                 </div>
@@ -68,10 +69,10 @@
     </div>
 </template>
 <script>
-/*
-* 文档地址 http://fex.baidu.com/webuploader/doc/index.html
-* */
-/* eslint-disable */
+    /*
+    * 文档地址 http://fex.baidu.com/webuploader/doc/index.html
+    * */
+    /* eslint-disable */
     import $ from './lib/jquery'
     import WebUploader from './lib/webuploader'
     import * as Api from '@/api/bmsa/upload';
@@ -204,7 +205,7 @@
                 tableDataTotal: [],
                 tableUploadData: {}, // 单文件上传的数据
                 tableCheckBox: [],
-                onUploadFile:[],
+                onUploadFile: [],
                 uploadFlag: false, // 判断是否是单文件上传
                 systemId: '',
                 fileDetail: {
@@ -235,41 +236,41 @@
                         resizable: true,
                         render: (h, params) => {
                             return h('div', {
-                                class:'progressOver',
-                                    attrs: {
-                                        id: `tableProgress${this.tableData[params.index].id}`
-                                    }
-                                },
-                                [
-                                    h('a', {
-                                        on: {
-                                            click: () => {
-                                                if (params.row.url) {
-                                                    this.downFile(params.row.url)
+                                        class: 'progressOver',
+                                        attrs: {
+                                            id: `tableProgress${this.tableData[params.index].id}`
+                                        }
+                                    },
+                                    [
+                                        h('a', {
+                                            on: {
+                                                click: () => {
+                                                    if (params.row.url) {
+                                                        this.downFile(params.row.url)
+                                                    }
                                                 }
                                             }
-                                        }
-                                    }, [
-                                        h(bingoFileIcon, {
-                                            props: {  // 自定义组件的属性
-                                                type: params.row.extName,
-                                                width: '14px',
-                                                height: '14px'
-                                            },
-                                            class: 'bingoFileIcon',
-                                            on: {}
-                                        }),
-                                        h('Tooltip', {
-                                            props: {placement: 'top', transfer: true}
                                         }, [
-                                            params.row[params.column.key],
-                                            h('span', {
-                                                slot: 'content',
-                                                style: {whiteSpace: 'normal', wordBreak: 'break-all'}
-                                            }, params.row[params.column.key])
+                                            h(bingoFileIcon, {
+                                                props: {  // 自定义组件的属性
+                                                    type: params.row.extName,
+                                                    width: '14px',
+                                                    height: '14px'
+                                                },
+                                                class: 'bingoFileIcon',
+                                                on: {}
+                                            }),
+                                            h('Tooltip', {
+                                                props: {placement: 'top', transfer: true}
+                                            }, [
+                                                params.row[params.column.key],
+                                                h('span', {
+                                                    slot: 'content',
+                                                    style: {whiteSpace: 'normal', wordBreak: 'break-all'}
+                                                }, params.row[params.column.key])
+                                            ])
                                         ])
-                                    ])
-                                ]
+                                    ]
                             )
                         }
                     },
@@ -367,7 +368,7 @@
                 ],
                 showImageModal: false,
                 showBigImage: '',
-                oldFile:''//单文件上传时要删除的文件
+                oldFile: ''//单文件上传时要删除的文件
             }
         },
         watch: {
@@ -404,10 +405,10 @@
                     label: '选择文件'
                 }
                 let picker = {}
-                if(this.tableLayout){
+                if (this.tableLayout) {
                     picker = tablePicker
                 } else {
-                    if(this.isOneFile){
+                    if (this.isOneFile) {
                         picker = OneListPicker
                     } else {
                         picker = ListPicker
@@ -609,17 +610,17 @@
             register() {
                 WebUploader.Uploader.unRegister('custom')
                 WebUploader.Uploader.register(
-                    {
-                        name: 'custom',
-                        'before-send-file': 'beforeSendFile',
-                        'before-send': 'beforeSend',
-                        'after-send-file': 'afterSendFile'
-                    },
-                    {
-                        beforeSendFile: this._beforeSendFileHook,
-                        beforeSend: this._beforeSendHook,
-                        afterSendFile: this._afterSendFileHook
-                    }
+                        {
+                            name: 'custom',
+                            'before-send-file': 'beforeSendFile',
+                            'before-send': 'beforeSend',
+                            'after-send-file': 'afterSendFile'
+                        },
+                        {
+                            beforeSendFile: this._beforeSendFileHook,
+                            beforeSend: this._beforeSendHook,
+                            afterSendFile: this._afterSendFileHook
+                        }
                 )
             },
             // 开始上传按钮
@@ -638,7 +639,7 @@
             },
             // table分页数据
             getTablePageData(currentPage) {
-                if(this.page){
+                if (this.page) {
                     this.currentPage = this.model.pageSetting.pageNum
                     if (this.tableDataTotal.length === (this.currentPage - 1) * this.model.pageSetting.pageSize) {
                         this.currentPage -= 1
@@ -673,20 +674,20 @@
             // 上传过程中触发，携带上传进度。
             onUploadProgress(file, percentage) {
                 var $li = $(`#tableProgress${file.id}`),
-                    $percent = $li.find('.progress .progress-bar');
+                        $percent = $li.find('.progress .progress-bar');
 
                 // 避免重复创建
                 // 避免重复创建
-                if ( !$percent.length ) {
+                if (!$percent.length) {
                     $percent = $('<div class="file-progress progress-striped active">' +
-                        '<div class="progress-bar" role="progressbar" style="width: 0%">' +
-                        '</div>' +
-                        '</div>' + '<br/><div class="per">0%</div>').appendTo( $li ).find('.progress-bar');
+                            '<div class="progress-bar" role="progressbar" style="width: 0%">' +
+                            '</div>' +
+                            '</div>' + '<br/><div class="per">0%</div>').appendTo($li).find('.progress-bar');
                 }
 
                 $li.siblings('.file-status').text('上传中');
                 $li.find('.per').text((percentage * 100).toFixed(2) + '%');
-                $percent.css( 'width', percentage * 100 + '%' );
+                $percent.css('width', percentage * 100 + '%');
             },
             // 当文件上传出错时触发
             onUploadError(file) {
@@ -694,7 +695,7 @@
             },
             // 当validate不通过时，会以派送错误事件的形式通知调用者
             onError(type) {
-                $( '#'+file.id ).find('.file-status').text('上传出错');
+                $('#' + file.id).find('.file-status').text('上传出错');
                 let errorMessage = ''
                 if (type === 'F_EXCEED_SIZE') {
                     errorMessage = `文件大小不能超过${this.fileSingleSizeLimit}M`
@@ -709,7 +710,7 @@
             },
             // 当文件上传成功时触发
             onUploadSuccess(file, res) {
-                $( '#'+file.id ).find('.file-status').text('上传成功');
+                $('#' + file.id).find('.file-status').text('上传成功');
                 /*if(this.tableLayout){
                     $(`#tableProgress${file.id}`).addClass('upload-state-done');
                 } else {
@@ -875,11 +876,11 @@
                 //let $btns = $('<div class="file-panel"><span class="file-panel-item rotateLeft">下载</span><span class="file-panel-item cancel">删除</span><span class="file-panel-item rotateRight">向右旋转</span><span class="file-panel-item rotateLeft">向左旋转</span></div>').appendTo($li)
                 let downBtn = '', deleteBtn = '', uploadBtn = '';
                 if (this.authUpload) {
-                    uploadBtn = '<span class="file-panel-item upload" id="oneUploadFile'+file.source.id+'"></a>'
+                    uploadBtn = '<span class="file-panel-item upload" id="oneUploadFile' + file.source.id + '"></a>'
                 }
                 if (this.authDown) {
                     //downBtn = $(`<a href="${Setting.apiBaseURL + '/docservice' + file.url + file.id}" download="${file.name}"><i class="ivu-icon ivu-icon-md-cloud-download"></i></a>`)
-                    downBtn = '<a href='+Setting.apiBaseURL + '/docservice' + file.source.fileUrl + ' download = ' + file.name + ' class="file-panel-item"><i class="ivu-icon ivu-icon-md-cloud-download"></i></a>'
+                    downBtn = '<a href=' + Setting.apiBaseURL + '/docservice' + file.source.fileUrl + ' download = ' + file.name + ' class="file-panel-item"><i class="ivu-icon ivu-icon-md-cloud-download"></i></a>'
                 }
                 if (this.authDelete) {
                     deleteBtn = '<span class="file-panel-item cancel"><i class="ivu-icon ivu-icon-md-trash"></i></span>'
@@ -920,16 +921,16 @@
                             let officeMap = officeExtName
                             let extName = file.ext.toLowerCase()
 
-                            let fileType  = officeMap.find(c=>c==extName);
-                            let imgType   = imgExtName.find(c=>c==extName);
+                            let fileType = officeMap.find(c => c == extName);
+                            let imgType = imgExtName.find(c => c == extName);
 
-                            if(imgType){
+                            if (imgType) {
                                 /*this.showImageModal = true;
                                 this.showBigImage = item.fileUrl*/
                                 let img = $(`<img src="${file.source.previewImage}"/>`)
                                 $wrap.empty().append(img)
-                            } else{
-                               // this.$refs.modal.warning("您选择的文件类型暂时不支持预览！")
+                            } else {
+                                // this.$refs.modal.warning("您选择的文件类型暂时不支持预览！")
                                 /*this.fileDetail.url = this.serveOption.officeOnlineUrl + item.previewImage
                                 window.open(this.fileDetail.url)*/
                                 file.isShowIcon = true;
@@ -940,7 +941,7 @@
                         // 添加图片
                         if (this._isSupportBase64()) {
                             //let img = $(`<img src="${src}"/>`)
-                           // $wrap.empty().append(img)
+                            // $wrap.empty().append(img)
                         } else {
                             //$wrap.text('预览出错')
                         }
@@ -981,8 +982,8 @@
 */
                 $li.on('mouseenter', () => {
                     $btns.stop().animate({height: 30})
-                    let onFileBtn = $('#oneUploadFile'+file.source.id)
-                    if(!onFileBtn.children().length){
+                    let onFileBtn = $('#oneUploadFile' + file.source.id)
+                    if (!onFileBtn.children().length) {
                         _this[`uploader${_this.randomNum}`].addButton({
                             id: `#oneUploadFile${file.source.id}`,
                             label: '<i class="ivu-icon ivu-icon-md-cloud-upload"></i>'
@@ -992,7 +993,7 @@
 
                 $li.on('mouseleave', () => {
                     $btns.stop().animate({height: 0})
-                     //$('#oneUploadFile'+file.source.id).empty();
+                    //$('#oneUploadFile'+file.source.id).empty();
                 })
                 $btns.on('click', 'span', function () {
                     let index = $(this).index()
@@ -1009,10 +1010,10 @@
                             _this.oldFile = file
                             //上传
                             //_this._addFileButton()
-                           /* _this[`uploader${_this.randomNum}`].addButton({
-                                id: `#oneUploadFile${file.source.id}`,
-                                label: '<i class="ivu-icon ivu-icon-md-cloud-upload"></i>'
-                            })*/
+                            /* _this[`uploader${_this.randomNum}`].addButton({
+                                 id: `#oneUploadFile${file.source.id}`,
+                                 label: '<i class="ivu-icon ivu-icon-md-cloud-upload"></i>'
+                             })*/
                             //file.rotation += 90
                             break
                         case 3:
@@ -1306,12 +1307,12 @@
                     chunkNumber: chunkNumber
                 }
                 await this.serveOption.uploadCheckChunk(JSON.stringify(chunkData))
-                    .then((res) => {
-                        isExist = res
-                        if (isExist) {
-                            return deferred.resolved()
-                        }
-                    })
+                        .then((res) => {
+                            isExist = res
+                            if (isExist) {
+                                return deferred.resolved()
+                            }
+                        })
                 return deferred.promise()
             },
             // 在文件所有分片都上传完后，且服务端没有错误返回后执行
@@ -1373,17 +1374,17 @@
                             const swf = '.lib//expressInstall.swf'
                             // insert flash object
                             let html = '<object type="application/' +
-                                'x-shockwave-flash" data="' + swf + '" '
+                                    'x-shockwave-flash" data="' + swf + '" '
 
                             if (WebUploader.browser.ie) {
                                 html += 'classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" '
                             }
 
                             html += 'width="100%" height="100%" style="outline:0">' +
-                                '<param name="movie" value="' + swf + '" />' +
-                                '<param name="wmode" value="transparent" />' +
-                                '<param name="allowscriptaccess" value="always" />' +
-                                '</object>'
+                                    '<param name="movie" value="' + swf + '" />' +
+                                    '<param name="wmode" value="transparent" />' +
+                                    '<param name="allowscriptaccess" value="always" />' +
+                                    '</object>'
 
                             container.html(html)
                         })(this.$wrap)
@@ -1406,7 +1407,7 @@
                     try {
                         /* eslint-disable */
                         version = new ActiveXObject('ShockwaveFlash.ShockwaveFlash')
-                            .GetVariable('$version')
+                                .GetVariable('$version')
                     } catch (ex2) {
                         version = '0.0'
                     }
@@ -1418,10 +1419,10 @@
             _supportTransition() {
                 let s = document.createElement('p').style
                 let r = 'transition' in s ||
-                    'WebkitTransition' in s ||
-                    'MozTransition' in s ||
-                    'msTransition' in s ||
-                    'OTransition' in s
+                        'WebkitTransition' in s ||
+                        'MozTransition' in s ||
+                        'msTransition' in s ||
+                        'OTransition' in s
                 s = null
                 return r
             },
@@ -1501,11 +1502,11 @@
                     /*if(that.isOneFile){
                         this._getFileListFirst(res.documents)
                     } else {*/
-                        res.documents.forEach((item) => {
-                            this._getFileListFirst(item)
-                            this._addFileButton(item.id);
-                        })
-                   // }
+                    res.documents.forEach((item) => {
+                        this._getFileListFirst(item)
+                        this._addFileButton(item.id);
+                    })
+                    // }
 
                 })
             },
@@ -1638,12 +1639,12 @@
             display: inline-block;
             float: left;
         }
-
+        
         .upload-table {
             .ivu-table-cell {
                 height: auto;
             }
-
+            
             .uploadBtn, .deleteBtn, .downloadBtn {
                 display: inline-block;
                 height: 32px;
@@ -1662,19 +1663,19 @@
                 overflow: hidden;
                 box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
             }
-
+            
             .uploadBtn {
                 margin-left: 0;
                 margin-right: 6px;
             }
-
+            
             .progress-wrap {
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 height: 100%;
                 width: 100%;
-
+                
                 .progress {
                     position: relative;
                     display: inline-block;
@@ -1685,13 +1686,13 @@
                     width: 100%;
                     background: #fff;
                     border-radius: 4px;
-
+                    
                     .progress-text {
                         position: relative;
                         z-index: 10;
                         color: #fff !important;
                     }
-
+                    
                     .progress-inner {
                         display: inline-block;
                         height: 14px;
@@ -1705,11 +1706,11 @@
                 }
             }
         }
-
+        
         .table-file-picker {
             display: inline-block;
             height: 32px;
-
+            
             .webuploader-pick {
                 height: 32px;
                 line-height: 32px;
@@ -1721,7 +1722,7 @@
                 margin-right: 6px;
             }
         }
-
+        
         .uploader {
             margin-top: 10px;
             border: 1px solid #dadada;
@@ -1729,10 +1730,10 @@
             font-size: 12px;
             background-color: #FFF;
         }
-
+        
         .queueList {
             margin: 20px;
-
+            
             .placeholder {
                 position: relative;
                 box-sizing: content-box;
@@ -1744,7 +1745,7 @@
                 color: #cccccc;
                 font-size: 18px;
             }
-
+            
             div.file-panel {
                 position: absolute;
                 top: 0;
@@ -1754,7 +1755,7 @@
                 background: rgba(0, 0, 0, 0.5);
                 overflow: hidden;
                 z-index: 300;
-
+                
                 .file-panel-item {
                     float: right;
                     display: inline-block;
@@ -1767,7 +1768,7 @@
                     overflow: hidden;*/
                     background: none;
                     cursor: pointer;
-
+                    
                     /*&.cancel {
                         background-position: -48px -24px;
                     }
@@ -1780,14 +1781,14 @@
                         background-position: 0 -24px;
                     }*/
                 }
-
+                
             }
-
+            
             .filelist {
                 max-height: 130px;
                 overflow-x: hidden;
                 overflow-y: auto;
-
+                
                 li.file-item {
                     position: relative;
                     display: inline;
@@ -1800,7 +1801,7 @@
                     overflow: hidden;
                     font-size: 12px;
                 }
-
+                
                 p.title {
                     position: absolute;
                     left: 0;
@@ -1812,7 +1813,7 @@
                     text-indent: 5px;
                     text-align: left;
                 }
-
+                
                 p.imgWrap {
                     position: relative;
                     z-index: 2;
@@ -1824,7 +1825,7 @@
                     transform-origin: 50% 50%;
                     transition: 200ms ease-out;
                 }
-
+                
                 p.error {
                     background: #f43838;
                     color: #fff;
@@ -1836,7 +1837,7 @@
                     width: 100%;
                     z-index: 100;
                 }
-
+                
                 p.progress {
                     position: absolute;
                     width: 100%;
@@ -1845,7 +1846,7 @@
                     height: 8px;
                     overflow: hidden;
                     z-index: 50;
-
+                    
                     span {
                         display: none;
                         overflow: hidden;
@@ -1856,7 +1857,7 @@
                         -webkit-transform: translateZ(0);
                     }
                 }
-
+                
                 span.upload-state-done {
                     display: block;
                     position: absolute;
@@ -1869,7 +1870,7 @@
                 }
             }
         }
-
+        
         .statusBar {
             height: 63px;
             border-top: 1px solid #dadada;
@@ -1877,7 +1878,7 @@
             line-height: 63px;
             vertical-align: middle;
             position: relative;
-
+            
             .progress {
                 border: 1px solid #1483d8;
                 width: 198px;
@@ -1889,12 +1890,12 @@
                 line-height: 20px;
                 color: #6dbfff;
                 margin-right: 10px;
-
+                
                 .text {
                     position: relative;
                     z-index: 10;
                 }
-
+                
                 .percentage {
                     width: 0;
                     height: 100%;
@@ -1904,19 +1905,19 @@
                     position: absolute;
                 }
             }
-
+            
             .info {
                 display: inline-block;
                 font-size: 14px;
                 color: #666666;
             }
-
+            
             .btns {
                 position: absolute;
                 top: 10px;
                 right: 20px;
                 line-height: 40px;
-
+                
                 .uploadBtn, .webuploader-pick {
                     display: inline-block;
                     float: left;
@@ -1930,12 +1931,12 @@
                     font-size: 14px;
                     line-height: 40px;
                 }
-
+                
                 .file-picker2 {
                     display: inline-block;
                     float: left;
                 }
-
+                
                 .uploadBtn {
                     background: #00b7ee;
                     color: #fff;
@@ -1943,18 +1944,16 @@
                 }
             }
         }
-
-
-
+        
         .element-invisible {
             position: absolute !important;
             clip: rect(1px 1px 1px 1px);
             clip: rect(1px, 1px, 1px, 1px);
-            top:0;
-            left:0;
+            top: 0;
+            left: 0;
             z-index: 100;
         }
-
+        
         .webuploader-pick {
             box-sizing: content-box;
             position: relative;
@@ -1971,27 +1970,27 @@
             margin: 20px auto;
             box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
         }
-
+        
         .webuploader-element-invisible {
             position: absolute !important;
             clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
             clip: rect(1px, 1px, 1px, 1px);
         }
-
+        
         .webuploader-pick-hover {
             background: #00a2d4;
         }
-
+        
         .webuploader-pick-disable {
             opacity: 0.6;
             pointer-events: none;
         }
-
+        
         .uploader-table-toolbar {
             display: inline-block;
             float: left;
             height: 32px;
-
+            
             > div, > button {
                 display: inline-block;
                 float: left;
@@ -2002,7 +2001,7 @@
             width: 100%;
             height: 100%;
             position: relative;
-            .filelist{
+            .filelist {
                 height: 110px;
                 overflow: hidden;
             }
@@ -2012,8 +2011,8 @@
                 padding: 0;
                 min-height: auto;
                 position: absolute;
-                top:0;
-                left:0;
+                top: 0;
+                left: 0;
                 div {
                     width: 100%;
                     height: 100%;
@@ -2028,7 +2027,7 @@
                 padding: 0;
                 line-height: 100%;
             }
-            .file-panel{
+            .file-panel {
                 .webuploader-pick {
                     margin: 0 5px 0 0;
                     background: transparent;
@@ -2044,14 +2043,14 @@
             }
         }
     }
-
+    
     .bingoFileIcon {
         margin-right: 5px;
     }
-
+    
     .tableUpdateBtn {
         display: inline-block;
-
+        
         .webuploader-pick {
             margin: -2px 0 0 0;
             background: transparent;
@@ -2064,28 +2063,28 @@
             padding: 0;
         }
     }
-
+    
     td > div.ivu-table-cell > div > a {
         display: inline-block;
         height: 22px;
         line-height: 22px;
         padding: 5px 10px 0 10px;
         overflow: hidden;
-        i{
+        i {
             font-size: 22px;
         }
     }
-    td > div.ivu-table-cell > div > a.webuploader-container{
-        .webuploader-pick{
-            padding:0;
-            margin:0;
+    
+    td > div.ivu-table-cell > div > a.webuploader-container {
+        .webuploader-pick {
+            padding: 0;
+            margin: 0;
             line-height: 22px;
             color: #0077c8;
-            background:transparent;
+            background: transparent;
         }
     }
-
-
+    
     .ivu-table {
         td {
             .progressOver {
@@ -2104,7 +2103,7 @@
                     position: absolute;
                     top: 0;
                     left: 0;
-
+                    
                     span {
                         display: block;
                         overflow: hidden;
@@ -2129,11 +2128,10 @@
             }
         }
     }
-
-
+    
     .file-detail {
         height: 100%;
-
+        
         iframe {
             height: 100%;
         }

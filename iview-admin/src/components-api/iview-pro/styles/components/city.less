@@ -1,107 +1,107 @@
-.ivu-city{
+.ivu-city {
+  display: inline-block;
+  width: 100%;
+  position: relative;
+
+  .ivu-dropdown {
+    width: 100%;
+  }
+
+  &-rel {
     display: inline-block;
     width: 100%;
     position: relative;
+    cursor: pointer;
+  }
 
-    .ivu-dropdown{
-        width: 100%;
-    }
+  &-arrow {
+    transition: all @transition-time @ease-in-out;
+  }
 
-    &-rel{
+  &-visible &-arrow:nth-of-type(2) {
+    transform: rotate(180deg);
+  }
+
+  @city-width: 400px;
+  .ivu-select-dropdown {
+    width: @city-width;
+  }
+
+  &-drop {
+    width: @city-width;
+    padding: 2px 8px;
+
+    &-cities {
+      margin-bottom: 8px;
+      span {
         display: inline-block;
-        width: 100%;
-        position: relative;
+        margin-right: 4px;
         cursor: pointer;
+        &:hover {
+          color: @link-hover-color;
+        }
+      }
     }
 
-    &-arrow{
-        transition: all @transition-time @ease-in-out;
+    &-menu {
+      margin-bottom: 8px;
     }
 
-    &-visible &-arrow:nth-of-type(2) {
-        transform: rotate(180deg);
+    &-type {
+      display: inline-block;
+    }
+    &-search {
+      display: inline-block;
+      margin-left: 8px;
     }
 
-    @city-width: 400px;
-    .ivu-select-dropdown{
-        width: @city-width;
-    }
-
-    &-drop{
-        width: @city-width;
-        padding: 2px 8px;
-
-        &-cities{
-            margin-bottom: 8px;
-            span{
-                display: inline-block;
-                margin-right: 4px;
-                cursor: pointer;
-                &:hover{
-                    color: @link-hover-color;
-                }
+    &-list {
+      &-letter {
+        margin-bottom: 8px;
+        .ivu-tag {
+          &:hover {
+            .ivu-tag-text {
+              color: @link-hover-color;
             }
+          }
         }
+      }
+      &-main {
+        max-height: 200px;
+        overflow: auto;
+        dl {
 
-        &-menu{
-            margin-bottom: 8px;
         }
-
-        &-type{
+        dt {
+          float: left;
+          font-weight: bold;
+        }
+        dd {
+          white-space: normal;
+          margin-inline-start: 40px;
+          margin-bottom: 8px;
+          li {
             display: inline-block;
-        }
-        &-search{
-            display: inline-block;
-            margin-left: 8px;
-        }
+            margin-right: 9px;
+            cursor: pointer;
 
-        &-list{
-            &-letter{
-                margin-bottom: 8px;
-                .ivu-tag{
-                    &:hover{
-                        .ivu-tag-text{
-                            color: @link-hover-color;
-                        }
-                    }
-                }
+            &:hover {
+              color: @link-hover-color;
             }
-            &-main{
-                max-height: 200px;
-                overflow: auto;
-                dl{
-
-                }
-                dt{
-                    float: left;
-                    font-weight: bold;
-                }
-                dd{
-                    white-space: normal;
-                    margin-inline-start: 40px;
-                    margin-bottom: 8px;
-                    li{
-                        display: inline-block;
-                        margin-right: 9px;
-                        cursor: pointer;
-
-                        &:hover{
-                            color: @link-hover-color;
-                        }
-                    }
-                }
-
-                &-city{
-                    dd{
-                        margin-inline-start: 24px;
-                    }
-                }
-            }
+          }
         }
-    }
 
-    &-transfer.ivu-select-dropdown{
-        max-height: none;
-        overflow: visible;
+        &-city {
+          dd {
+            margin-inline-start: 24px;
+          }
+        }
+      }
     }
+  }
+
+  &-transfer.ivu-select-dropdown {
+    max-height: none;
+    overflow: visible;
+  }
 }

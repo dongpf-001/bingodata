@@ -13,35 +13,34 @@
     </div>
 </template>
 <script>
-import bingoGridItem from '../bingo-grid-item/index'
-export default {
-  name: 'bing-create-info',
-  data () {
-    return {
+    import bingoGridItem from '../bingo-grid-item/index'
+
+    export default {
+        name: 'bing-create-info',
+        data() {
+            return {}
+        },
+        components: {
+            bingoGridItem
+        },
+        props: {
+            data: {
+                type: Object,
+                default() {
+                    return {
+                        creator: '',
+                        createTime: '',
+                        modifier: '',
+                        modifyTime: ''
+                    }
+                }
+            }
+        },
+        methods: {}
     }
-  },
-  components: {
-    bingoGridItem
-  },
-  props: {
-    data: {
-      type: Object,
-      default () {
-        return {
-          creator: '',
-          createTime: '',
-          modifier: '',
-          modifyTime: ''
-        }
-      }
-    }
-  },
-  methods: {
-  }
-}
 </script>
 <style lang="less">
-    .create-wrapper{
+    .create-wrapper {
         display: inline-block;
         width: 100%;
         .ivu-input {

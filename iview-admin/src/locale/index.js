@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueI18n from 'vue-i18n'
-import { localRead } from '@/libs/util'
+import {localRead} from '@/libs/util'
 import customZhCn from './lang/zh-CN'
 import customZhTw from './lang/zh-TW'
 import customEnUs from './lang/en-US'
@@ -18,15 +18,16 @@ let lang = localLang || localRead('local') || 'zh-CN'
 Vue.config.lang = lang
 
 // vue-i18n 6.x+写法
-Vue.locale = () => {}
+Vue.locale = () => {
+}
 const messages = {
-  'zh-CN': Object.assign(zhCnLocale, customZhCn),
-  'zh-TW': Object.assign(zhTwLocale, customZhTw),
-  'en-US': Object.assign(enUsLocale, customEnUs)
+    'zh-CN': Object.assign(zhCnLocale, customZhCn),
+    'zh-TW': Object.assign(zhTwLocale, customZhTw),
+    'en-US': Object.assign(enUsLocale, customEnUs)
 }
 const i18n = new VueI18n({
-  locale: lang,
-  messages
+    locale: lang,
+    messages
 })
 
 export default i18n

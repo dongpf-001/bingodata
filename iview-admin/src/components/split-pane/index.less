@@ -9,64 +9,64 @@
 @trigger-bar-weight: 1px;
 @trigger-bar-con-height: (@trigger-bar-weight + @trigger-bar-interval) * 8;
 
-.@{split-prefix-cls}{
-  &-wrapper{
+.@{split-prefix-cls} {
+  &-wrapper {
     position: relative;
     width: 100%;
     height: 100%;
   }
-  &-pane{
+  &-pane {
     position: absolute;
-    &.left-pane, &.right-pane{
+    &.left-pane, &.right-pane {
       top: 0px;
       bottom: 0px;
     }
-    &.left-pane{
+    &.left-pane {
       left: 0px;
     }
-    &.right-pane{
+    &.right-pane {
       right: 0px;
     }
-    &.top-pane, &.bottom-pane{
+    &.top-pane, &.bottom-pane {
       left: 0px;
       right: 0px;
     }
-    &.top-pane{
+    &.top-pane {
       top: 0px;
     }
-    &.bottom-pane{
+    &.bottom-pane {
       bottom: 0px;
     }
   }
-  &-trigger{
-    &-con{
+  &-trigger {
+    &-con {
       position: absolute;
       transform: translate(-50%, -50%);
       z-index: 10;
     }
-    &-bar-con{
+    &-bar-con {
       position: absolute;
       overflow: hidden;
-      &.vertical{
+      &.vertical {
         left: @trigger-bar-offset;
         top: 50%;
         height: @trigger-bar-con-height;
         transform: translate(0, -50%);
       }
-      &.horizontal{
+      &.horizontal {
         left: 50%;
         top: @trigger-bar-offset;
         width: @trigger-bar-con-height;
         transform: translate(-50%, 0);
       }
     }
-    &-vertical{
+    &-vertical {
       width: @trigger-width;
       height: 100%;
       background: @trigger-background;
       box-shadow: @box-shadow;
       cursor: col-resize;
-      .@{split-prefix-cls}-trigger-bar{
+      .@{split-prefix-cls}-trigger-bar {
         width: @trigger-bar-width;
         height: 1px;
         background: @trigger-bar-background;
@@ -74,13 +74,13 @@
         margin-top: @trigger-bar-interval;
       }
     }
-    &-horizontal{
+    &-horizontal {
       height: @trigger-width;
       width: 100%;
       background: @trigger-background;
       box-shadow: @box-shadow;
       cursor: row-resize;
-      .@{split-prefix-cls}-trigger-bar{
+      .@{split-prefix-cls}-trigger-bar {
         height: @trigger-bar-width;
         width: 1px;
         background: @trigger-bar-background;
@@ -89,21 +89,21 @@
       }
     }
   }
-  &-horizontal{
-    .@{split-prefix-cls}-trigger-con{
+  &-horizontal {
+    .@{split-prefix-cls}-trigger-con {
       top: 50%;
       height: 100%;
       width: 0;
     }
   }
-  &-vertical{
-    .@{split-prefix-cls}-trigger-con{
+  &-vertical {
+    .@{split-prefix-cls}-trigger-con {
       left: 50%;
       height: 0;
       width: 100%;
     }
   }
-  .no-select{
+  .no-select {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;

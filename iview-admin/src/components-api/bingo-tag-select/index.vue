@@ -5,25 +5,22 @@
 </template>
 
 <script>
-export default {
-  data () {
-    return {
-
+    export default {
+        data() {
+            return {}
+        },
+        props: {
+            data: {
+                type: Array,
+                default: () => []
+            }
+        },
+        created() {
+        },
+        mounted() {
+        },
+        computed: {}
     }
-  },
-  props: {
-    data: {
-      type: Array,
-      default: () => []
-    }
-  },
-  created () {
-  },
-  mounted () {
-  },
-  computed: {
-  }
-}
 </script>
 
 <style>

@@ -12,21 +12,28 @@
                     <li class="placeholder" v-show="isShowUploadBtn">
                         <Button :id="`listFilePicker${randomNum}`"></Button>
                     </li>
-                    <li class="file-item" v-for="(item, key) in listUploadFile" :key="key" @mouseover="onLiMouseOver($event, item)" @mouseout="onLiMouseOut($event)">
+                    <li class="file-item" v-for="(item, key) in listUploadFile" :key="key"
+                        @mouseover="onLiMouseOver($event, item)" @mouseout="onLiMouseOut($event)">
                         <div class="text" v-if="item.text != ''">{{item.text}}</div>
-                        <img :src="item.previewImage" v-if="item.isImage" />
-                        <bingo-file-icon v-if="!item.isImage" :type="item.extName" width="60px" height="60px"></bingo-file-icon>
+                        <img :src="item.previewImage" v-if="item.isImage"/>
+                        <bingo-file-icon v-if="!item.isImage" :type="item.extName" width="60px"
+                                         height="60px"></bingo-file-icon>
                         <p>{{item.name}}</p>
-                        <Progress :percent="item.percent" v-if="item.percent" hide-info :stroke-width="5" />
+                        <Progress :percent="item.percent" v-if="item.percent" hide-info :stroke-width="5"/>
                         <div class="btn-group updown">
-                            <Button type="text" v-if="authSee" @click="showFileDetail(item)" icon="ios-eye"><span>查看</span></Button>
-                            <Button type="text" v-if="authDelete" @click="removeDocument(item)" icon="md-trash"><span>删除</span></Button>
-                            <a :href="item.download" :download="item.name"><Icon type="md-cloud-download" /><span>下载</span></a>
-                            <Button type="text" v-if="authUpload" class="uploadBtn" @click="uploadOneBtnClick(item)" icon="md-cloud-upload"><span>上传</span></Button>
+                            <Button type="text" v-if="authSee" @click="showFileDetail(item)" icon="ios-eye">
+                                <span>查看</span></Button>
+                            <Button type="text" v-if="authDelete" @click="removeDocument(item)" icon="md-trash">
+                                <span>删除</span></Button>
+                            <a :href="item.download" :download="item.name">
+                                <Icon type="md-cloud-download"/>
+                                <span>下载</span></a>
+                            <Button type="text" v-if="authUpload" class="uploadBtn" @click="uploadOneBtnClick(item)"
+                                    icon="md-cloud-upload"><span>上传</span></Button>
                         </div>
                     </li>
                 </ul>
-
+            
             </div>
         </div>
         <div :id="`uploader${randomNum}`" class="tableList" v-if="tableLayout">
@@ -80,35 +87,45 @@
                         <Icon class="icon" type="md-add-circle"/>
                         创建文件夹</a>
                 </header>
-                <Table :data="tableData" :columns="columns" :height=height :loading="uploading" :draggable="true" @on-drag-drop="onDragDrop"
-                   @getData="getTablePageData"
-                   @on-select="onSelect"
-                   @on-select-all="onSelectAll"
-                   @on-select-all-cancel="onSelectAllCancel"
-                   @on-select-cancel="onSelectCancel"
-                   @on-selection-change="onSelectionChange">
-                <template slot="move">
-                    <Icon type="md-menu" class="dashboard-workplace-todo-move" title="拖拽排序" />
-                </template>
-                <template slot-scope="{ row }" slot="name">
-                    <p class="passOver">{{row.name}}<Progress :percent="row.percent" hide-info :stroke-width="3" /></p>
-                </template>
-                <template slot-scope="{ row }" slot="image">
-                    <img :src="row.previewImage" v-if="row.isImage" />
-                    <bingo-file-icon v-if="!row.isImage" :type="row.extName" width="30px" height="30px"></bingo-file-icon>
-                </template>
-                <template slot-scope="{ row, index }" slot="action">
-                    <Button type="text" v-if="authUpload" class="actionBtn uploadBtn" :id="`uploadBtn${row.id}`" @click="uploadOneBtnClick(row)" icon="md-cloud-upload"><span>上传</span></Button>
-                    <Divider type="vertical" />
-                    <a :href="row.download" :download="row.name" class="actionBtn"><Icon type="md-cloud-download" /><span>下载</span></a>
-                    <Divider type="vertical" />
-                    <Button type="text" v-if="authRename" class="actionBtn" @click="uploadRename(row)" icon="md-create"><span>重命名</span></Button>
-                    <Divider type="vertical" />
-                    <Button type="text" v-if="authDelete" class="actionBtn" @click="removeDocument(row)" icon="md-trash"><span>删除</span></Button>
-                    <Divider type="vertical" />
-                    <Button type="text" v-if="authSee" class="actionBtn" @click="showFileDetail(row)" icon="ios-eye"><span>查看</span></Button>
-                </template>
-            </Table>
+                <Table :data="tableData" :columns="columns" :height=height :loading="uploading" :draggable="true"
+                       @on-drag-drop="onDragDrop"
+                       @getData="getTablePageData"
+                       @on-select="onSelect"
+                       @on-select-all="onSelectAll"
+                       @on-select-all-cancel="onSelectAllCancel"
+                       @on-select-cancel="onSelectCancel"
+                       @on-selection-change="onSelectionChange">
+                    <template slot="move">
+                        <Icon type="md-menu" class="dashboard-workplace-todo-move" title="拖拽排序"/>
+                    </template>
+                    <template slot-scope="{ row }" slot="name">
+                        <p class="passOver">{{row.name}}
+                            <Progress :percent="row.percent" hide-info :stroke-width="3"/>
+                        </p>
+                    </template>
+                    <template slot-scope="{ row }" slot="image">
+                        <img :src="row.previewImage" v-if="row.isImage"/>
+                        <bingo-file-icon v-if="!row.isImage" :type="row.extName" width="30px"
+                                         height="30px"></bingo-file-icon>
+                    </template>
+                    <template slot-scope="{ row, index }" slot="action">
+                        <Button type="text" v-if="authUpload" class="actionBtn uploadBtn" :id="`uploadBtn${row.id}`"
+                                @click="uploadOneBtnClick(row)" icon="md-cloud-upload"><span>上传</span></Button>
+                        <Divider type="vertical"/>
+                        <a :href="row.download" :download="row.name" class="actionBtn">
+                            <Icon type="md-cloud-download"/>
+                            <span>下载</span></a>
+                        <Divider type="vertical"/>
+                        <Button type="text" v-if="authRename" class="actionBtn" @click="uploadRename(row)"
+                                icon="md-create"><span>重命名</span></Button>
+                        <Divider type="vertical"/>
+                        <Button type="text" v-if="authDelete" class="actionBtn" @click="removeDocument(row)"
+                                icon="md-trash"><span>删除</span></Button>
+                        <Divider type="vertical"/>
+                        <Button type="text" v-if="authSee" class="actionBtn" @click="showFileDetail(row)"
+                                icon="ios-eye"><span>查看</span></Button>
+                    </template>
+                </Table>
             </div>
             <!--<bingoTable
                     :border="model.border"
@@ -156,10 +173,10 @@
     </div>
 </template>
 <script>
-/*
-* 文档地址 http://fex.baidu.com/webuploader/doc/index.html
-* */
-/* eslint-disable */
+    /*
+    * 文档地址 http://fex.baidu.com/webuploader/doc/index.html
+    * */
+    /* eslint-disable */
     import $ from './lib/jquery'
     import WebUploader from './lib/webuploader'
     import * as Api from '@/api/bmsa/upload';
@@ -292,12 +309,12 @@
             return {
                 token: token,
                 spinShow: true,
-                listHeight : this.row * 120,
-                apiBaseURL:Setting.apiBaseURL,
+                listHeight: this.row * 120,
+                apiBaseURL: Setting.apiBaseURL,
                 uploadFileList: [],
                 uploader: null,
-                cls:'',
-                label:'',
+                cls: '',
+                label: '',
                 layout: '',
                 width: '100%',
                 isShowUploadBtn: true,
@@ -310,10 +327,10 @@
                 tableData: [],
                 tableDataTotal: [],
                 oldUploadData: {}, // 单文件上传的数据
-                oldIndex:0,
+                oldIndex: 0,
                 tableCheckBox: [],
                 uploading: true,
-                listUploadFile:[],
+                listUploadFile: [],
                 uploadFlag: false, // 判断是否是单文件上传
                 systemId: '',
                 fileDetail: {
@@ -402,104 +419,104 @@
                         align: 'center',
                         width: 220,
                     }
-                   /* {
-                        title: '操作',
-                        key: 'control',
-                        align: 'center',
-                        width: 220,
-                        render: (h, params) => {
-                            let that = this;
-                            return h('div', [
-                                h('a', {
-                                    attrs: {
-                                        id: 'uploadFile' + params.row.id
-                                    },
-                                    style: {
-                                        display: this.authUpload ? 'inline-block' : 'none',
-                                    },
-                                    on: {
-                                        load: () => {
-                                            that._addFileButton(params.row)
-                                        },
-                                        click: () => {
-                                            that._addFileButton(params.row)
-                                            //this.tableUploadData = params.row
-                                        }
-                                    }
-                                }),
-                                h('a', {
-                                    style: {
-                                        display: this.authDown ? 'inline-block' : 'none',
-                                    },
-                                    attrs: {
-                                        href: Setting.apiBaseURL + '/docservice' + params.row.url,
-                                        download: params.row.name,
-                                    }
-                                }, [
-                                    h('Icon', {
-                                        props: {
-                                            type: 'md-cloud-download',
-                                            size: '22',
-                                        },
-                                        nativeOn: {
-                                            click: () => {
-                                                if (params.row.url) {
-                                                    this.downFile(params.row.url)
-                                                }
-                                            }
-                                        }
-                                    },)
-                                ]),
-                                h('a', {
-                                    style: {
-                                        display: this.authDelete ? 'inline-block' : 'none',
-                                    }
-                                }, [
-                                    h('Icon', {
-                                        props: {
-                                            type: 'md-trash',
-                                            size: '22',
-                                        },
-                                        nativeOn: {
-                                            click: () => {
-                                                that.removeDocument(params.row)
-                                            }
-                                        }
-                                    },)
-                                ]),
-                                h('a', {
-                                    style: {
-                                        display: this.authSee ? 'inline-block' : 'none',
-                                    }
-                                }, [
-                                    h('Icon', {
-                                        props: {
-                                            type: 'ios-eye',
-                                            size: '22',
-                                        },
-                                        nativeOn: {
-                                            click: () => {
-                                                that.showFileDetail(params.row)
-                                            }
-                                        }
-                                    },)
-                                ]),
-                            ])
-                        }
-                    }*/
+                    /* {
+                         title: '操作',
+                         key: 'control',
+                         align: 'center',
+                         width: 220,
+                         render: (h, params) => {
+                             let that = this;
+                             return h('div', [
+                                 h('a', {
+                                     attrs: {
+                                         id: 'uploadFile' + params.row.id
+                                     },
+                                     style: {
+                                         display: this.authUpload ? 'inline-block' : 'none',
+                                     },
+                                     on: {
+                                         load: () => {
+                                             that._addFileButton(params.row)
+                                         },
+                                         click: () => {
+                                             that._addFileButton(params.row)
+                                             //this.tableUploadData = params.row
+                                         }
+                                     }
+                                 }),
+                                 h('a', {
+                                     style: {
+                                         display: this.authDown ? 'inline-block' : 'none',
+                                     },
+                                     attrs: {
+                                         href: Setting.apiBaseURL + '/docservice' + params.row.url,
+                                         download: params.row.name,
+                                     }
+                                 }, [
+                                     h('Icon', {
+                                         props: {
+                                             type: 'md-cloud-download',
+                                             size: '22',
+                                         },
+                                         nativeOn: {
+                                             click: () => {
+                                                 if (params.row.url) {
+                                                     this.downFile(params.row.url)
+                                                 }
+                                             }
+                                         }
+                                     },)
+                                 ]),
+                                 h('a', {
+                                     style: {
+                                         display: this.authDelete ? 'inline-block' : 'none',
+                                     }
+                                 }, [
+                                     h('Icon', {
+                                         props: {
+                                             type: 'md-trash',
+                                             size: '22',
+                                         },
+                                         nativeOn: {
+                                             click: () => {
+                                                 that.removeDocument(params.row)
+                                             }
+                                         }
+                                     },)
+                                 ]),
+                                 h('a', {
+                                     style: {
+                                         display: this.authSee ? 'inline-block' : 'none',
+                                     }
+                                 }, [
+                                     h('Icon', {
+                                         props: {
+                                             type: 'ios-eye',
+                                             size: '22',
+                                         },
+                                         nativeOn: {
+                                             click: () => {
+                                                 that.showFileDetail(params.row)
+                                             }
+                                         }
+                                     },)
+                                 ]),
+                             ])
+                         }
+                     }*/
                 ],
                 showImageModal: false,
                 showBigImage: '',
-                oldFile:'',//单文件上传时要删除的文件
-                deleteDocumetId:'', //要删除的文档保存在这里
+                oldFile: '',//单文件上传时要删除的文件
+                deleteDocumetId: '', //要删除的文档保存在这里
                 folderList: [],
                 checkAll: false,
                 checkAllGroup: [],
                 checkFileParams: [],
                 checkFoladParams: [],
-                checkFileData:[],
-                checkFolderData:[],
-                isMultiple:false
+                checkFileData: [],
+                checkFolderData: [],
+                isMultiple: false
             }
         },
         watch: {
@@ -562,8 +579,8 @@
             },
         },
         mounted() {
-            if(this.showNum){
-                if(!this.tableLayout){
+            if (this.showNum) {
+                if (!this.tableLayout) {
                     this.width = this.showNum * 130 + 15 + 'px'
                 }
             }
@@ -572,7 +589,7 @@
             this.register()
             this.initWebUploader()
             this._getFoldersList()
-            console.log('listUploadFile=='+ this.listUploadFile)
+            console.log('listUploadFile==' + this.listUploadFile)
         },
         methods: {
             // 初始化dom
@@ -737,17 +754,17 @@
             register() {
                 WebUploader.Uploader.unRegister('custom')
                 WebUploader.Uploader.register(
-                    {
-                        name: 'custom',
-                        'before-send-file': 'beforeSendFile',
-                        'before-send': 'beforeSend',
-                        'after-send-file': 'afterSendFile'
-                    },
-                    {
-                        beforeSendFile: this._beforeSendFileHook,
-                        beforeSend: this._beforeSendHook,
-                        afterSendFile: this._afterSendFileHook
-                    }
+                        {
+                            name: 'custom',
+                            'before-send-file': 'beforeSendFile',
+                            'before-send': 'beforeSend',
+                            'after-send-file': 'afterSendFile'
+                        },
+                        {
+                            beforeSendFile: this._beforeSendFileHook,
+                            beforeSend: this._beforeSendHook,
+                            afterSendFile: this._afterSendFileHook
+                        }
                 )
             },
             // table分页数据
@@ -879,21 +896,21 @@
                                 id: file.id,
                                 No: this.tableDataTotal.length + 1,
                                 control: 1,
-                                name:file.name,
+                                name: file.name,
                                 progress: 0,
                                 size: fileSize,
                                 remark: '',
                                 url: file.fileUrl,
                                 previewImage: file.previewImage,
                                 extName: file.ext,
-                                percent:0,
+                                percent: 0,
                                 isImage: isImage,
                                 mainFileId: file.mainFileId
                             }
                             if (this.oldUploadData.id) {
                                 let selectId = '';
                                 this.tableDataTotal.forEach(function (item, index) {
-                                    if(item.id == that.oldUploadData.id) {
+                                    if (item.id == that.oldUploadData.id) {
                                         selectId = index;
                                         return
                                     }
@@ -902,7 +919,7 @@
                                 this.tableDataTotal.splice(selectId, 1, file)
                                 console.log(selectId)
                                 console.log(this.tableDataTotal)
-                                this.oldUploadData={}
+                                this.oldUploadData = {}
                             } else {
                                 this.tableDataTotal.unshift(file)
                             }
@@ -916,7 +933,7 @@
                             let index = this.listUploadFile.indexOf(this.oldUploadData);
                             this.oldIndex = index
                             this.listUploadFile.splice(index, 1, file)
-                            this.oldUploadData={}
+                            this.oldUploadData = {}
                         } else {
                             this.listUploadFile.unshift(file);
                         }
@@ -1336,12 +1353,12 @@
                     chunkNumber: chunkNumber
                 }
                 await this.serveOption.uploadCheckChunk(JSON.stringify(chunkData))
-                    .then((res) => {
-                        isExist = res
-                        if (isExist) {
-                            return deferred.resolved()
-                        }
-                    })
+                        .then((res) => {
+                            isExist = res
+                            if (isExist) {
+                                return deferred.resolved()
+                            }
+                        })
                 return deferred.promise()
             },
             // 在文件所有分片都上传完后，且服务端没有错误返回后执行
@@ -1404,17 +1421,17 @@
                             const swf = '.lib//expressInstall.swf'
                             // insert flash object
                             let html = '<object type="application/' +
-                                'x-shockwave-flash" data="' + swf + '" '
+                                    'x-shockwave-flash" data="' + swf + '" '
 
                             if (WebUploader.browser.ie) {
                                 html += 'classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" '
                             }
 
                             html += 'width="100%" height="100%" style="outline:0">' +
-                                '<param name="movie" value="' + swf + '" />' +
-                                '<param name="wmode" value="transparent" />' +
-                                '<param name="allowscriptaccess" value="always" />' +
-                                '</object>'
+                                    '<param name="movie" value="' + swf + '" />' +
+                                    '<param name="wmode" value="transparent" />' +
+                                    '<param name="allowscriptaccess" value="always" />' +
+                                    '</object>'
 
                             container.html(html)
                         })(this.$wrap)
@@ -1437,7 +1454,7 @@
                     try {
                         /* eslint-disable */
                         version = new ActiveXObject('ShockwaveFlash.ShockwaveFlash')
-                            .GetVariable('$version')
+                                .GetVariable('$version')
                     } catch (ex2) {
                         version = '0.0'
                     }
@@ -1449,10 +1466,10 @@
             _supportTransition() {
                 let s = document.createElement('p').style
                 let r = 'transition' in s ||
-                    'WebkitTransition' in s ||
-                    'MozTransition' in s ||
-                    'msTransition' in s ||
-                    'OTransition' in s
+                        'WebkitTransition' in s ||
+                        'MozTransition' in s ||
+                        'msTransition' in s ||
+                        'OTransition' in s
                 s = null
                 return r
             },
@@ -1559,7 +1576,7 @@
                     loading: true,
                     duration: '3'
                 }
-                if(item.documentId != undefined){
+                if (item.documentId != undefined) {
                     this.deleteDocumetId = item.documentId;
                 } else {
                     this.deleteDocumetId = item.id;
@@ -1569,12 +1586,12 @@
                     this.$refs.alert.confirmAuto()
                 })
             },
-            removeDocumentOK(){
+            removeDocumentOK() {
                 let id = this.deleteDocumetId
                 this.serveOption.deleteDocument(id).then((res) => {
-                    if(res){
+                    if (res) {
                         this.$refs.alert.onCanel();
-                        if(this.tableLayout){
+                        if (this.tableLayout) {
                             let index = this.tableDataTotal.findIndex(el => el.id === id)
                             this.tableDataTotal.splice(index, 1)
                         } else {
@@ -1606,7 +1623,7 @@
                     idList.push(item.id)
                 })
                 this.serveOption.deleteMultipleDocument(idList).then((res) => {
-                    if(res){
+                    if (res) {
                         that.$refs.alert.onCanel();
                         that.refreshTable();
                         this.$Message.success('您已成功删除文件！')
@@ -1614,7 +1631,7 @@
                 })
             },
             //拼下载地址
-            FileUrl(url){
+            FileUrl(url) {
                 return Setting.apiBaseURL + '/docservice' + url
             },
             //初始化列表
@@ -1641,11 +1658,11 @@
                         id: file.id,
                         No: this.tableDataTotal.length + 1,
                         control: 1,
-                        name:file.name,
+                        name: file.name,
                         size: fileSize,
                         remark: '',
                         url: file.fileUrl,
-                        fileUrl:file.fileUrl,
+                        fileUrl: file.fileUrl,
                         isImage: file.isImage,
                         progress: 1,
                         download: file.download,
@@ -1656,7 +1673,7 @@
                     this.getTablePageData(this.currentPage)
                     this.$nextTick(() => {
                         this[`uploader${this.randomNum}`].addButton({
-                            id: "#uploadBtn"+file.id,
+                            id: "#uploadBtn" + file.id,
                             innerHTML: '<i class="ivu-icon ivu-icon-md-cloud-upload"></i>',
                             multiple: false
                         })
@@ -1707,9 +1724,9 @@
                 }
             },
             //是否显示上传按钮
-            isShowUploadListBtn (){
-                if(this.authUpload){
-                    if(this.showNum){
+            isShowUploadListBtn() {
+                if (this.authUpload) {
+                    if (this.showNum) {
                         let listNum = this.listUploadFile.length
                         if (listNum > this.showNum) {
                             this.listUploadFile.splice(this.showNum, this.listUploadFile.length - this.showNum)
@@ -1722,15 +1739,15 @@
                 }
             },
             //是否是支持类型的文件
-            FileType(ext){
+            FileType(ext) {
                 let extName = ext.toLowerCase()
                 let fileType = officeExtName.find(c => c == extName);
                 let imgType = imgExtName.find(c => c == extName);
 
-                if(imgType){
+                if (imgType) {
                     //this.isImage = true
                     return 'image'
-                } else if(fileType){
+                } else if (fileType) {
                     //this.isImage = false
                     return 'doc'
                 } else {
@@ -1751,16 +1768,16 @@
                 }
             },
             //重命名
-            uploadRename(){
+            uploadRename() {
 
             },
             //list 形态 单文件操作
-            onLiMouseOver(e, item){
+            onLiMouseOver(e, item) {
                 let $updown = $(e.currentTarget).find(".updown");
                 let $uploadBtn = $updown.find(".uploadBtn")
                 let $webupload = $uploadBtn.find('.webuploader-pick')
                 $updown.stop().animate({height: 30})
-                if(!$webupload.length){
+                if (!$webupload.length) {
                     this.$nextTick(() => {
                         this[`uploader${this.randomNum}`].addButton({
                             id: $uploadBtn,
@@ -1770,14 +1787,14 @@
                     })
                 }
             },
-            onLiMouseOut(e){
+            onLiMouseOut(e) {
                 let $updown = $(e.currentTarget).find(".updown")
                 $updown.stop().animate({height: 0})
             },
             //
             ok() {
                 let that = this
-                if(this.isMultiple){
+                if (this.isMultiple) {
                     this.deleteMultipleDocumentOk()  //批量删除
                 } else {
                     this.removeDocumentOK() //单文件删除
@@ -1794,15 +1811,15 @@
                     this.checkAllGroup = this.checkAllGroupList
                     this.checkAll = true
                     this.fileList.forEach(function (item) {
-                        if(item.typeId === 'file'){
+                        if (item.typeId === 'file') {
                             that.checkAllGroup.forEach(function (item1) {
-                                if(item.id == item1){
+                                if (item.id == item1) {
                                     that.checkFileParams.push(item);
                                 }
                             })
                         } else {
                             that.checkAllGroup.forEach(function (item1) {
-                                if(item.id == item1){
+                                if (item.id == item1) {
                                     that.checkFoladParams.push(item);
                                 }
                             })
@@ -1823,8 +1840,8 @@
                     this.checkAll = false
                     data.forEach(function (item) {
                         let type = item.split('.')[0]
-                        let id   = item.split('.')[1]
-                        if(type === 'file'){
+                        let id = item.split('.')[1]
+                        if (type === 'file') {
                             let indexFile = that.fileList.findIndex(el => el.id === id)
                             that.checkFileData.push(id)
                             that.checkFileParams.push(that.fileList[indexFile]);
@@ -1841,7 +1858,7 @@
 
             },
             // 拖动
-            onDragDrop (a, b) {
+            onDragDrop(a, b) {
                 console.log(a)
                 console.log(b)
                 this.tableData.splice(b, 1, ...this.tableData.splice(a, 1, this.tableData[b]));
@@ -1893,7 +1910,7 @@
                 this._uploadNewFolder(data)
             },
             // 修改文件夹名称
-            renameFolder(folder){
+            renameFolder(folder) {
                 this.$set(folder, 'edit', true)
                 this.$nextTick(() => {
                     this.$refs[`fileInput${folder.id}`][0].focus()

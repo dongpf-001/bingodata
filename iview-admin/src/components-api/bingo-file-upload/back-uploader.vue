@@ -53,11 +53,12 @@
 </template>
 
 <script>
-/* eslint-disable */
+    /* eslint-disable */
     import $ from './lib/jquery'
     import WebUploader from './lib/webuploader'
     import util from '@/libs/util';
     import Setting from '../../setting'
+
     const EVENT_FINISHED = 'finished'
     const token = util.cookies.get('token');
     export default {
@@ -124,7 +125,7 @@
                 tableData: [],
                 state: 'pedding',
                 allFilesUpdateFlag: false,
-                oldUploadData:{}
+                oldUploadData: {}
             }
         },
         computed: {
@@ -140,7 +141,7 @@
         },
         watch: {
             serveOption: function (val, old) {
-                console.log('serveOption==--=='+val)
+                console.log('serveOption==--==' + val)
             }
         },
         mounted() {
@@ -153,17 +154,17 @@
             register() {
                 WebUploader.Uploader.unRegister('custom')
                 WebUploader.Uploader.register(
-                    {
-                        name: 'custom',
-                        'before-send-file': 'beforeSendFile',
-                        'before-send': 'beforeSend',
-                        'after-send-file': 'afterSendFile'
-                    },
-                    {
-                        beforeSendFile: this._beforeSendFileHook,
-                        beforeSend: this._beforeSendHook,
-                        afterSendFile: this._afterSendFileHook
-                    }
+                        {
+                            name: 'custom',
+                            'before-send-file': 'beforeSendFile',
+                            'before-send': 'beforeSend',
+                            'after-send-file': 'afterSendFile'
+                        },
+                        {
+                            beforeSendFile: this._beforeSendFileHook,
+                            beforeSend: this._beforeSendHook,
+                            afterSendFile: this._afterSendFileHook
+                        }
                 )
             },
             // 初始化
@@ -203,7 +204,7 @@
                     chunkSize: 5242880,
                     // 去重， 根据文件名字、文件大小和最后修改时间来生成hash Key
                     duplicate: true,
-                    headers:{
+                    headers: {
                         'Authorization': util.cookies.get('token')
                     }
                 })
@@ -285,10 +286,10 @@
                 }
             },
             //上传成功时触发
-            onSuccess(file){
+            onSuccess(file) {
                 this.$emit("success", file)
             },
-            onUploadComplete(file){
+            onUploadComplete(file) {
                 this.$emit("finished", file)
             },
             // 当validate不通过时，会以派送错误事件的形式通知调用者
@@ -320,16 +321,16 @@
                 data.objectKey = fileModel.objectKey
             },
             //文件添加到队列之前
-            onBeforeFileQueued(file){
+            onBeforeFileQueued(file) {
                 let that = this;
                 let name = file.name.substring(0, file.name.lastIndexOf('.'))
-                if (file.size && name.length < 100){
+                if (file.size && name.length < 100) {
                     return true
                 } else {
-                    if(name.length >= 100){
+                    if (name.length >= 100) {
                         this.$BMessage.warning('您上传的文件名称过长，请不要超过100个字符！')
                     }
-                    if(file.size == 0){
+                    if (file.size == 0) {
                         this.$BMessage.warning('您上传一个文件大小为0字节的文件，请重新上传！')
                     }
                     return false
@@ -347,7 +348,7 @@
                 let thumbnailWidth = 110 * ratio
                 let thumbnailHeight = 110 * ratio
                 let imgSrc
-                if(that.$parent.getCurrentData.id){
+                if (that.$parent.getCurrentData.id) {
                     file.documentId = that.$parent.getCurrentData.documentId;
                 } else {
                     file.documentId = ''
@@ -403,9 +404,9 @@
                     chunkNumber: chunkNumber
                 }
                 await this.serveOption.uploadCheckChunk(JSON.stringify(chunkData))
-                    .then((res) => {
-                        isExist = res
-                    })
+                        .then((res) => {
+                            isExist = res
+                        })
                 if (isExist) {
                     return deferred.resolved()
                 }
@@ -416,7 +417,7 @@
                 let deferred = WebUploader.Deferred()
                 let item = file.item
                 let fileModel = item.model
-                if(this.$parent.getCurrentData.id){
+                if (this.$parent.getCurrentData.id) {
                     file.documentId = this.$parent.getCurrentData.documentId
                 } else {
                     file.documentId = ''
@@ -539,14 +540,14 @@
         box-shadow: 0 7px 21px rgba(0, 0, 0, 0.1);
         transition: bottom 218ms ease;
         background: #fff;
-
+        
         .card-header {
             position: relative;
             padding: 10px 20px;
             line-height: 30px;
             border-bottom: 1px solid #e1e1e1;
             font-size: 20px;
-
+            
             .card-title {
                 max-width: 100%;
                 padding-right: 50px;
@@ -555,7 +556,7 @@
                 white-space: nowrap;
                 font-size: 16px;
             }
-
+            
             .icon {
                 position: absolute;
                 top: 10px;
@@ -564,23 +565,23 @@
                 color: #8c8c8c;
                 transition: color 218ms ease;
             }
-
+            
             .icon-control {
                 font-size: 26px;
             }
-
+            
             .close-creator {
                 right: 20px;
             }
         }
-
+        
         .back-uploader-list {
             position: relative;
             padding: 12px 12px 0;
             height: 240px;
             background-color: #f7f7f7;
             overflow-y: auto;
-
+            
             .back-uploader-item {
                 float: left;
                 width: 100%;
@@ -589,31 +590,31 @@
                 margin-bottom: 8px;
                 font-size: 14px;
                 list-style: none;
-
+                
                 .uploader-wrapper {
                     display: flex;
                     flex-direction: row;
                     justify-content: space-between;
                     padding: 8px;
                 }
-
+                
                 .uploader-content {
                     position: relative;
                     text-overflow: ellipsis;
                     white-space: nowrap;
                     flex: 1 1 auto;
                 }
-
+                
                 .file-item {
                     display: flex;
-
+                    
                     .file-item-icon {
                         display: flex;
                         flex: 0 0 32px;
                         margin-right: 8px;
                         font-size: 22px;
                     }
-
+                    
                     .file-item-content {
                         display: flex;
                         flex: 1 1 auto;
@@ -623,7 +624,7 @@
                         justify-content: space-between;
                         align-items: center;
                     }
-
+                    
                     .elastic-title {
                         display: flex;
                         flex-direction: row;
@@ -634,19 +635,19 @@
                         text-overflow: ellipsis;
                         white-space: nowrap;
                     }
-
+                    
                     .file-info {
                         flex: 1;
                         text-align: right;
                     }
                 }
-
+                
                 .progress-container {
                     position: absolute;
                     bottom: 2px;
                     width: 100%;
                     padding-left: 40px;
-
+                    
                     .progress {
                         position: relative;
                         width: 100%;
@@ -657,7 +658,7 @@
                         border-radius: 0;
                         background-color: #d1ebfc;
                     }
-
+                    
                     .progress-bar {
                         float: left;
                         position: absolute;
@@ -675,7 +676,7 @@
                         transition: width .6s ease;
                     }
                 }
-
+                
                 .uploader-handlers {
                     display: flex;
                     width: 64px;
@@ -683,21 +684,21 @@
                     justify-content: flex-end;
                     align-items: center;
                     font-size: 18px;
-
+                    
                     .ivu-icon-md-checkmark {
                         color: #1b9aee;
                     }
-
+                    
                     .ivu-icon-md-checkmark:hover {
                         cursor: pointer;
                     }
-
+                    
                     .ivu-icon-md-close:hover {
                         cursor: pointer;
                     }
                 }
             }
         }
-
+        
     }
 </style>

@@ -3,16 +3,18 @@
         <div class="ivu-page-header-breadcrumb" v-if="$slots.breadcrumb || !hiddenBreadcrumb">
             <slot name="breadcrumb">
                 <Breadcrumb>
-                    <BreadcrumbItem v-for="(item, index) in breadcrumbList" :key="index" :to="item.to" :replace="item.replace" :target="item.target">{{ item.title }}</BreadcrumbItem>
+                    <BreadcrumbItem v-for="(item, index) in breadcrumbList" :key="index" :to="item.to"
+                                    :replace="item.replace" :target="item.target">{{ item.title }}
+                    </BreadcrumbItem>
                 </Breadcrumb>
             </slot>
         </div>
         <div class="ivu-page-header-detail">
             <div class="ivu-page-header-back" v-if="back || $slots.back" @click="handleBack">
                 <slot name="back">
-                    <Icon type="md-arrow-back" />
+                    <Icon type="md-arrow-back"/>
                 </slot>
-                <Divider type="vertical" />
+                <Divider type="vertical"/>
             </div>
             <div class="ivu-page-header-logo" v-if="logo || $slots.logo">
                 <slot name="logo">
@@ -23,9 +25,9 @@
                 <div class="ivu-page-header-row">
                     <div class="ivu-page-header-back" v-if="back || $slots.back" @click="handleBack">
                         <slot name="back">
-                            <Icon type="md-arrow-back" />
+                            <Icon type="md-arrow-back"/>
                         </slot>
-                        <Divider type="vertical" />
+                        <Divider type="vertical"/>
                     </div>
                     <div class="ivu-page-header-title" v-if="title || $slots.title">
                         <slot name="title">{{ title }}</slot>
@@ -52,62 +54,62 @@
     </div>
 </template>
 <script>
-export default {
-  name: 'PageHeader',
-  props: {
-    title: {
-      type: String
-    },
-    back: {
-      type: Boolean,
-      default: false
-    },
-    logo: {
-      type: String
-    },
-    action: {
-      type: String
-    },
-    content: {
-      type: String
-    },
-    extra: {
-      type: String
-    },
-    breadcrumbList: {
-      type: Array
-    },
-    hiddenBreadcrumb: {
-      type: Boolean,
-      default: false
-    },
-    tabList: {
-      type: Array
-    },
-    tabActiveKey: {
-      type: String
-    },
-    // 是否定宽
-    wide: {
-      type: Boolean,
-      default: false
+    export default {
+        name: 'PageHeader',
+        props: {
+            title: {
+                type: String
+            },
+            back: {
+                type: Boolean,
+                default: false
+            },
+            logo: {
+                type: String
+            },
+            action: {
+                type: String
+            },
+            content: {
+                type: String
+            },
+            extra: {
+                type: String
+            },
+            breadcrumbList: {
+                type: Array
+            },
+            hiddenBreadcrumb: {
+                type: Boolean,
+                default: false
+            },
+            tabList: {
+                type: Array
+            },
+            tabActiveKey: {
+                type: String
+            },
+            // 是否定宽
+            wide: {
+                type: Boolean,
+                default: false
+            }
+        },
+        computed: {
+            classes() {
+                return {
+                    'ivu-page-header-wide': this.wide
+                }
+            }
+        },
+        methods: {
+            handleTabChange(name) {
+                const tab = this.tabList.find(item => item.name === name)
+                this.$emit('on-tab-change', JSON.parse(JSON.stringify(tab)))
+            },
+            handleBack() {
+                this.$emit('on-back')
+            }
+        }
     }
-  },
-  computed: {
-    classes () {
-      return {
-        'ivu-page-header-wide': this.wide
-      }
-    }
-  },
-  methods: {
-    handleTabChange (name) {
-      const tab = this.tabList.find(item => item.name === name)
-      this.$emit('on-tab-change', JSON.parse(JSON.stringify(tab)))
-    },
-    handleBack () {
-      this.$emit('on-back')
-    }
-  }
-}
 </script>

@@ -102,7 +102,8 @@
             正文标题颜色：<code>深灰-color-text-dark-gray</code><br>
             正文强调文字颜色：<code>85%黑色-color-text-black</code>、<code>蓝色-color-text-blue</code><br>
             正文颜色：<code>85%黑色-color-text-black</code><br>
-            辅助色可用于<code>标题文字</code>、<code>小段文字</code>以及<code>段落文字的标题</code>，作为基础色的辅助，使版面更有丰富多样；同时，辅助色也可基于某个恰当的主题来进行使用，例如<code>警告</code>，<code>错误</code>，<code>通过</code>等，成为点睛之笔。</p>
+            辅助色可用于<code>标题文字</code>、<code>小段文字</code>以及<code>段落文字的标题</code>，作为基础色的辅助，使版面更有丰富多样；同时，辅助色也可基于某个恰当的主题来进行使用，例如<code>警告</code>，<code>错误</code>，<code>通过</code>等，成为点睛之笔。
+        </p>
         <div class="ivu-row">
             <div class="ivu-col ivu-col-span-8">
                 <div class="ivu-card color-text-blue">
@@ -127,7 +128,7 @@
                         <div><strong class="ui-strong">Color</strong>#ffffff</div>
                     </div>
                 </div>
-
+            
             </div>
             <div class="ivu-col ivu-col-span-8">
                 <div class="ivu-card color-text-gray">
@@ -144,9 +145,9 @@
                         <div><strong class="ui-strong">Color</strong>#262626</div>
                     </div>
                 </div>
-
+            
             </div>
-
+            
             <div class="ivu-col ivu-col-span-8">
                 <div class="ivu-card color-text-yellow">
                     <div class="ivu-card-body">
@@ -154,7 +155,7 @@
                         <div><strong class="ui-strong">Color</strong>#ffc72c</div>
                     </div>
                 </div>
-
+            
             </div>
             <div class="ivu-col ivu-col-span-8">
                 <div class="ivu-card color-text-red">
@@ -163,9 +164,9 @@
                         <div><strong class="ui-strong">Color</strong>#cb333b</div>
                     </div>
                 </div>
-
+            
             </div>
-
+            
             <div class="ivu-col ivu-col-span-8">
                 <div class="ivu-card color-text-green">
                     <div class="ivu-card-body">
@@ -173,7 +174,7 @@
                         <div><strong class="ui-strong">Color</strong>#84bd00</div>
                     </div>
                 </div>
-
+            
             </div>
             <div class="ivu-col ivu-col-span-8">
                 <div class="ivu-card color-text-turquoise">
@@ -182,7 +183,7 @@
                         <div><strong class="ui-strong">Color</strong>#115740</div>
                     </div>
                 </div>
-
+            
             </div>
         </div>
         <br/>
@@ -190,31 +191,32 @@
 </template>
 
 <script>
-export default {
-  name: 'ui-color',
-  data () {
-    return {}
-  },
-  created () {
-  },
-  mounted () {
-  },
-  computed: {},
-  watch: {},
-  methods: {
-  }
-}
+    export default {
+        name: 'ui-color',
+        data() {
+            return {}
+        },
+        created() {
+        },
+        mounted() {
+        },
+        computed: {},
+        watch: {},
+        methods: {}
+    }
 </script>
 
 <style scoped>
-    .ivu-col{
+    .ivu-col {
         padding: 8px;
     }
-    .ui-content{
-        padding:20px;
+    
+    .ui-content {
+        padding: 20px;
     }
-    .ui-strong{
-        width:60px;
+    
+    .ui-strong {
+        width: 60px;
         display: inline-block;
     }
 </style>

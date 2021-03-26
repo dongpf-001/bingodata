@@ -13,101 +13,101 @@ window.jQuery = $;
 (function (root, factory) {
     var modules = {},
 
-        // 内部require, 简单不完全实现。
-        // https://github.com/amdjs/amdjs-api/wiki/require
-        _require = function (deps, callback) {
-            var args, len, i;
+            // 内部require, 简单不完全实现。
+            // https://github.com/amdjs/amdjs-api/wiki/require
+            _require = function (deps, callback) {
+                var args, len, i;
 
-            // 如果deps不是数组，则直接返回指定module
-            if (typeof deps === 'string') {
-                return getModule(deps);
-            } else {
-                args = [];
-                for (len = deps.length, i = 0; i < len; i++) {
-                    args.push(getModule(deps[i]));
+                // 如果deps不是数组，则直接返回指定module
+                if (typeof deps === 'string') {
+                    return getModule(deps);
+                } else {
+                    args = [];
+                    for (len = deps.length, i = 0; i < len; i++) {
+                        args.push(getModule(deps[i]));
+                    }
+
+                    return callback.apply(null, args);
+                }
+            },
+
+            // 内部define，暂时不支持不指定id.
+            _define = function (id, deps, factory) {
+                if (arguments.length === 2) {
+                    factory = deps;
+                    deps = null;
                 }
 
-                return callback.apply(null, args);
-            }
-        },
+                _require(deps || [], function () {
+                    setModule(id, factory, arguments);
+                });
+            },
 
-        // 内部define，暂时不支持不指定id.
-        _define = function (id, deps, factory) {
-            if (arguments.length === 2) {
-                factory = deps;
-                deps = null;
-            }
+            // 设置module, 兼容CommonJs写法。
+            setModule = function (id, factory, args) {
+                var module = {
+                            exports: factory
+                        },
+                        returned;
 
-            _require(deps || [], function () {
-                setModule(id, factory, arguments);
-            });
-        },
-
-        // 设置module, 兼容CommonJs写法。
-        setModule = function (id, factory, args) {
-            var module = {
-                    exports: factory
-                },
-                returned;
-
-            if (typeof factory === 'function') {
-                args.length || (args = [_require, module.exports, module]);
-                returned = factory.apply(null, args);
-                returned !== undefined && (module.exports = returned);
-            }
-
-            modules[id] = module.exports;
-        },
-
-        // 根据id获取module
-        getModule = function (id) {
-            var module = modules[id] || root[id];
-
-            if (!module) {
-                throw new Error('`' + id + '` is undefined');
-            }
-
-            return module;
-        },
-
-        // 将所有modules，将路径ids装换成对象。
-        exportsTo = function (obj) {
-            var key, host, parts, part, last, ucFirst;
-
-            // make the first character upper case.
-            ucFirst = function (str) {
-                return str && (str.charAt(0).toUpperCase() + str.substr(1));
-            };
-
-            for (key in modules) {
-                host = obj;
-
-                if (!modules.hasOwnProperty(key)) {
-                    continue;
+                if (typeof factory === 'function') {
+                    args.length || (args = [_require, module.exports, module]);
+                    returned = factory.apply(null, args);
+                    returned !== undefined && (module.exports = returned);
                 }
 
-                parts = key.split('/');
-                last = ucFirst(parts.pop());
+                modules[id] = module.exports;
+            },
 
-                while ((part = ucFirst(parts.shift()))) {
-                    host[part] = host[part] || {};
-                    host = host[part];
+            // 根据id获取module
+            getModule = function (id) {
+                var module = modules[id] || root[id];
+
+                if (!module) {
+                    throw new Error('`' + id + '` is undefined');
                 }
 
-                host[last] = modules[key];
-            }
+                return module;
+            },
 
-            return obj;
-        },
+            // 将所有modules，将路径ids装换成对象。
+            exportsTo = function (obj) {
+                var key, host, parts, part, last, ucFirst;
 
-        makeExport = function (dollar) {
-            root.__dollar = dollar;
+                // make the first character upper case.
+                ucFirst = function (str) {
+                    return str && (str.charAt(0).toUpperCase() + str.substr(1));
+                };
 
-            // exports every module.
-            return exportsTo(factory(root, _define, _require));
-        },
+                for (key in modules) {
+                    host = obj;
 
-        origin;
+                    if (!modules.hasOwnProperty(key)) {
+                        continue;
+                    }
+
+                    parts = key.split('/');
+                    last = ucFirst(parts.pop());
+
+                    while ((part = ucFirst(parts.shift()))) {
+                        host[part] = host[part] || {};
+                        host = host[part];
+                    }
+
+                    host[last] = modules[key];
+                }
+
+                return obj;
+            },
+
+            makeExport = function (dollar) {
+                root.__dollar = dollar;
+
+                // exports every module.
+                return exportsTo(factory(root, _define, _require));
+            },
+
+            origin;
 
     if (typeof module === 'object' && typeof module.exports === 'object') {
 
@@ -141,10 +141,10 @@ window.jQuery = $;
     define('dollar-third', [], function () {
         var req = window.require;
         var $ = window.__dollar ||
-            window.jQuery ||
-            window.Zepto ||
-            req('jquery') ||
-            req('zepto');
+                window.jQuery ||
+                window.Zepto ||
+                req('jquery') ||
+                req('zepto');
 
         if (!$) {
             throw new Error('jQuery or Zepto not found!');
@@ -210,8 +210,8 @@ window.jQuery = $;
     ], function ($, promise) {
 
         var noop = function () {
-            },
-            call = Function.call;
+                },
+                call = Function.call;
 
         // http://jsperf.com/uncurrythis
         // 反科里化
@@ -277,15 +277,15 @@ window.jQuery = $;
              */
             browser: (function (ua) {
                 var ret = {},
-                    webkit = ua.match(/WebKit\/([\d.]+)/),
-                    chrome = ua.match(/Chrome\/([\d.]+)/) ||
-                        ua.match(/CriOS\/([\d.]+)/),
+                        webkit = ua.match(/WebKit\/([\d.]+)/),
+                        chrome = ua.match(/Chrome\/([\d.]+)/) ||
+                                ua.match(/CriOS\/([\d.]+)/),
 
-                    ie = ua.match(/MSIE\s([\d\.]+)/) ||
-                        ua.match(/(?:trident)(?:.*rv:([\w.]+))?/i),
-                    firefox = ua.match(/Firefox\/([\d.]+)/),
-                    safari = ua.match(/Safari\/([\d.]+)/),
-                    opera = ua.match(/OPR\/([\d.]+)/);
+                        ie = ua.match(/MSIE\s([\d\.]+)/) ||
+                                ua.match(/(?:trident)(?:.*rv:([\w.]+))?/i),
+                        firefox = ua.match(/Firefox\/([\d.]+)/),
+                        safari = ua.match(/Safari\/([\d.]+)/),
+                        opera = ua.match(/OPR\/([\d.]+)/);
 
                 webkit && (ret.webkit = parseFloat(webkit[1]));
                 chrome && (ret.chrome = parseFloat(chrome[1]));
@@ -307,9 +307,9 @@ window.jQuery = $;
             os: (function (ua) {
                 var ret = {},
 
-                    // osx = !!ua.match( /\(Macintosh\; Intel / ),
-                    android = ua.match(/(?:Android);?[\s\/]+([\d.]+)?/),
-                    ios = ua.match(/(?:iPad|iPod|iPhone).*OS\s([\d_]+)/);
+                        // osx = !!ua.match( /\(Macintosh\; Intel / ),
+                        android = ua.match(/(?:Android);?[\s\/]+([\d.]+)?/),
+                        ios = ua.match(/(?:iPad|iPod|iPhone).*OS\s([\d_]+)/);
 
                 // osx && (ret.osx = true);
                 android && (ret.android = parseFloat(android[1]));
@@ -463,7 +463,7 @@ window.jQuery = $;
 
                 return function (prefix) {
                     var guid = (+new Date()).toString(32),
-                        i = 0;
+                            i = 0;
 
                     for (; i < 5; i++) {
                         guid += Math.floor(Math.random() * 65535).toString(32);
@@ -500,7 +500,7 @@ window.jQuery = $;
                 }
 
                 return (unit === 'B' ? size : size.toFixed(pointLength || 2)) +
-                    unit;
+                        unit;
             }
         };
     });
@@ -512,18 +512,18 @@ window.jQuery = $;
         'base'
     ], function (Base) {
         var $ = Base.$,
-            slice = [].slice,
-            separator = /\s+/,
-            protos;
+                slice = [].slice,
+                separator = /\s+/,
+                protos;
 
         // 根据条件过滤出事件handlers.
         function findHandlers(arr, name, callback, context) {
             return $.grep(arr, function (handler) {
                 return handler &&
-                    (!name || handler.e === name) &&
-                    (!callback || handler.cb === callback ||
-                        handler.cb._cb === callback) &&
-                    (!context || handler.ctx === context);
+                        (!name || handler.e === name) &&
+                        (!callback || handler.cb === callback ||
+                                handler.cb._cb === callback) &&
+                        (!context || handler.ctx === context);
             });
         }
 
@@ -536,9 +536,9 @@ window.jQuery = $;
 
         function triggerHanders(events, args) {
             var stoped = false,
-                i = -1,
-                len = events.length,
-                handler;
+                    i = -1,
+                    len = events.length,
+                    handler;
 
             while (++i < len) {
                 handler = events[i];
@@ -593,7 +593,7 @@ window.jQuery = $;
              */
             on: function (name, callback, context) {
                 var me = this,
-                    set;
+                        set;
 
                 if (!callback) {
                     return this;
@@ -696,7 +696,7 @@ window.jQuery = $;
                 allEvents = findHandlers(this._events, 'all');
 
                 return triggerHanders(events, args) &&
-                    triggerHanders(allEvents, arguments);
+                        triggerHanders(allEvents, arguments);
             }
         };
 
@@ -819,7 +819,7 @@ window.jQuery = $;
                 if (arguments.length > 1) {
 
                     if ($.isPlainObject(val) &&
-                        $.isPlainObject(opts[key])) {
+                            $.isPlainObject(opts[key])) {
                         $.extend(opts[key], val);
                     } else {
                         opts[key] = val;
@@ -863,25 +863,25 @@ window.jQuery = $;
             // 需要重写此方法来来支持opts.onEvent和instance.onEvent的处理器
             trigger: function (type/*, args...*/) {
                 var args = [].slice.call(arguments, 1),
-                    opts = this.options,
-                    name = 'on' + type.substring(0, 1).toUpperCase() +
-                        type.substring(1);
+                        opts = this.options,
+                        name = 'on' + type.substring(0, 1).toUpperCase() +
+                                type.substring(1);
 
                 if (
-                    // 调用通过on方法注册的handler.
-                    Mediator.trigger.apply(this, arguments) === false ||
+                        // 调用通过on方法注册的handler.
+                        Mediator.trigger.apply(this, arguments) === false ||
 
-                    // 调用opts.onEvent
-                    $.isFunction(opts[name]) &&
-                    opts[name].apply(this, args) === false ||
+                        // 调用opts.onEvent
+                        $.isFunction(opts[name]) &&
+                        opts[name].apply(this, args) === false ||
 
-                    // 调用this.onEvent
-                    $.isFunction(this[name]) &&
-                    this[name].apply(this, args) === false ||
+                        // 调用this.onEvent
+                        $.isFunction(this[name]) &&
+                        this[name].apply(this, args) === false ||
 
-                    // 广播所有uploader的事件。
-                    Mediator.trigger.apply(Mediator,
-                        [this, type].concat(args)) === false) {
+                        // 广播所有uploader的事件。
+                        Mediator.trigger.apply(Mediator,
+                                [this, type].concat(args)) === false) {
 
                     return false;
                 }
@@ -928,17 +928,17 @@ window.jQuery = $;
     ], function (Base, Mediator) {
 
         var $ = Base.$,
-            factories = {},
+                factories = {},
 
-            // 获取对象的第一个key
-            getFirstKey = function (obj) {
-                for (var key in obj) {
-                    if (obj.hasOwnProperty(key)) {
-                        return key;
+                // 获取对象的第一个key
+                getFirstKey = function (obj) {
+                    for (var key in obj) {
+                        if (obj.hasOwnProperty(key)) {
+                            return key;
+                        }
                     }
-                }
-                return null;
-            };
+                    return null;
+                };
 
         // 接口类。
         function Runtime(options) {
@@ -952,7 +952,7 @@ window.jQuery = $;
 
             getContainer: function () {
                 var opts = this.options,
-                    parent, container;
+                        parent, container;
 
                 if (this._container) {
                     return this._container;
@@ -1075,7 +1075,7 @@ window.jQuery = $;
 
         function RuntimeClient(component, standalone) {
             var deferred = Base.Deferred(),
-                runtime;
+                    runtime;
 
             this.uid = Base.guid('client_');
 
@@ -1222,10 +1222,10 @@ window.jQuery = $;
     ], function (Base, Uploader) {
 
         var $ = Base.$,
-            _init = Uploader.prototype._init,
-            _destroy = Uploader.prototype.destroy,
-            IGNORE = {},
-            widgetClass = [];
+                _init = Uploader.prototype._init,
+                _destroy = Uploader.prototype.destroy,
+                IGNORE = {},
+                widgetClass = [];
 
         function isArrayLike(obj) {
             if (!obj) {
@@ -1233,15 +1233,15 @@ window.jQuery = $;
             }
 
             var length = obj.length,
-                type = $.type(obj);
+                    type = $.type(obj);
 
             if (obj.nodeType === 1 && length) {
                 return true;
             }
 
             return type === 'array' || type !== 'function' && type !== 'string' &&
-                (length === 0 || typeof length === 'number' && length > 0 &&
-                    (length - 1) in obj);
+                    (length === 0 || typeof length === 'number' && length > 0 &&
+                            (length - 1) in obj);
         }
 
         function Widget(uploader) {
@@ -1266,7 +1266,7 @@ window.jQuery = $;
 
                 // 如果无API响应声明则忽略
                 if (!map || !(apiName in map) || !(map[apiName] in this) ||
-                    !$.isFunction(this[map[apiName]])) {
+                        !$.isFunction(this[map[apiName]])) {
 
                     return IGNORE;
                 }
@@ -1300,8 +1300,8 @@ window.jQuery = $;
             // 覆写_init用来初始化widgets
             _init: function () {
                 var me = this,
-                    widgets = me._widgets = [],
-                    deactives = me.options.disableWidgets || '';
+                        widgets = me._widgets = [],
+                        deactives = me.options.disableWidgets || '';
 
                 $.each(widgetClass, function (_, klass) {
                     (!deactives || !~deactives.indexOf(klass._name)) &&
@@ -1313,11 +1313,11 @@ window.jQuery = $;
 
             request: function (apiName, args, callback) {
                 var i = 0,
-                    widgets = this._widgets,
-                    len = widgets && widgets.length,
-                    rlts = [],
-                    dfds = [],
-                    widget, rlt, promise, key;
+                        widgets = this._widgets,
+                        len = widgets && widgets.length,
+                        rlts = [],
+                        dfds = [],
+                        widget, rlt, promise, key;
 
                 args = isArrayLike(args) ? args : [args];
 
@@ -1345,7 +1345,7 @@ window.jQuery = $;
                     // 保证执行顺序。让callback总是在下一个 tick 中执行。
                     return promise[key](function () {
                         var deferred = Base.Deferred(),
-                            args = arguments;
+                                args = arguments;
 
                         if (args.length === 1) {
                             args = args[0];
@@ -1392,7 +1392,7 @@ window.jQuery = $;
          */
         Uploader.register = Widget.register = function (responseMap, widgetProto) {
             var map = {init: 'init', destroy: 'destroy', name: 'anonymous'},
-                klass;
+                    klass;
 
             if (arguments.length === 1) {
                 widgetProto = responseMap;
@@ -1489,18 +1489,18 @@ window.jQuery = $;
             init: function (opts) {
 
                 if (!opts.dnd ||
-                    this.request('predict-runtime-type') !== 'html5') {
+                        this.request('predict-runtime-type') !== 'html5') {
                     return;
                 }
 
                 var me = this,
-                    deferred = Base.Deferred(),
-                    options = $.extend({}, {
-                        disableGlobalDnd: opts.disableGlobalDnd,
-                        container: opts.dnd,
-                        accept: opts.accept
-                    }),
-                    dnd;
+                        deferred = Base.Deferred(),
+                        options = $.extend({}, {
+                            disableGlobalDnd: opts.disableGlobalDnd,
+                            container: opts.dnd,
+                            accept: opts.accept
+                        }),
+                        dnd;
 
                 this.dnd = dnd = new Dnd(options);
 
@@ -1581,17 +1581,17 @@ window.jQuery = $;
             init: function (opts) {
 
                 if (!opts.paste ||
-                    this.request('predict-runtime-type') !== 'html5') {
+                        this.request('predict-runtime-type') !== 'html5') {
                     return;
                 }
 
                 var me = this,
-                    deferred = Base.Deferred(),
-                    options = $.extend({}, {
-                        container: opts.paste,
-                        accept: opts.accept
-                    }),
-                    paste;
+                        deferred = Base.Deferred(),
+                        options = $.extend({}, {
+                            container: opts.paste,
+                            accept: opts.accept
+                        }),
+                        paste;
 
                 this.paste = paste = new FilePaste(options);
 
@@ -1625,7 +1625,7 @@ window.jQuery = $;
 
             // 如果没有指定 mimetype, 但是知道文件后缀。
             if (!source.type && this.ext &&
-                ~'jpg,jpeg,png,gif,bmp'.indexOf(this.ext)) {
+                    ~'jpg,jpeg,png,gif,bmp'.indexOf(this.ext)) {
                 this.type = 'image/' + (this.ext === 'jpg' ? 'jpeg' : this.ext);
             } else {
                 this.type = source.type || 'application/octet-stream';
@@ -1664,7 +1664,7 @@ window.jQuery = $;
     ], function (Base, Blob) {
 
         var uid = 1,
-            rExt = /\.([^.]+)$/;
+                rExt = /\.([^.]+)$/;
 
         function File(ruid, file) {
             var ext;
@@ -1676,13 +1676,13 @@ window.jQuery = $;
             // 如果有 mimetype, 但是文件名里面没有找出后缀规律
             if (!ext && file.type) {
                 ext = /\/(jpg|jpeg|png|gif|bmp)$/i.exec(file.type) ?
-                    RegExp.$1.toLowerCase() : '';
+                        RegExp.$1.toLowerCase() : '';
                 this.name += '.' + ext;
             }
 
             this.ext = ext;
             this.lastModifiedDate = file.lastModifiedDate ||
-                (new Date()).toLocaleString();
+                    (new Date()).toLocaleString();
 
             Blob.apply(this, arguments);
         }
@@ -1711,7 +1711,7 @@ window.jQuery = $;
             }
 
             opts.innerHTML = opts.innerHTML || opts.label ||
-                opts.container.html() || '';
+                    opts.container.html() || '';
 
             opts.button = $(opts.button || document.createElement('div'));
             opts.button.html(opts.innerHTML);
@@ -1736,9 +1736,9 @@ window.jQuery = $;
 
             init: function () {
                 var me = this,
-                    opts = me.options,
-                    button = opts.button,
-                    style = opts.style;
+                        opts = me.options,
+                        button = opts.button,
+                        style = opts.style;
 
                 if (style)
                     button.addClass('webuploader-pick');
@@ -1782,14 +1782,14 @@ window.jQuery = $;
 
             refresh: function () {
                 var shimContainer = this.getRuntime().getContainer(),
-                    button = this.options.button,
-                    width = button.outerWidth ?
-                        button.outerWidth() : button.width(),
+                        button = this.options.button,
+                        width = button.outerWidth ?
+                                button.outerWidth() : button.width(),
 
-                    height = button.outerHeight ?
-                        button.outerHeight() : button.height(),
+                        height = button.outerHeight ?
+                                button.outerHeight() : button.height(),
 
-                    pos = button.offset();
+                        pos = button.offset();
 
                 width && height && shimContainer.css({
                     bottom: 'auto',
@@ -1820,7 +1820,7 @@ window.jQuery = $;
                 var btn = this.options.button;
                 $(window).off('resize', this._resizeHandler);
                 btn.removeClass('webuploader-pick-disable webuploader-pick-hover ' +
-                    'webuploader-pick');
+                        'webuploader-pick');
             }
         });
 
@@ -1908,9 +1908,9 @@ window.jQuery = $;
              */
             addBtn: function (pick) {
                 var me = this,
-                    opts = me.options,
-                    accept = opts.accept,
-                    promises = [];
+                        opts = me.options,
+                        accept = opts.accept,
+                        promises = [];
 
                 if (!pick) {
                     return;
@@ -2038,7 +2038,7 @@ window.jQuery = $;
 
             loadFromBlob: function (blob) {
                 var me = this,
-                    ruid = blob.getRuid();
+                        ruid = blob.getRuid();
 
                 this.connectRuntime(ruid, function () {
                     me.exec('init', me.options);
@@ -2080,21 +2080,21 @@ window.jQuery = $;
     ], function (Base, Uploader, Image) {
 
         var $ = Base.$,
-            throttle;
+                throttle;
 
         // 根据要处理的文件大小来节流，一次不能处理太多，会卡。
         throttle = (function (max) {
             var occupied = 0,
-                waiting = [],
-                tick = function () {
-                    var item;
+                    waiting = [],
+                    tick = function () {
+                        var item;
 
-                    while (waiting.length && occupied < max) {
-                        item = waiting.shift();
-                        occupied += item[0];
-                        item[1]();
-                    }
-                };
+                        while (waiting.length && occupied < max) {
+                            item = waiting.shift();
+                            occupied += item[0];
+                            item[1]();
+                        }
+                    };
 
             return function (emiter, size, cb) {
                 waiting.push([size, cb]);
@@ -2295,9 +2295,9 @@ window.jQuery = $;
 
             beforeSendFile: function (file) {
                 var opts = this.options.compress || this.options.resize,
-                    compressSize = opts && opts.compressSize || 0,
-                    noCompressIfLarger = opts && opts.noCompressIfLarger || false,
-                    image, deferred;
+                        compressSize = opts && opts.compressSize || 0,
+                        noCompressIfLarger = opts && opts.noCompressIfLarger || false,
+                        image, deferred;
 
                 file = this.request('get-file', file);
 
@@ -2305,8 +2305,8 @@ window.jQuery = $;
                 // gif 可能会丢失针
                 // bmp png 基本上尺寸都不大，且压缩比比较小。
                 if (!opts || !~'image/jpeg,image/jpg'.indexOf(file.type) ||
-                    file.size < compressSize ||
-                    file._compressed) {
+                        file.size < compressSize ||
+                        file._compressed) {
                     return;
                 }
 
@@ -2322,7 +2322,7 @@ window.jQuery = $;
                 image.once('error', deferred.reject);
                 image.once('load', function () {
                     var width = opts.width,
-                        height = opts.height;
+                            height = opts.height;
 
                     file._info = file._info || image.info();
                     file._meta = file._meta || image.meta();
@@ -2387,10 +2387,10 @@ window.jQuery = $;
     ], function (Base, Mediator) {
 
         var $ = Base.$,
-            idPrefix = 'WU_FILE_',
-            idSuffix = 0,
-            rExt = /\.([^.]+)$/,
-            statusMap = {};
+                idPrefix = 'WU_FILE_',
+                idSuffix = 0,
+                rExt = /\.([^.]+)$/,
+                statusMap = {};
 
         function gid() {
             return idPrefix + idSuffix++;
@@ -2574,7 +2574,7 @@ window.jQuery = $;
     ], function (Base, Mediator, WUFile) {
 
         var $ = Base.$,
-            STATUS = WUFile.Status;
+                STATUS = WUFile.Status;
 
         /**
          * 文件队列, 用来存储各个状态中的文件。
@@ -2661,7 +2661,7 @@ window.jQuery = $;
              */
             fetch: function (status) {
                 var len = this._queue.length,
-                    i, file;
+                        i, file;
 
                 status = status || STATUS.QUEUED;
 
@@ -2696,10 +2696,10 @@ window.jQuery = $;
              */
             getFiles: function () {
                 var sts = [].slice.call(arguments, 0),
-                    ret = [],
-                    i = 0,
-                    len = this._queue.length,
-                    file;
+                        ret = [],
+                        i = 0,
+                        len = this._queue.length,
+                        file;
 
                 for (; i < len; i++) {
                     file = this._queue[i];
@@ -2722,7 +2722,7 @@ window.jQuery = $;
              */
             removeFile: function (file) {
                 var me = this,
-                    existing = this._map[file.id];
+                        existing = this._map[file.id];
 
                 if (existing) {
                     delete this._map[file.id];
@@ -2733,7 +2733,7 @@ window.jQuery = $;
 
             _fileAdded: function (file) {
                 var me = this,
-                    existing = this._map[file.id];
+                        existing = this._map[file.id];
 
                 if (!existing) {
                     this._map[file.id] = file;
@@ -2821,15 +2821,15 @@ window.jQuery = $;
     ], function (Base, Uploader, Queue, WUFile, File, RuntimeClient) {
 
         var $ = Base.$,
-            rExt = /\.\w+$/,
-            Status = WUFile.Status;
+                rExt = /\.\w+$/,
+                Status = WUFile.Status;
 
         return Uploader.register({
             name: 'queue',
 
             init: function (opts) {
                 var me = this,
-                    deferred, len, i, item, arr, accept, runtime;
+                        deferred, len, i, item, arr, accept, runtime;
 
                 if ($.isPlainObject(opts.accept)) {
                     opts.accept = [opts.accept];
@@ -2846,8 +2846,8 @@ window.jQuery = $;
 
                     if (arr.length) {
                         accept = '\\.' + arr.join(',')
-                            .replace(/,/g, '$|\\.')
-                            .replace(/\*/g, '.*') + '$';
+                                .replace(/,/g, '$|\\.')
+                                .replace(/\*/g, '.*') + '$';
                     }
 
                     me.accept = new RegExp(accept, 'i');
@@ -2897,8 +2897,8 @@ window.jQuery = $;
             acceptFile: function (file) {
                 //var invalid = !file || !file.size || this.accept &&   modify by YuanNan 20200408
                 var invalid = !file || this.accept &&
-                    // 如果名字中有后缀，才做后缀白名单处理。
-                    rExt.exec(file.name) && !this.accept.test(file.name);
+                        // 如果名字中有后缀，才做后缀白名单处理。
+                        rExt.exec(file.name) && !this.accept.test(file.name);
 
                 return !invalid;
             },
@@ -3059,7 +3059,7 @@ window.jQuery = $;
              */
             retry: function (file, noForceStart) {
                 var me = this,
-                    files, i, len;
+                        files, i, len;
 
                 if (file) {
                     file = file.id ? file : me.queue.getFile(file);
@@ -3156,8 +3156,8 @@ window.jQuery = $;
              */
             predictRuntimeType: function () {
                 var orders = this.options.runtimeOrder || Runtime.orders,
-                    type = this.type,
-                    i, len;
+                        type = this.type,
+                        i, len;
 
                 if (!type) {
                     orders = orders.split(/\s*,\s*/g);
@@ -3219,7 +3219,7 @@ window.jQuery = $;
             // 添加Blob, 只能添加一次，最后一次有效。
             appendBlob: function (key, blob, filename) {
                 var me = this,
-                    opts = me.options;
+                        opts = me.options;
 
                 if (me.getRuid()) {
                     me.disconnectRuntime();
@@ -3283,7 +3283,7 @@ window.jQuery = $;
 
             _timeout: function () {
                 var me = this,
-                    duration = me.options.timeout;
+                        duration = me.options.timeout;
 
                 if (!duration) {
                     return;
@@ -3315,8 +3315,8 @@ window.jQuery = $;
     ], function (Base, Uploader, WUFile, Transport) {
 
         var $ = Base.$,
-            isPromise = Base.isPromise,
-            Status = WUFile.Status;
+                isPromise = Base.isPromise,
+                Status = WUFile.Status;
 
         // 添加默认配置项
         $.extend(Uploader.options, {
@@ -3392,12 +3392,12 @@ window.jQuery = $;
         // 负责将文件切片。
         function CuteFile(file, chunkSize) {
             var pending = [],
-                blob = file.source,
-                total = blob.size,
-                chunks = chunkSize ? Math.ceil(total / chunkSize) : 1,
-                start = 0,
-                index = 0,
-                len, api;
+                    blob = file.source,
+                    total = blob.size,
+                    chunks = chunkSize ? Math.ceil(total / chunkSize) : 1,
+                    start = 0,
+                    index = 0,
+                    len, api;
 
             api = {
                 file: file,
@@ -3441,18 +3441,18 @@ window.jQuery = $;
 
             init: function () {
                 var owner = this.owner,
-                    me = this;
+                        me = this;
 
                 this.runing = false;
                 this.progress = false;
 
                 owner
-                    .on('startUpload', function () {
-                        me.progress = true;
-                    })
-                    .on('uploadFinished', function () {
-                        me.progress = false;
-                    });
+                        .on('startUpload', function () {
+                            me.progress = true;
+                        })
+                        .on('uploadFinished', function () {
+                            me.progress = false;
+                        });
 
                 // 记录当前正在传的数据，跟threads相关
                 this.pool = [];
@@ -3566,7 +3566,7 @@ window.jQuery = $;
                 });
 
                 file || $.each(me.request('get-files',
-                    Status.INTERRUPT), function () {
+                        Status.INTERRUPT), function () {
                     this.setStatus(Status.PROGRESS);
                 });
 
@@ -3593,7 +3593,7 @@ window.jQuery = $;
              */
             stopUpload: function (file, interrupt) {
                 var me = this,
-                    block;
+                        block;
 
                 if (file === true) {
                     interrupt = file;
@@ -3609,7 +3609,7 @@ window.jQuery = $;
                     file = file.id ? file : me.request('get-file', file);
 
                     if (file.getStatus() !== Status.PROGRESS &&
-                        file.getStatus() !== Status.QUEUED) {
+                            file.getStatus() !== Status.QUEUED) {
                         return;
                     }
 
@@ -3728,8 +3728,8 @@ window.jQuery = $;
              */
             _tick: function () {
                 var me = this,
-                    opts = me.options,
-                    fn, val;
+                        opts = me.options,
+                        fn, val;
 
                 // 上一个promise还没有结束，则等待完成后再执行。
                 if (me._promise) {
@@ -3752,7 +3752,7 @@ window.jQuery = $;
 
                     // 没有要上传的了，且没有正在传输的了。
                 } else if (!me.remaning && !me._getStats().numOfQueue &&
-                    !me._getStats().numofInterrupt) {
+                        !me._getStats().numofInterrupt) {
                     me.runing = false;
 
                     me._trigged || Base.nextTick(function () {
@@ -3775,14 +3775,14 @@ window.jQuery = $;
 
             _getStack: function () {
                 var i = 0,
-                    act;
+                        act;
 
                 while ((act = this.stack[i++])) {
                     if (act.has() && act.file.getStatus() === Status.PROGRESS) {
                         return act;
                     } else if (!act.has() ||
-                        act.file.getStatus() !== Status.PROGRESS &&
-                        act.file.getStatus() !== Status.INTERRUPT) {
+                            act.file.getStatus() !== Status.PROGRESS &&
+                            act.file.getStatus() !== Status.INTERRUPT) {
 
                         // 把已经处理完了的，或者，状态为非 progress（上传中）、
                         // interupt（暂停中） 的移除。
@@ -3795,8 +3795,8 @@ window.jQuery = $;
 
             _nextBlock: function () {
                 var me = this,
-                    opts = me.options,
-                    act, next, done, preparing;
+                        opts = me.options,
+                        act, next, done, preparing;
 
                 // 如果当前文件还有没有需要传输的，则直接返回剩下的。
                 if ((act = this._getStack())) {
@@ -3848,16 +3848,16 @@ window.jQuery = $;
              */
             _prepareNextFile: function () {
                 var me = this,
-                    file = me.request('fetch-file'),
-                    pending = me.pending,
-                    promise;
+                        file = me.request('fetch-file'),
+                        pending = me.pending,
+                        promise;
 
                 if (file) {
                     promise = me.request('before-send-file', file, function () {
 
                         // 有可能文件被skip掉了。文件被skip掉后，状态坑定不是Queued.
                         if (file.getStatus() === Status.PROGRESS ||
-                            file.getStatus() === Status.INTERRUPT) {
+                                file.getStatus() === Status.INTERRUPT) {
                             return file;
                         }
 
@@ -3899,8 +3899,8 @@ window.jQuery = $;
             // 开始上传，可以被掉过。如果promise被reject了，则表示跳过此分片。
             _startSend: function (block) {
                 var me = this,
-                    file = block.file,
-                    promise;
+                        file = block.file,
+                        promise;
 
                 // 有可能在 before-send-file 的 promise 期间改变了文件状态。
                 // 如：暂停，取消
@@ -3921,7 +3921,7 @@ window.jQuery = $;
                 // 如果没有分片，则直接使用原始的。
                 // 不会丢失content-type信息。
                 block.blob = block.chunks === 1 ? file.source :
-                    file.source.slice(block.start, block.end);
+                        file.source.slice(block.start, block.end);
 
                 // hook, 每个分片发送之前可能要做些异步的事情。
                 promise = me.request('before-send', block, function () {
@@ -4006,13 +4006,13 @@ window.jQuery = $;
             // 做上传操作。
             _doSend: function (block) {
                 var me = this,
-                    owner = me.owner,
-                    opts = me.options,
-                    file = block.file,
-                    tr = new Transport(opts),
-                    data = $.extend({}, opts.formData),
-                    headers = $.extend({}, opts.headers),
-                    requestAccept, ret;
+                        owner = me.owner,
+                        opts = me.options,
+                        file = block.file,
+                        tr = new Transport(opts),
+                        data = $.extend({}, opts.formData),
+                        headers = $.extend({}, opts.headers),
+                        requestAccept, ret;
                 block.transport = tr;
 
                 tr.on('destroy', function () {
@@ -4051,7 +4051,7 @@ window.jQuery = $;
 
                     // 自动重试
                     if (block.chunks > 1 && ~'http,abort'.indexOf(type) &&
-                        block.retried < opts.chunkRetry) {
+                            block.retried < opts.chunkRetry) {
 
                         block.retried++;
                         tr.send();
@@ -4117,27 +4117,27 @@ window.jQuery = $;
                 var owner = this.owner;
 
                 return owner
-                    .request('after-send-file', arguments, function () {
-                        file.setStatus(Status.COMPLETE);
-                        owner.trigger('uploadSuccess', file, ret, hds);
-                    })
-                    .fail(function (reason) {
+                        .request('after-send-file', arguments, function () {
+                            file.setStatus(Status.COMPLETE);
+                            owner.trigger('uploadSuccess', file, ret, hds);
+                        })
+                        .fail(function (reason) {
 
-                        // 如果外部已经标记为invalid什么的，不再改状态。
-                        if (file.getStatus() === Status.PROGRESS) {
-                            file.setStatus(Status.ERROR, reason);
-                        }
+                            // 如果外部已经标记为invalid什么的，不再改状态。
+                            if (file.getStatus() === Status.PROGRESS) {
+                                file.setStatus(Status.ERROR, reason);
+                            }
 
-                        owner.trigger('uploadError', file, reason);
-                    })
-                    .always(function () {
-                        owner.trigger('uploadComplete', file);
-                    });
+                            owner.trigger('uploadError', file, reason);
+                        })
+                        .always(function () {
+                            owner.trigger('uploadComplete', file);
+                        });
             },
 
             updateFileProgress: function (file) {
                 var totalPercent = 0,
-                    uploaded = 0;
+                        uploaded = 0;
 
                 if (!file.blocks) {
                     return;
@@ -4166,8 +4166,8 @@ window.jQuery = $;
     ], function (Base, Uploader, WUFile) {
 
         var $ = Base.$,
-            validators = {},
-            api;
+                validators = {},
+                api;
 
         /**
          * @event error
@@ -4216,10 +4216,10 @@ window.jQuery = $;
          */
         api.addValidator('fileNumLimit', function () {
             var uploader = this,
-                opts = uploader.options,
-                count = 0,
-                max = parseInt(opts.fileNumLimit, 10),
-                flag = true;
+                    opts = uploader.options,
+                    count = 0,
+                    max = parseInt(opts.fileNumLimit, 10),
+                    flag = true;
 
             if (!max) {
                 return;
@@ -4233,22 +4233,22 @@ window.jQuery = $;
                         flag = true;
                     }, 1);
                 }
-                console.log('beforeFileQueued-----count-----------'+count)
+                console.log('beforeFileQueued-----count-----------' + count)
                 return count >= max ? false : true;
             });
 
             uploader.on('fileQueued', function () {
-                console.log('fileQueued-----count-----------'+count)
+                console.log('fileQueued-----count-----------' + count)
                 count++;
             });
 
             uploader.on('fileDequeued', function () {
-                console.log('fileDequeued-----count-----------'+count)
+                console.log('fileDequeued-----count-----------' + count)
                 count--;
             });
 
             uploader.on('reset', function () {
-                console.log('reset-----count-----------'+count)
+                console.log('reset-----count-----------' + count)
                 count = 0;
             });
         });
@@ -4262,10 +4262,10 @@ window.jQuery = $;
          */
         api.addValidator('fileSizeLimit', function () {
             var uploader = this,
-                opts = uploader.options,
-                count = 0,
-                max = parseInt(opts.fileSizeLimit, 10),
-                flag = true;
+                    opts = uploader.options,
+                    count = 0,
+                    max = parseInt(opts.fileSizeLimit, 10),
+                    flag = true;
 
             if (!max) {
                 return;
@@ -4306,8 +4306,8 @@ window.jQuery = $;
          */
         api.addValidator('fileSingleSizeLimit', function () {
             var uploader = this,
-                opts = uploader.options,
-                max = opts.fileSingleSizeLimit;
+                    opts = uploader.options,
+                    max = opts.fileSingleSizeLimit;
 
             if (!max) {
                 return;
@@ -4333,8 +4333,8 @@ window.jQuery = $;
          */
         api.addValidator('duplicate', function () {
             var uploader = this,
-                opts = uploader.options,
-                mapping = {};
+                    opts = uploader.options,
+                    mapping = {};
 
             if (opts.duplicate) {
                 return;
@@ -4342,9 +4342,9 @@ window.jQuery = $;
 
             function hashString(str) {
                 var hash = 0,
-                    i = 0,
-                    len = str.length,
-                    _char;
+                        i = 0,
+                        len = str.length,
+                        _char;
 
                 for (; i < len; i++) {
                     _char = str.charCodeAt(i);
@@ -4356,7 +4356,7 @@ window.jQuery = $;
 
             uploader.on('beforeFileQueued', function (file) {
                 var hash = file.__hash || (file.__hash = hashString(file.name +
-                    file.size + file.lastModifiedDate));
+                        file.size + file.lastModifiedDate));
 
                 // 已经重复了
                 if (mapping[hash]) {
@@ -4463,9 +4463,9 @@ window.jQuery = $;
              */
             md5File: function (file, start, end) {
                 var md5 = new Md5(),
-                    deferred = Base.Deferred(),
-                    blob = (file instanceof Blob) ? file :
-                        this.request('get-file', file).source;
+                        deferred = Base.Deferred(),
+                        blob = (file instanceof Blob) ? file :
+                                this.request('get-file', file).source;
 
                 md5.on('progress load', function (e) {
                     e = e || {};
@@ -4530,12 +4530,12 @@ window.jQuery = $;
     ], function (Base, Runtime, CompBase) {
 
         var type = 'html5',
-            components = {};
+                components = {};
 
         function Html5Runtime() {
             var pool = {},
-                me = this,
-                destroy = this.destroy;
+                    me = this,
+                    destroy = this.destroy;
 
             Runtime.apply(me, arguments);
             me.type = type;
@@ -4544,13 +4544,13 @@ window.jQuery = $;
             // 这个方法的调用者，实际上是RuntimeClient
             me.exec = function (comp, fn/*, args...*/) {
                 var client = this,
-                    uid = client.uid,
-                    args = Base.slice(arguments, 2),
-                    instance;
+                        uid = client.uid,
+                        args = Base.slice(arguments, 2),
+                        instance;
 
                 if (components[comp]) {
                     instance = pool[uid] = pool[uid] ||
-                        new components[comp](client, me);
+                            new components[comp](client, me);
 
                     if (instance[fn]) {
                         return instance[fn].apply(instance, args);
@@ -4602,7 +4602,7 @@ window.jQuery = $;
         return Html5Runtime.register('Blob', {
             slice: function (start, end) {
                 var blob = this.owner.source,
-                    slice = blob.slice || blob.webkitSlice || blob.mozSlice;
+                        slice = blob.slice || blob.webkitSlice || blob.mozSlice;
 
                 blob = slice.call(blob, start, end);
 
@@ -4620,7 +4620,7 @@ window.jQuery = $;
     ], function (Base, Html5Runtime, File) {
 
         var $ = Base.$,
-            prefix = 'webuploader-dnd-';
+                prefix = 'webuploader-dnd-';
 
         return Html5Runtime.register('DragAndDrop', {
             init: function () {
@@ -4645,8 +4645,8 @@ window.jQuery = $;
 
             _dragEnterHandler: function (e) {
                 var me = this,
-                    denied = me._denied || false,
-                    items;
+                        denied = me._denied || false,
+                        items;
 
                 e = e.originalEvent || e;
 
@@ -4662,7 +4662,7 @@ window.jQuery = $;
 
                     me.elem.addClass(prefix + 'over');
                     me.elem[denied ? 'addClass' :
-                        'removeClass'](prefix + 'denied');
+                            'removeClass'](prefix + 'denied');
                 }
 
                 e.dataTransfer.dropEffect = denied ? 'none' : 'copy';
@@ -4685,7 +4685,7 @@ window.jQuery = $;
 
             _dragLeaveHandler: function () {
                 var me = this,
-                    handler;
+                        handler;
 
                 handler = function () {
                     me.dndOver = false;
@@ -4699,9 +4699,9 @@ window.jQuery = $;
 
             _dropHandler: function (e) {
                 var me = this,
-                    ruid = me.getRuid(),
-                    parentElem = me.elem.parent().get(0),
-                    dataTransfer, data;
+                        ruid = me.getRuid(),
+                        parentElem = me.elem.parent().get(0),
+                        dataTransfer, data;
 
                 // 只处理框内的。
                 if (parentElem && !$.contains(parentElem, e.currentTarget)) {
@@ -4737,8 +4737,8 @@ window.jQuery = $;
             // 如果传入 callback 则去查看文件夹，否则只管当前文件夹。
             _getTansferFiles: function (dataTransfer, callback) {
                 var results = [],
-                    promises = [],
-                    items, files, file, item, i, len, canAccessFolder;
+                        promises = [],
+                        items, files, file, item, i, len, canAccessFolder;
 
                 items = dataTransfer.items;
                 files = dataTransfer.files;
@@ -4752,7 +4752,7 @@ window.jQuery = $;
                     if (canAccessFolder && item.webkitGetAsEntry().isDirectory) {
 
                         promises.push(this._traverseDirectoryTree(
-                            item.webkitGetAsEntry(), results));
+                                item.webkitGetAsEntry(), results));
                     } else {
                         results.push(file);
                     }
@@ -4770,7 +4770,7 @@ window.jQuery = $;
 
             _traverseDirectoryTree: function (entry, results) {
                 var deferred = Base.Deferred(),
-                    me = this;
+                        me = this;
 
                 if (entry.isFile) {
                     entry.file(function (file) {
@@ -4780,13 +4780,13 @@ window.jQuery = $;
                 } else if (entry.isDirectory) {
                     entry.createReader().readEntries(function (entries) {
                         var len = entries.length,
-                            promises = [],
-                            arr = [],    // 为了保证顺序。
-                            i;
+                                promises = [],
+                                arr = [],    // 为了保证顺序。
+                                i;
 
                         for (i = 0; i < len; i++) {
                             promises.push(me._traverseDirectoryTree(
-                                entries[i], arr));
+                                    entries[i], arr));
                         }
 
                         Base.when.apply(Base, promises).then(function () {
@@ -4832,9 +4832,9 @@ window.jQuery = $;
         return Html5Runtime.register('FilePaste', {
             init: function () {
                 var opts = this.options,
-                    elem = this.elem = opts.container,
-                    accept = '.*',
-                    arr, i, len, item;
+                        elem = this.elem = opts.container,
+                        accept = '.*',
+                        arr, i, len, item;
 
                 // accetp的mimeTypes中生成匹配正则。
                 if (opts.accept) {
@@ -4857,8 +4857,8 @@ window.jQuery = $;
 
             _pasteHander: function (e) {
                 var allowed = [],
-                    ruid = this.getRuid(),
-                    items, item, blob, i, len;
+                        ruid = this.getRuid(),
+                        items, item, blob, i, len;
 
                 e = e.originalEvent || e;
                 items = e.clipboardData.items;
@@ -4900,12 +4900,12 @@ window.jQuery = $;
         return Html5Runtime.register('FilePicker', {
             init: function () {
                 var container = this.getRuntime().getContainer(),
-                    me = this,
-                    owner = me.owner,
-                    opts = me.options,
-                    label = this.label = $(document.createElement('label')),
-                    input = this.input = $(document.createElement('input')),
-                    arr, i, len, mouseHandler, changeHandler;
+                        me = this,
+                        owner = me.owner,
+                        opts = me.options,
+                        label = this.label = $(document.createElement('label')),
+                        input = this.input = $(document.createElement('input')),
+                        arr, i, len, mouseHandler, changeHandler;
 
                 input.attr('type', 'file');
                 input.attr('capture', 'camera');
@@ -4967,7 +4967,7 @@ window.jQuery = $;
 
                     input.off();
                     input = $(clone).on('change', changeHandler)
-                        .on('mouseenter mouseleave', mouseHandler);
+                            .on('mouseenter mouseleave', mouseHandler);
 
                     owner.trigger('change');
                 }
@@ -4999,10 +4999,10 @@ window.jQuery = $;
         'base'
     ], function (Base) {
         var urlAPI = window.createObjectURL && window ||
-            window.URL && URL.revokeObjectURL && URL ||
-            window.webkitURL,
-            createObjectURL = Base.noop,
-            revokeObjectURL = createObjectURL;
+                window.URL && URL.revokeObjectURL && URL ||
+                window.webkitURL,
+                createObjectURL = Base.noop,
+                revokeObjectURL = createObjectURL;
 
         if (urlAPI) {
 
@@ -5065,7 +5065,7 @@ window.jQuery = $;
 
             arrayBufferToBlob: function (buffer, type) {
                 var builder = window.BlobBuilder || window.WebKitBlobBuilder,
-                    bb;
+                        bb;
 
                 // android不支持直接new Blob, 只能借助blobbuilder.
                 if (builder) {
@@ -5115,7 +5115,7 @@ window.jQuery = $;
 
             parse: function (blob, cb) {
                 var me = this,
-                    fr = new FileReader();
+                        fr = new FileReader();
 
                 fr.onload = function () {
                     cb(false, me._parse(this.result));
@@ -5137,11 +5137,11 @@ window.jQuery = $;
                 }
 
                 var dataview = new DataView(buffer),
-                    offset = 2,
-                    maxOffset = dataview.byteLength - 4,
-                    headLength = offset,
-                    ret = {},
-                    markerBytes, markerLength, parsers, i;
+                        offset = 2,
+                        maxOffset = dataview.byteLength - 4,
+                        headLength = offset,
+                        ret = {},
+                        markerBytes, markerLength, parsers, i;
 
                 if (dataview.getUint16(0) === 0xffd8) {
 
@@ -5149,7 +5149,7 @@ window.jQuery = $;
                         markerBytes = dataview.getUint16(offset);
 
                         if (markerBytes >= 0xffe0 && markerBytes <= 0xffef ||
-                            markerBytes === 0xfffe) {
+                                markerBytes === 0xfffe) {
 
                             markerLength = dataview.getUint16(offset + 2) + 2;
 
@@ -5162,7 +5162,7 @@ window.jQuery = $;
                             if (!noParse && parsers) {
                                 for (i = 0; i < parsers.length; i += 1) {
                                     parsers[i].call(api, dataview, offset,
-                                        markerLength, ret);
+                                            markerLength, ret);
                                 }
                             }
 
@@ -5180,7 +5180,7 @@ window.jQuery = $;
                             // Workaround for IE10, which does not yet
                             // support ArrayBuffer.slice:
                             ret.imageHead = new Uint8Array(buffer)
-                                .subarray(2, headLength);
+                                    .subarray(2, headLength);
                         }
                     }
                 }
@@ -5190,7 +5190,7 @@ window.jQuery = $;
 
             updateImageHead: function (buffer, head) {
                 var data = this._parse(buffer, true),
-                    buf1, buf2, bodyoffset;
+                        buf1, buf2, bodyoffset;
 
 
                 bodyoffset = 2;
@@ -5326,7 +5326,7 @@ window.jQuery = $;
             5: {
                 getValue: function (dataView, dataOffset, littleEndian) {
                     return dataView.getUint32(dataOffset, littleEndian) /
-                        dataView.getUint32(dataOffset + 4, littleEndian);
+                            dataView.getUint32(dataOffset + 4, littleEndian);
                 },
                 size: 8
             },
@@ -5343,7 +5343,7 @@ window.jQuery = $;
             10: {
                 getValue: function (dataView, dataOffset, littleEndian) {
                     return dataView.getInt32(dataOffset, littleEndian) /
-                        dataView.getInt32(dataOffset + 4, littleEndian);
+                            dataView.getInt32(dataOffset + 4, littleEndian);
                 },
                 size: 8
             }
@@ -5356,7 +5356,7 @@ window.jQuery = $;
                                       littleEndian) {
 
             var tagType = EXIF.exifTagTypes[type],
-                tagSize, dataOffset, values, i, str, c;
+                    tagSize, dataOffset, values, i, str, c;
 
             if (!tagType) {
                 Base.log('Invalid Exif data: Invalid tag type.');
@@ -5368,7 +5368,7 @@ window.jQuery = $;
             // Determine if the value is contained in the dataOffset bytes,
             // or if the value at the dataOffset is a pointer to the actual data:
             dataOffset = tagSize > 4 ? tiffOffset + dataView.getUint32(offset + 8,
-                littleEndian) : (offset + 8);
+                    littleEndian) : (offset + 8);
 
             if (dataOffset + tagSize > dataView.byteLength) {
                 Base.log('Invalid Exif data: Invalid data offset.');
@@ -5383,7 +5383,7 @@ window.jQuery = $;
 
             for (i = 0; i < length; i += 1) {
                 values[i] = tagType.getValue(dataView,
-                    dataOffset + i * tagType.size, littleEndian);
+                        dataOffset + i * tagType.size, littleEndian);
             }
 
             if (tagType.ascii) {
@@ -5410,9 +5410,9 @@ window.jQuery = $;
 
             var tag = dataView.getUint16(offset, littleEndian);
             data.exif[tag] = EXIF.getExifValue(dataView, tiffOffset, offset,
-                dataView.getUint16(offset + 2, littleEndian),    // tag type
-                dataView.getUint32(offset + 4, littleEndian),    // tag length
-                littleEndian);
+                    dataView.getUint16(offset + 2, littleEndian),    // tag type
+                    dataView.getUint32(offset + 4, littleEndian),    // tag length
+                    littleEndian);
         };
 
         EXIF.parseExifTags = function (dataView, tiffOffset, dirOffset,
@@ -5435,8 +5435,8 @@ window.jQuery = $;
 
             for (i = 0; i < tagsNumber; i += 1) {
                 this.parseExifTag(dataView, tiffOffset,
-                    dirOffset + 2 + 12 * i,    // tag offset
-                    littleEndian, data);
+                        dirOffset + 2 + 12 * i,    // tag offset
+                        littleEndian, data);
             }
 
             // Return the offset to the next directory:
@@ -5462,7 +5462,7 @@ window.jQuery = $;
         EXIF.parseExifData = function (dataView, offset, length, data) {
 
             var tiffOffset = offset + 10,
-                littleEndian, dirOffset;
+                    littleEndian, dirOffset;
 
             // Check for the ASCII code for "Exif" (0x45786966):
             if (dataView.getUint32(offset + 4) !== 0x45786966) {
@@ -5508,7 +5508,7 @@ window.jQuery = $;
             // Parse the tags of the main image directory and retrieve the
             // offset to the next directory, usually the thumbnail directory:
             dirOffset = EXIF.parseExifTags(dataView, tiffOffset,
-                tiffOffset + dirOffset, littleEndian, data);
+                    tiffOffset + dirOffset, littleEndian, data);
 
             // 尝试读取缩略图
             // if ( dirOffset ) {
@@ -5849,38 +5849,50 @@ window.jQuery = $;
                     var tmp4 = d3 - d4;
 
                     /* Even part */
-                    var tmp10 = tmp0 + tmp3;    /* phase 2 */
+                    var tmp10 = tmp0 + tmp3;
+                    /* phase 2 */
                     var tmp13 = tmp0 - tmp3;
                     var tmp11 = tmp1 + tmp2;
                     var tmp12 = tmp1 - tmp2;
 
-                    data[dataOff] = tmp10 + tmp11; /* phase 3 */
+                    data[dataOff] = tmp10 + tmp11;
+                    /* phase 3 */
                     data[dataOff + 4] = tmp10 - tmp11;
 
-                    var z1 = (tmp12 + tmp13) * 0.707106781; /* c4 */
-                    data[dataOff + 2] = tmp13 + z1; /* phase 5 */
+                    var z1 = (tmp12 + tmp13) * 0.707106781;
+                    /* c4 */
+                    data[dataOff + 2] = tmp13 + z1;
+                    /* phase 5 */
                     data[dataOff + 6] = tmp13 - z1;
 
                     /* Odd part */
-                    tmp10 = tmp4 + tmp5; /* phase 2 */
+                    tmp10 = tmp4 + tmp5;
+                    /* phase 2 */
                     tmp11 = tmp5 + tmp6;
                     tmp12 = tmp6 + tmp7;
 
                     /* The rotator is modified from fig 4-8 to avoid extra negations. */
-                    var z5 = (tmp10 - tmp12) * 0.382683433; /* c6 */
-                    var z2 = 0.541196100 * tmp10 + z5; /* c2-c6 */
-                    var z4 = 1.306562965 * tmp12 + z5; /* c2+c6 */
-                    var z3 = tmp11 * 0.707106781; /* c4 */
+                    var z5 = (tmp10 - tmp12) * 0.382683433;
+                    /* c6 */
+                    var z2 = 0.541196100 * tmp10 + z5;
+                    /* c2-c6 */
+                    var z4 = 1.306562965 * tmp12 + z5;
+                    /* c2+c6 */
+                    var z3 = tmp11 * 0.707106781;
+                    /* c4 */
 
-                    var z11 = tmp7 + z3;    /* phase 5 */
+                    var z11 = tmp7 + z3;
+                    /* phase 5 */
                     var z13 = tmp7 - z3;
 
-                    data[dataOff + 5] = z13 + z2; /* phase 6 */
+                    data[dataOff + 5] = z13 + z2;
+                    /* phase 6 */
                     data[dataOff + 3] = z13 - z2;
                     data[dataOff + 1] = z11 + z4;
                     data[dataOff + 7] = z11 - z4;
 
-                    dataOff += 8; /* advance pointer to next row */
+                    dataOff += 8;
+                    /* advance pointer to next row */
                 }
 
                 /* Pass 2: process columns. */
@@ -5905,38 +5917,50 @@ window.jQuery = $;
                     var tmp4p2 = d3 - d4;
 
                     /* Even part */
-                    var tmp10p2 = tmp0p2 + tmp3p2;  /* phase 2 */
+                    var tmp10p2 = tmp0p2 + tmp3p2;
+                    /* phase 2 */
                     var tmp13p2 = tmp0p2 - tmp3p2;
                     var tmp11p2 = tmp1p2 + tmp2p2;
                     var tmp12p2 = tmp1p2 - tmp2p2;
 
-                    data[dataOff] = tmp10p2 + tmp11p2; /* phase 3 */
+                    data[dataOff] = tmp10p2 + tmp11p2;
+                    /* phase 3 */
                     data[dataOff + 32] = tmp10p2 - tmp11p2;
 
-                    var z1p2 = (tmp12p2 + tmp13p2) * 0.707106781; /* c4 */
-                    data[dataOff + 16] = tmp13p2 + z1p2; /* phase 5 */
+                    var z1p2 = (tmp12p2 + tmp13p2) * 0.707106781;
+                    /* c4 */
+                    data[dataOff + 16] = tmp13p2 + z1p2;
+                    /* phase 5 */
                     data[dataOff + 48] = tmp13p2 - z1p2;
 
                     /* Odd part */
-                    tmp10p2 = tmp4p2 + tmp5p2; /* phase 2 */
+                    tmp10p2 = tmp4p2 + tmp5p2;
+                    /* phase 2 */
                     tmp11p2 = tmp5p2 + tmp6p2;
                     tmp12p2 = tmp6p2 + tmp7p2;
 
                     /* The rotator is modified from fig 4-8 to avoid extra negations. */
-                    var z5p2 = (tmp10p2 - tmp12p2) * 0.382683433; /* c6 */
-                    var z2p2 = 0.541196100 * tmp10p2 + z5p2; /* c2-c6 */
-                    var z4p2 = 1.306562965 * tmp12p2 + z5p2; /* c2+c6 */
-                    var z3p2 = tmp11p2 * 0.707106781; /* c4 */
+                    var z5p2 = (tmp10p2 - tmp12p2) * 0.382683433;
+                    /* c6 */
+                    var z2p2 = 0.541196100 * tmp10p2 + z5p2;
+                    /* c2-c6 */
+                    var z4p2 = 1.306562965 * tmp12p2 + z5p2;
+                    /* c2+c6 */
+                    var z3p2 = tmp11p2 * 0.707106781;
+                    /* c4 */
 
-                    var z11p2 = tmp7p2 + z3p2;  /* phase 5 */
+                    var z11p2 = tmp7p2 + z3p2;
+                    /* phase 5 */
                     var z13p2 = tmp7p2 - z3p2;
 
-                    data[dataOff + 40] = z13p2 + z2p2; /* phase 6 */
+                    data[dataOff + 40] = z13p2 + z2p2;
+                    /* phase 6 */
                     data[dataOff + 24] = z13p2 - z2p2;
                     data[dataOff + 8] = z11p2 + z4p2;
                     data[dataOff + 56] = z11p2 - z4p2;
 
-                    dataOff++; /* advance pointer to next column */
+                    dataOff++;
+                    /* advance pointer to next column */
                 }
 
                 // Quantize/descale the coefficients
@@ -6284,7 +6308,7 @@ window.jQuery = $;
         'base'
     ], function (Util, encoder, Base) {
         var origin = Util.canvasToDataUrl,
-            supportJpeg;
+                supportJpeg;
 
         Util.canvasToDataUrl = function (canvas, type, quality) {
             var ctx, w, h, fragement, parts;
@@ -6310,7 +6334,7 @@ window.jQuery = $;
                 fragement = fragement.substring(0, 2);
 
                 supportJpeg = fragement.charCodeAt(0) === 255 &&
-                    fragement.charCodeAt(1) === 216;
+                        fragement.charCodeAt(1) === 216;
             }
 
             // 只有在android环境下才修复
@@ -6343,7 +6367,7 @@ window.jQuery = $;
 
             init: function () {
                 var me = this,
-                    img = new Image();
+                        img = new Image();
 
                 img.onload = function () {
 
@@ -6375,7 +6399,7 @@ window.jQuery = $;
 
             loadFromBlob: function (blob) {
                 var me = this,
-                    img = me._img;
+                        img = me._img;
 
                 me._blob = blob;
                 me.type = blob.type;
@@ -6387,7 +6411,7 @@ window.jQuery = $;
 
             resize: function (width, height) {
                 var canvas = this._canvas ||
-                    (this._canvas = document.createElement('canvas'));
+                        (this._canvas = document.createElement('canvas'));
 
                 this._resize(this._img, canvas, width, height);
                 this._blob = null;    // 没用了，可以删掉了。
@@ -6397,12 +6421,12 @@ window.jQuery = $;
 
             crop: function (x, y, w, h, s) {
                 var cvs = this._canvas ||
-                    (this._canvas = document.createElement('canvas')),
-                    opts = this.options,
-                    img = this._img,
-                    iw = img.naturalWidth,
-                    ih = img.naturalHeight,
-                    orientation = this.getOrientation();
+                        (this._canvas = document.createElement('canvas')),
+                        opts = this.options,
+                        img = this._img,
+                        iw = img.naturalWidth,
+                        ih = img.naturalHeight,
+                        orientation = this.getOrientation();
 
                 s = s || 1;
 
@@ -6435,8 +6459,8 @@ window.jQuery = $;
 
             getAsBlob: function (type) {
                 var blob = this._blob,
-                    opts = this.options,
-                    canvas;
+                        opts = this.options,
+                        canvas;
 
                 type = type || this.type;
 
@@ -6449,11 +6473,11 @@ window.jQuery = $;
                         blob = Util.canvasToDataUrl(canvas, type, opts.quality);
 
                         if (opts.preserveHeaders && this._metas &&
-                            this._metas.imageHead) {
+                                this._metas.imageHead) {
 
                             blob = Util.dataURL2ArrayBuffer(blob);
                             blob = Util.updateImageHead(blob,
-                                this._metas.imageHead);
+                                    this._metas.imageHead);
                             blob = Util.arrayBufferToBlob(blob, type);
                             return blob;
                         }
@@ -6481,7 +6505,7 @@ window.jQuery = $;
 
             getOrientation: function () {
                 return this._metas && this._metas.exif &&
-                    this._metas.exif.get('Orientation') || 1;
+                        this._metas.exif.get('Orientation') || 1;
             },
 
             info: function (val) {
@@ -6514,7 +6538,7 @@ window.jQuery = $;
 
                 if (canvas) {
                     canvas.getContext('2d')
-                        .clearRect(0, 0, canvas.width, canvas.height);
+                            .clearRect(0, 0, canvas.width, canvas.height);
                     canvas.width = canvas.height = 0;
                     this._canvas = null;
                 }
@@ -6526,10 +6550,10 @@ window.jQuery = $;
 
             _resize: function (img, cvs, width, height) {
                 var opts = this.options,
-                    naturalWidth = img.width,
-                    naturalHeight = img.height,
-                    orientation = this.getOrientation(),
-                    scale, w, h, x, y;
+                        naturalWidth = img.width,
+                        naturalHeight = img.height,
+                        orientation = this.getOrientation(),
+                        scale, w, h, x, y;
 
                 // values that require 90 degree rotation
                 if (~[5, 6, 7, 8].indexOf(orientation)) {
@@ -6541,7 +6565,7 @@ window.jQuery = $;
                 }
 
                 scale = Math[opts.crop ? 'max' : 'min'](width / naturalWidth,
-                    height / naturalHeight);
+                        height / naturalHeight);
 
                 // 不允许放大。
                 opts.allowMagnify || (scale = Math.min(1, scale));
@@ -6567,8 +6591,8 @@ window.jQuery = $;
 
             _rotate2Orientaion: function (canvas, orientation) {
                 var width = canvas.width,
-                    height = canvas.height,
-                    ctx = canvas.getContext('2d');
+                        height = canvas.height,
+                        ctx = canvas.getContext('2d');
 
                 switch (orientation) {
                     case 5:
@@ -6627,7 +6651,7 @@ window.jQuery = $;
                 if (!Base.os.ios) {
                     return function (canvas) {
                         var args = Base.slice(arguments, 1),
-                            ctx = canvas.getContext('2d');
+                                ctx = canvas.getContext('2d');
 
                         ctx.drawImage.apply(ctx, args);
                     };
@@ -6640,11 +6664,11 @@ window.jQuery = $;
                  */
                 function detectVerticalSquash(img, iw, ih) {
                     var canvas = document.createElement('canvas'),
-                        ctx = canvas.getContext('2d'),
-                        sy = 0,
-                        ey = ih,
-                        py = ih,
-                        data, alpha, ratio;
+                            ctx = canvas.getContext('2d'),
+                            sy = 0,
+                            ey = ih,
+                            py = ih,
+                            data, alpha, ratio;
 
 
                     canvas.width = 1;
@@ -6676,12 +6700,12 @@ window.jQuery = $;
                 if (Base.os.ios >= 7) {
                     return function (canvas, img, x, y, w, h) {
                         var iw = img.naturalWidth,
-                            ih = img.naturalHeight,
-                            vertSquashRatio = detectVerticalSquash(img, iw, ih);
+                                ih = img.naturalHeight,
+                                vertSquashRatio = detectVerticalSquash(img, iw, ih);
 
                         return canvas.getContext('2d').drawImage(img, 0, 0,
-                            iw * vertSquashRatio, ih * vertSquashRatio,
-                            x, y, w, h);
+                                iw * vertSquashRatio, ih * vertSquashRatio,
+                                x, y, w, h);
                     };
                 }
 
@@ -6692,8 +6716,8 @@ window.jQuery = $;
                  */
                 function detectSubsampling(img) {
                     var iw = img.naturalWidth,
-                        ih = img.naturalHeight,
-                        canvas, ctx;
+                            ih = img.naturalHeight,
+                            canvas, ctx;
 
                     // subsampling may happen overmegapixel image
                     if (iw * ih > 1024 * 1024) {
@@ -6715,14 +6739,14 @@ window.jQuery = $;
 
                 return function (canvas, img, x, y, width, height) {
                     var iw = img.naturalWidth,
-                        ih = img.naturalHeight,
-                        ctx = canvas.getContext('2d'),
-                        subsampled = detectSubsampling(img),
-                        doSquash = this.type === 'image/jpeg',
-                        d = 1024,
-                        sy = 0,
-                        dy = 0,
-                        tmpCanvas, tmpCtx, vertSquashRatio, dw, dh, sx, dx;
+                            ih = img.naturalHeight,
+                            ctx = canvas.getContext('2d'),
+                            subsampled = detectSubsampling(img),
+                            doSquash = this.type === 'image/jpeg',
+                            d = 1024,
+                            sy = 0,
+                            dy = 0,
+                            tmpCanvas, tmpCtx, vertSquashRatio, dw, dh, sx, dx;
 
                     if (subsampled) {
                         iw /= 2;
@@ -6735,7 +6759,7 @@ window.jQuery = $;
 
                     tmpCtx = tmpCanvas.getContext('2d');
                     vertSquashRatio = doSquash ?
-                        detectVerticalSquash(img, iw, ih) : 1;
+                            detectVerticalSquash(img, iw, ih) : 1;
 
                     dw = Math.ceil(d * width / iw);
                     dh = Math.ceil(d * height / ih / vertSquashRatio);
@@ -6747,7 +6771,7 @@ window.jQuery = $;
                             tmpCtx.clearRect(0, 0, d, d);
                             tmpCtx.drawImage(img, -sx, -sy);
                             ctx.drawImage(tmpCanvas, 0, 0, d, d,
-                                x + dx, y + dy, dw, dh);
+                                    x + dx, y + dy, dw, dh);
                             sx += d;
                             dx += dw;
                         }
@@ -6773,7 +6797,7 @@ window.jQuery = $;
     ], function (Base, Html5Runtime) {
 
         var noop = Base.noop,
-            $ = Base.$;
+                $ = Base.$;
 
         return Html5Runtime.register('Transport', {
             init: function () {
@@ -6783,14 +6807,15 @@ window.jQuery = $;
 
             send: function () {
                 var owner = this.owner,
-                    opts = this.options,
-                    xhr = this._initAjax(),
-                    blob = owner._blob,
-                    server = opts.server,
-                    formData, binary, fr;
-                if (opts.sendAsBinary) { debugger
+                        opts = this.options,
+                        xhr = this._initAjax(),
+                        blob = owner._blob,
+                        server = opts.server,
+                        formData, binary, fr;
+                if (opts.sendAsBinary) {
+                    debugger
                     server += (/\?/.test(server) ? '&' : '?') +
-                        $.param(owner._formData);
+                            $.param(owner._formData);
 
                     binary = blob.getSource();
                 } else {
@@ -6800,7 +6825,7 @@ window.jQuery = $;
                     });
 
                     formData.append(opts.fileVal, blob.getSource(),
-                        opts.filename || owner._formData.name || '');
+                            opts.filename || owner._formData.name || '');
                 }
 
                 if (opts.withCredentials && 'withCredentials' in xhr) {
@@ -6868,11 +6893,11 @@ window.jQuery = $;
 
             _initAjax: function () {
                 var me = this,
-                    xhr = new XMLHttpRequest(),
-                    opts = this.options;
+                        xhr = new XMLHttpRequest(),
+                        opts = this.options;
 
                 if (opts.withCredentials && !('withCredentials' in xhr) &&
-                    typeof XDomainRequest !== 'undefined') {
+                        typeof XDomainRequest !== 'undefined') {
                     xhr = new XDomainRequest();
                 }
 
@@ -6953,276 +6978,278 @@ window.jQuery = $;
           need the idiotic second function,
           generated by an if clause.  */
         var add32 = function (a, b) {
-                return (a + b) & 0xFFFFFFFF;
-            },
+                    return (a + b) & 0xFFFFFFFF;
+                },
 
-            cmn = function (q, a, b, x, s, t) {
-                a = add32(add32(a, q), add32(x, t));
-                return add32((a << s) | (a >>> (32 - s)), b);
-            },
+                cmn = function (q, a, b, x, s, t) {
+                    a = add32(add32(a, q), add32(x, t));
+                    return add32((a << s) | (a >>> (32 - s)), b);
+                },
 
-            ff = function (a, b, c, d, x, s, t) {
-                return cmn((b & c) | ((~b) & d), a, b, x, s, t);
-            },
+                ff = function (a, b, c, d, x, s, t) {
+                    return cmn((b & c) | ((~b) & d), a, b, x, s, t);
+                },
 
-            gg = function (a, b, c, d, x, s, t) {
-                return cmn((b & d) | (c & (~d)), a, b, x, s, t);
-            },
+                gg = function (a, b, c, d, x, s, t) {
+                    return cmn((b & d) | (c & (~d)), a, b, x, s, t);
+                },
 
-            hh = function (a, b, c, d, x, s, t) {
-                return cmn(b ^ c ^ d, a, b, x, s, t);
-            },
+                hh = function (a, b, c, d, x, s, t) {
+                    return cmn(b ^ c ^ d, a, b, x, s, t);
+                },
 
-            ii = function (a, b, c, d, x, s, t) {
-                return cmn(c ^ (b | (~d)), a, b, x, s, t);
-            },
+                ii = function (a, b, c, d, x, s, t) {
+                    return cmn(c ^ (b | (~d)), a, b, x, s, t);
+                },
 
-            md5cycle = function (x, k) {
-                var a = x[0],
-                    b = x[1],
-                    c = x[2],
-                    d = x[3];
+                md5cycle = function (x, k) {
+                    var a = x[0],
+                            b = x[1],
+                            c = x[2],
+                            d = x[3];
 
-                a = ff(a, b, c, d, k[0], 7, -680876936);
-                d = ff(d, a, b, c, k[1], 12, -389564586);
-                c = ff(c, d, a, b, k[2], 17, 606105819);
-                b = ff(b, c, d, a, k[3], 22, -1044525330);
-                a = ff(a, b, c, d, k[4], 7, -176418897);
-                d = ff(d, a, b, c, k[5], 12, 1200080426);
-                c = ff(c, d, a, b, k[6], 17, -1473231341);
-                b = ff(b, c, d, a, k[7], 22, -45705983);
-                a = ff(a, b, c, d, k[8], 7, 1770035416);
-                d = ff(d, a, b, c, k[9], 12, -1958414417);
-                c = ff(c, d, a, b, k[10], 17, -42063);
-                b = ff(b, c, d, a, k[11], 22, -1990404162);
-                a = ff(a, b, c, d, k[12], 7, 1804603682);
-                d = ff(d, a, b, c, k[13], 12, -40341101);
-                c = ff(c, d, a, b, k[14], 17, -1502002290);
-                b = ff(b, c, d, a, k[15], 22, 1236535329);
+                    a = ff(a, b, c, d, k[0], 7, -680876936);
+                    d = ff(d, a, b, c, k[1], 12, -389564586);
+                    c = ff(c, d, a, b, k[2], 17, 606105819);
+                    b = ff(b, c, d, a, k[3], 22, -1044525330);
+                    a = ff(a, b, c, d, k[4], 7, -176418897);
+                    d = ff(d, a, b, c, k[5], 12, 1200080426);
+                    c = ff(c, d, a, b, k[6], 17, -1473231341);
+                    b = ff(b, c, d, a, k[7], 22, -45705983);
+                    a = ff(a, b, c, d, k[8], 7, 1770035416);
+                    d = ff(d, a, b, c, k[9], 12, -1958414417);
+                    c = ff(c, d, a, b, k[10], 17, -42063);
+                    b = ff(b, c, d, a, k[11], 22, -1990404162);
+                    a = ff(a, b, c, d, k[12], 7, 1804603682);
+                    d = ff(d, a, b, c, k[13], 12, -40341101);
+                    c = ff(c, d, a, b, k[14], 17, -1502002290);
+                    b = ff(b, c, d, a, k[15], 22, 1236535329);
 
-                a = gg(a, b, c, d, k[1], 5, -165796510);
-                d = gg(d, a, b, c, k[6], 9, -1069501632);
-                c = gg(c, d, a, b, k[11], 14, 643717713);
-                b = gg(b, c, d, a, k[0], 20, -373897302);
-                a = gg(a, b, c, d, k[5], 5, -701558691);
-                d = gg(d, a, b, c, k[10], 9, 38016083);
-                c = gg(c, d, a, b, k[15], 14, -660478335);
-                b = gg(b, c, d, a, k[4], 20, -405537848);
-                a = gg(a, b, c, d, k[9], 5, 568446438);
-                d = gg(d, a, b, c, k[14], 9, -1019803690);
-                c = gg(c, d, a, b, k[3], 14, -187363961);
-                b = gg(b, c, d, a, k[8], 20, 1163531501);
-                a = gg(a, b, c, d, k[13], 5, -1444681467);
-                d = gg(d, a, b, c, k[2], 9, -51403784);
-                c = gg(c, d, a, b, k[7], 14, 1735328473);
-                b = gg(b, c, d, a, k[12], 20, -1926607734);
+                    a = gg(a, b, c, d, k[1], 5, -165796510);
+                    d = gg(d, a, b, c, k[6], 9, -1069501632);
+                    c = gg(c, d, a, b, k[11], 14, 643717713);
+                    b = gg(b, c, d, a, k[0], 20, -373897302);
+                    a = gg(a, b, c, d, k[5], 5, -701558691);
+                    d = gg(d, a, b, c, k[10], 9, 38016083);
+                    c = gg(c, d, a, b, k[15], 14, -660478335);
+                    b = gg(b, c, d, a, k[4], 20, -405537848);
+                    a = gg(a, b, c, d, k[9], 5, 568446438);
+                    d = gg(d, a, b, c, k[14], 9, -1019803690);
+                    c = gg(c, d, a, b, k[3], 14, -187363961);
+                    b = gg(b, c, d, a, k[8], 20, 1163531501);
+                    a = gg(a, b, c, d, k[13], 5, -1444681467);
+                    d = gg(d, a, b, c, k[2], 9, -51403784);
+                    c = gg(c, d, a, b, k[7], 14, 1735328473);
+                    b = gg(b, c, d, a, k[12], 20, -1926607734);
 
-                a = hh(a, b, c, d, k[5], 4, -378558);
-                d = hh(d, a, b, c, k[8], 11, -2022574463);
-                c = hh(c, d, a, b, k[11], 16, 1839030562);
-                b = hh(b, c, d, a, k[14], 23, -35309556);
-                a = hh(a, b, c, d, k[1], 4, -1530992060);
-                d = hh(d, a, b, c, k[4], 11, 1272893353);
-                c = hh(c, d, a, b, k[7], 16, -155497632);
-                b = hh(b, c, d, a, k[10], 23, -1094730640);
-                a = hh(a, b, c, d, k[13], 4, 681279174);
-                d = hh(d, a, b, c, k[0], 11, -358537222);
-                c = hh(c, d, a, b, k[3], 16, -722521979);
-                b = hh(b, c, d, a, k[6], 23, 76029189);
-                a = hh(a, b, c, d, k[9], 4, -640364487);
-                d = hh(d, a, b, c, k[12], 11, -421815835);
-                c = hh(c, d, a, b, k[15], 16, 530742520);
-                b = hh(b, c, d, a, k[2], 23, -995338651);
+                    a = hh(a, b, c, d, k[5], 4, -378558);
+                    d = hh(d, a, b, c, k[8], 11, -2022574463);
+                    c = hh(c, d, a, b, k[11], 16, 1839030562);
+                    b = hh(b, c, d, a, k[14], 23, -35309556);
+                    a = hh(a, b, c, d, k[1], 4, -1530992060);
+                    d = hh(d, a, b, c, k[4], 11, 1272893353);
+                    c = hh(c, d, a, b, k[7], 16, -155497632);
+                    b = hh(b, c, d, a, k[10], 23, -1094730640);
+                    a = hh(a, b, c, d, k[13], 4, 681279174);
+                    d = hh(d, a, b, c, k[0], 11, -358537222);
+                    c = hh(c, d, a, b, k[3], 16, -722521979);
+                    b = hh(b, c, d, a, k[6], 23, 76029189);
+                    a = hh(a, b, c, d, k[9], 4, -640364487);
+                    d = hh(d, a, b, c, k[12], 11, -421815835);
+                    c = hh(c, d, a, b, k[15], 16, 530742520);
+                    b = hh(b, c, d, a, k[2], 23, -995338651);
 
-                a = ii(a, b, c, d, k[0], 6, -198630844);
-                d = ii(d, a, b, c, k[7], 10, 1126891415);
-                c = ii(c, d, a, b, k[14], 15, -1416354905);
-                b = ii(b, c, d, a, k[5], 21, -57434055);
-                a = ii(a, b, c, d, k[12], 6, 1700485571);
-                d = ii(d, a, b, c, k[3], 10, -1894986606);
-                c = ii(c, d, a, b, k[10], 15, -1051523);
-                b = ii(b, c, d, a, k[1], 21, -2054922799);
-                a = ii(a, b, c, d, k[8], 6, 1873313359);
-                d = ii(d, a, b, c, k[15], 10, -30611744);
-                c = ii(c, d, a, b, k[6], 15, -1560198380);
-                b = ii(b, c, d, a, k[13], 21, 1309151649);
-                a = ii(a, b, c, d, k[4], 6, -145523070);
-                d = ii(d, a, b, c, k[11], 10, -1120210379);
-                c = ii(c, d, a, b, k[2], 15, 718787259);
-                b = ii(b, c, d, a, k[9], 21, -343485551);
+                    a = ii(a, b, c, d, k[0], 6, -198630844);
+                    d = ii(d, a, b, c, k[7], 10, 1126891415);
+                    c = ii(c, d, a, b, k[14], 15, -1416354905);
+                    b = ii(b, c, d, a, k[5], 21, -57434055);
+                    a = ii(a, b, c, d, k[12], 6, 1700485571);
+                    d = ii(d, a, b, c, k[3], 10, -1894986606);
+                    c = ii(c, d, a, b, k[10], 15, -1051523);
+                    b = ii(b, c, d, a, k[1], 21, -2054922799);
+                    a = ii(a, b, c, d, k[8], 6, 1873313359);
+                    d = ii(d, a, b, c, k[15], 10, -30611744);
+                    c = ii(c, d, a, b, k[6], 15, -1560198380);
+                    b = ii(b, c, d, a, k[13], 21, 1309151649);
+                    a = ii(a, b, c, d, k[4], 6, -145523070);
+                    d = ii(d, a, b, c, k[11], 10, -1120210379);
+                    c = ii(c, d, a, b, k[2], 15, 718787259);
+                    b = ii(b, c, d, a, k[9], 21, -343485551);
 
-                x[0] = add32(a, x[0]);
-                x[1] = add32(b, x[1]);
-                x[2] = add32(c, x[2]);
-                x[3] = add32(d, x[3]);
-            },
+                    x[0] = add32(a, x[0]);
+                    x[1] = add32(b, x[1]);
+                    x[2] = add32(c, x[2]);
+                    x[3] = add32(d, x[3]);
+                },
 
-            /* there needs to be support for Unicode here,
-           * unless we pretend that we can redefine the MD-5
-           * algorithm for multi-byte characters (perhaps
-           * by adding every four 16-bit characters and
-           * shortening the sum to 32 bits). Otherwise
-           * I suggest performing MD-5 as if every character
-           * was two bytes--e.g., 0040 0025 = @%--but then
-           * how will an ordinary MD-5 sum be matched?
-           * There is no way to standardize text to something
-           * like UTF-8 before transformation; speed cost is
-           * utterly prohibitive. The JavaScript standard
-           * itself needs to look at this: it should start
-           * providing access to strings as preformed UTF-8
-           * 8-bit unsigned value arrays.
-           */
-            md5blk = function (s) {
-                var md5blks = [],
-                    i; /* Andy King said do it this way. */
+                /* there needs to be support for Unicode here,
+               * unless we pretend that we can redefine the MD-5
+               * algorithm for multi-byte characters (perhaps
+               * by adding every four 16-bit characters and
+               * shortening the sum to 32 bits). Otherwise
+               * I suggest performing MD-5 as if every character
+               * was two bytes--e.g., 0040 0025 = @%--but then
+               * how will an ordinary MD-5 sum be matched?
+               * There is no way to standardize text to something
+               * like UTF-8 before transformation; speed cost is
+               * utterly prohibitive. The JavaScript standard
+               * itself needs to look at this: it should start
+               * providing access to strings as preformed UTF-8
+               * 8-bit unsigned value arrays.
+               */
+                md5blk = function (s) {
+                    var md5blks = [],
+                            i;
+                    /* Andy King said do it this way. */
 
-                for (i = 0; i < 64; i += 4) {
-                    md5blks[i >> 2] = s.charCodeAt(i) + (s.charCodeAt(i + 1) << 8) + (s.charCodeAt(i + 2) << 16) + (s.charCodeAt(i + 3) << 24);
-                }
-                return md5blks;
-            },
-
-            md5blk_array = function (a) {
-                var md5blks = [],
-                    i; /* Andy King said do it this way. */
-
-                for (i = 0; i < 64; i += 4) {
-                    md5blks[i >> 2] = a[i] + (a[i + 1] << 8) + (a[i + 2] << 16) + (a[i + 3] << 24);
-                }
-                return md5blks;
-            },
-
-            md51 = function (s) {
-                var n = s.length,
-                    state = [1732584193, -271733879, -1732584194, 271733878],
-                    i,
-                    length,
-                    tail,
-                    tmp,
-                    lo,
-                    hi;
-
-                for (i = 64; i <= n; i += 64) {
-                    md5cycle(state, md5blk(s.substring(i - 64, i)));
-                }
-                s = s.substring(i - 64);
-                length = s.length;
-                tail = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-                for (i = 0; i < length; i += 1) {
-                    tail[i >> 2] |= s.charCodeAt(i) << ((i % 4) << 3);
-                }
-                tail[i >> 2] |= 0x80 << ((i % 4) << 3);
-                if (i > 55) {
-                    md5cycle(state, tail);
-                    for (i = 0; i < 16; i += 1) {
-                        tail[i] = 0;
+                    for (i = 0; i < 64; i += 4) {
+                        md5blks[i >> 2] = s.charCodeAt(i) + (s.charCodeAt(i + 1) << 8) + (s.charCodeAt(i + 2) << 16) + (s.charCodeAt(i + 3) << 24);
                     }
-                }
+                    return md5blks;
+                },
 
-                // Beware that the final length might not fit in 32 bits so we take care of that
-                tmp = n * 8;
-                tmp = tmp.toString(16).match(/(.*?)(.{0,8})$/);
-                lo = parseInt(tmp[2], 16);
-                hi = parseInt(tmp[1], 16) || 0;
+                md5blk_array = function (a) {
+                    var md5blks = [],
+                            i;
+                    /* Andy King said do it this way. */
 
-                tail[14] = lo;
-                tail[15] = hi;
-
-                md5cycle(state, tail);
-                return state;
-            },
-
-            md51_array = function (a) {
-                var n = a.length,
-                    state = [1732584193, -271733879, -1732584194, 271733878],
-                    i,
-                    length,
-                    tail,
-                    tmp,
-                    lo,
-                    hi;
-
-                for (i = 64; i <= n; i += 64) {
-                    md5cycle(state, md5blk_array(a.subarray(i - 64, i)));
-                }
-
-                // Not sure if it is a bug, however IE10 will always produce a sub array of length 1
-                // containing the last element of the parent array if the sub array specified starts
-                // beyond the length of the parent array - weird.
-                // https://connect.microsoft.com/IE/feedback/details/771452/typed-array-subarray-issue
-                a = (i - 64) < n ? a.subarray(i - 64) : new Uint8Array(0);
-
-                length = a.length;
-                tail = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-                for (i = 0; i < length; i += 1) {
-                    tail[i >> 2] |= a[i] << ((i % 4) << 3);
-                }
-
-                tail[i >> 2] |= 0x80 << ((i % 4) << 3);
-                if (i > 55) {
-                    md5cycle(state, tail);
-                    for (i = 0; i < 16; i += 1) {
-                        tail[i] = 0;
+                    for (i = 0; i < 64; i += 4) {
+                        md5blks[i >> 2] = a[i] + (a[i + 1] << 8) + (a[i + 2] << 16) + (a[i + 3] << 24);
                     }
-                }
+                    return md5blks;
+                },
 
-                // Beware that the final length might not fit in 32 bits so we take care of that
-                tmp = n * 8;
-                tmp = tmp.toString(16).match(/(.*?)(.{0,8})$/);
-                lo = parseInt(tmp[2], 16);
-                hi = parseInt(tmp[1], 16) || 0;
+                md51 = function (s) {
+                    var n = s.length,
+                            state = [1732584193, -271733879, -1732584194, 271733878],
+                            i,
+                            length,
+                            tail,
+                            tmp,
+                            lo,
+                            hi;
 
-                tail[14] = lo;
-                tail[15] = hi;
+                    for (i = 64; i <= n; i += 64) {
+                        md5cycle(state, md5blk(s.substring(i - 64, i)));
+                    }
+                    s = s.substring(i - 64);
+                    length = s.length;
+                    tail = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+                    for (i = 0; i < length; i += 1) {
+                        tail[i >> 2] |= s.charCodeAt(i) << ((i % 4) << 3);
+                    }
+                    tail[i >> 2] |= 0x80 << ((i % 4) << 3);
+                    if (i > 55) {
+                        md5cycle(state, tail);
+                        for (i = 0; i < 16; i += 1) {
+                            tail[i] = 0;
+                        }
+                    }
 
-                md5cycle(state, tail);
+                    // Beware that the final length might not fit in 32 bits so we take care of that
+                    tmp = n * 8;
+                    tmp = tmp.toString(16).match(/(.*?)(.{0,8})$/);
+                    lo = parseInt(tmp[2], 16);
+                    hi = parseInt(tmp[1], 16) || 0;
 
-                return state;
-            },
+                    tail[14] = lo;
+                    tail[15] = hi;
 
-            hex_chr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'],
+                    md5cycle(state, tail);
+                    return state;
+                },
 
-            rhex = function (n) {
-                var s = '',
-                    j;
-                for (j = 0; j < 4; j += 1) {
-                    s += hex_chr[(n >> (j * 8 + 4)) & 0x0F] + hex_chr[(n >> (j * 8)) & 0x0F];
-                }
-                return s;
-            },
+                md51_array = function (a) {
+                    var n = a.length,
+                            state = [1732584193, -271733879, -1732584194, 271733878],
+                            i,
+                            length,
+                            tail,
+                            tmp,
+                            lo,
+                            hi;
 
-            hex = function (x) {
-                var i;
-                for (i = 0; i < x.length; i += 1) {
-                    x[i] = rhex(x[i]);
-                }
-                return x.join('');
-            },
+                    for (i = 64; i <= n; i += 64) {
+                        md5cycle(state, md5blk_array(a.subarray(i - 64, i)));
+                    }
 
-            md5 = function (s) {
-                return hex(md51(s));
-            },
+                    // Not sure if it is a bug, however IE10 will always produce a sub array of length 1
+                    // containing the last element of the parent array if the sub array specified starts
+                    // beyond the length of the parent array - weird.
+                    // https://connect.microsoft.com/IE/feedback/details/771452/typed-array-subarray-issue
+                    a = (i - 64) < n ? a.subarray(i - 64) : new Uint8Array(0);
+
+                    length = a.length;
+                    tail = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+                    for (i = 0; i < length; i += 1) {
+                        tail[i >> 2] |= a[i] << ((i % 4) << 3);
+                    }
+
+                    tail[i >> 2] |= 0x80 << ((i % 4) << 3);
+                    if (i > 55) {
+                        md5cycle(state, tail);
+                        for (i = 0; i < 16; i += 1) {
+                            tail[i] = 0;
+                        }
+                    }
+
+                    // Beware that the final length might not fit in 32 bits so we take care of that
+                    tmp = n * 8;
+                    tmp = tmp.toString(16).match(/(.*?)(.{0,8})$/);
+                    lo = parseInt(tmp[2], 16);
+                    hi = parseInt(tmp[1], 16) || 0;
+
+                    tail[14] = lo;
+                    tail[15] = hi;
+
+                    md5cycle(state, tail);
+
+                    return state;
+                },
+
+                hex_chr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'],
+
+                rhex = function (n) {
+                    var s = '',
+                            j;
+                    for (j = 0; j < 4; j += 1) {
+                        s += hex_chr[(n >> (j * 8 + 4)) & 0x0F] + hex_chr[(n >> (j * 8)) & 0x0F];
+                    }
+                    return s;
+                },
+
+                hex = function (x) {
+                    var i;
+                    for (i = 0; i < x.length; i += 1) {
+                        x[i] = rhex(x[i]);
+                    }
+                    return x.join('');
+                },
+
+                md5 = function (s) {
+                    return hex(md51(s));
+                },
 
 
-            ////////////////////////////////////////////////////////////////////////////
+                ////////////////////////////////////////////////////////////////////////////
 
-            /**
-             * SparkMD5 OOP implementation.
-             *
-             * Use this class to perform an incremental md5, otherwise use the
-             * static methods instead.
-             */
-            SparkMD5 = function () {
-                // call reset to init the instance
-                this.reset();
-            };
+                /**
+                 * SparkMD5 OOP implementation.
+                 *
+                 * Use this class to perform an incremental md5, otherwise use the
+                 * static methods instead.
+                 */
+                SparkMD5 = function () {
+                    // call reset to init the instance
+                    this.reset();
+                };
 
 
         // In some cases the fast add32 function cannot be used..
         if (md5('hello') !== '5d41402abc4b2a76b9719d911017c592') {
             add32 = function (x, y) {
                 var lsw = (x & 0xFFFF) + (y & 0xFFFF),
-                    msw = (x >> 16) + (y >> 16) + (lsw >> 16);
+                        msw = (x >> 16) + (y >> 16) + (lsw >> 16);
                 return (msw << 16) | (lsw & 0xFFFF);
             };
         }
@@ -7260,7 +7287,7 @@ window.jQuery = $;
             this._length += contents.length;
 
             var length = this._buff.length,
-                i;
+                    i;
 
             for (i = 64; i <= length; i += 64) {
                 md5cycle(this._state, md5blk(this._buff.substring(i - 64, i)));
@@ -7282,10 +7309,10 @@ window.jQuery = $;
          */
         SparkMD5.prototype.end = function (raw) {
             var buff = this._buff,
-                length = buff.length,
-                i,
-                tail = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                ret;
+                    length = buff.length,
+                    i,
+                    tail = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    ret;
 
             for (i = 0; i < length; i += 1) {
                 tail[i >> 2] |= buff.charCodeAt(i) << ((i % 4) << 3);
@@ -7307,9 +7334,9 @@ window.jQuery = $;
          */
         SparkMD5.prototype._finish = function (tail, length) {
             var i = length,
-                tmp,
-                lo,
-                hi;
+                    tmp,
+                    lo,
+                    hi;
 
             tail[i >> 2] |= 0x80 << ((i % 4) << 3);
             if (i > 55) {
@@ -7412,8 +7439,8 @@ window.jQuery = $;
             // TODO: we could avoid the concatenation here but the algorithm would be more complex
             //       if you find yourself needing extra performance, please make a PR.
             var buff = this._concatArrayBuffer(this._buff, arr),
-                length = buff.length,
-                i;
+                    length = buff.length,
+                    i;
 
             this._length += arr.byteLength;
 
@@ -7438,10 +7465,10 @@ window.jQuery = $;
          */
         SparkMD5.ArrayBuffer.prototype.end = function (raw) {
             var buff = this._buff,
-                length = buff.length,
-                tail = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                i,
-                ret;
+                    length = buff.length,
+                    tail = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    i,
+                    ret;
 
             for (i = 0; i < length; i += 1) {
                 tail[i >> 2] |= buff[i] << ((i % 4) << 3);
@@ -7486,7 +7513,7 @@ window.jQuery = $;
          */
         SparkMD5.ArrayBuffer.prototype._concatArrayBuffer = function (first, second) {
             var firstLength = first.length,
-                result = new Uint8Array(firstLength + second.byteLength);
+                    result = new Uint8Array(firstLength + second.byteLength);
 
             result.set(first);
             result.set(new Uint8Array(second), firstLength);
@@ -7515,14 +7542,14 @@ window.jQuery = $;
 
             loadFromBlob: function (file) {
                 var blob = file.getSource(),
-                    chunkSize = 2 * 1024 * 1024,
-                    chunks = Math.ceil(blob.size / chunkSize),
-                    chunk = 0,
-                    owner = this.owner,
-                    spark = new SparkMD5.ArrayBuffer(),
-                    me = this,
-                    blobSlice = blob.mozSlice || blob.webkitSlice || blob.slice,
-                    loadNext, fr;
+                        chunkSize = 2 * 1024 * 1024,
+                        chunks = Math.ceil(blob.size / chunkSize),
+                        chunk = 0,
+                        owner = this.owner,
+                        spark = new SparkMD5.ArrayBuffer(),
+                        me = this,
+                        blobSlice = blob.mozSlice || blob.webkitSlice || blob.slice,
+                        loadNext, fr;
 
                 fr = new FileReader();
 
@@ -7576,8 +7603,8 @@ window.jQuery = $;
     ], function (Base, Runtime, CompBase) {
 
         var $ = Base.$,
-            type = 'flash',
-            components = {};
+                type = 'flash',
+                components = {};
 
 
         function getFlashVersion() {
@@ -7589,7 +7616,7 @@ window.jQuery = $;
             } catch (ex) {
                 try {
                     version = new ActiveXObject('ShockwaveFlash.ShockwaveFlash')
-                        .GetVariable('$version');
+                            .GetVariable('$version');
                 } catch (ex2) {
                     version = '0.0';
                 }
@@ -7600,10 +7627,10 @@ window.jQuery = $;
 
         function FlashRuntime() {
             var pool = {},
-                clients = {},
-                destroy = this.destroy,
-                me = this,
-                jsreciver = Base.guid('webuploader_');
+                    clients = {},
+                    destroy = this.destroy,
+                    me = this,
+                    jsreciver = Base.guid('webuploader_');
 
             Runtime.apply(me, arguments);
             me.type = type;
@@ -7612,9 +7639,9 @@ window.jQuery = $;
             // 这个方法的调用者，实际上是RuntimeClient
             me.exec = function (comp, fn/*, args...*/) {
                 var client = this,
-                    uid = client.uid,
-                    args = Base.slice(arguments, 2),
-                    instance;
+                        uid = client.uid,
+                        args = Base.slice(arguments, 2),
+                        instance;
 
                 clients[uid] = client;
 
@@ -7635,7 +7662,7 @@ window.jQuery = $;
 
             function handler(evt, obj) {
                 var type = evt.type || evt,
-                    parts, uid;
+                        parts, uid;
 
                 parts = type.split('::');
                 uid = parts[0];
@@ -7671,7 +7698,7 @@ window.jQuery = $;
 
             this.flashExec = function (comp, fn) {
                 var flash = me.getFlash(),
-                    args = Base.slice(arguments, 2);
+                        args = Base.slice(arguments, 2);
 
                 return flash.exec(this.uid, comp, fn, args);
             };
@@ -7684,8 +7711,8 @@ window.jQuery = $;
 
             init: function () {
                 var container = this.getContainer(),
-                    opts = this.options,
-                    html;
+                        opts = this.options,
+                        html;
 
                 // if not the minimal height, shims are not initialized
                 // in older browsers (e.g FF3.6, IE6,7,8, Safari 4.0,5.0, etc)
@@ -7700,19 +7727,19 @@ window.jQuery = $;
 
                 // insert flash object
                 html = '<object id="' + this.uid + '" type="application/' +
-                    'x-shockwave-flash" data="' + opts.swf + '" ';
+                        'x-shockwave-flash" data="' + opts.swf + '" ';
 
                 if (Base.browser.ie) {
                     html += 'classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" ';
                 }
 
                 html += 'width="100%" height="100%" style="outline:0">' +
-                    '<param name="movie" value="' + opts.swf + '" />' +
-                    '<param name="flashvars" value="uid=' + this.uid +
-                    '&jsreciver=' + this.jsreciver + '" />' +
-                    '<param name="wmode" value="transparent" />' +
-                    '<param name="allowscriptaccess" value="always" />' +
-                    '</object>';
+                        '<param name="movie" value="' + opts.swf + '" />' +
+                        '<param name="flashvars" value="uid=' + this.uid +
+                        '&jsreciver=' + this.jsreciver + '" />' +
+                        '<param name="wmode" value="transparent" />' +
+                        '<param name="allowscriptaccess" value="always" />' +
+                        '</object>';
 
                 container.html(html);
             },
@@ -7733,7 +7760,7 @@ window.jQuery = $;
                 // @todo fix this later
                 flashExec: function () {
                     var owner = this.owner,
-                        runtime = this.getRuntime();
+                            runtime = this.getRuntime();
 
                     return runtime.flashExec.apply(owner, arguments);
                 }
@@ -7760,7 +7787,7 @@ window.jQuery = $;
         return FlashRuntime.register('FilePicker', {
             init: function (opts) {
                 var copy = $.extend({}, opts),
-                    len, i;
+                        len, i;
 
                 // 修复Flash再没有设置title的情况下无法弹出flash文件选择框的bug.
                 len = copy.accept && copy.accept.length;
@@ -7828,17 +7855,17 @@ window.jQuery = $;
 
             send: function () {
                 var owner = this.owner,
-                    opts = this.options,
-                    xhr = this._initAjax(),
-                    blob = owner._blob,
-                    server = opts.server,
-                    binary;
+                        opts = this.options,
+                        xhr = this._initAjax(),
+                        blob = owner._blob,
+                        server = opts.server,
+                        binary;
 
                 xhr.connectRuntime(blob.ruid);
 
                 if (opts.sendAsBinary) {
                     server += (/\?/.test(server) ? '&' : '?') +
-                        $.param(owner._formData);
+                            $.param(owner._formData);
 
                     binary = blob.uid;
                 } else {
@@ -7847,7 +7874,7 @@ window.jQuery = $;
                     });
 
                     xhr.exec('appendBlob', opts.fileVal, blob.uid,
-                        opts.filename || owner._formData.name || '');
+                            opts.filename || owner._formData.name || '');
                 }
 
                 this._setRequestHeader(xhr, opts.headers);
@@ -7887,8 +7914,8 @@ window.jQuery = $;
 
             _initAjax: function () {
                 var me = this,
-                    xhr = new RuntimeClient('XMLHttpRequest');
- debugger
+                        xhr = new RuntimeClient('XMLHttpRequest');
+                debugger
                 xhr.on('uploadprogress progress', function (e) {
                     var percent = e.loaded / e.total;
                     percent = Math.min(1, Math.max(0, percent));
@@ -7897,9 +7924,9 @@ window.jQuery = $;
 
                 xhr.on('load', function () {
                     var status = xhr.exec('getStatus'),
-                        readBody = false,
-                        err = '',
-                        p;
+                            readBody = false,
+                            err = '',
+                            p;
 
                     xhr.off();
                     me._xhr = null;
@@ -8055,12 +8082,12 @@ window.jQuery = $;
         'widgets/widget'
     ], function (Base, Uploader) {
         var $ = Base.$,
-            logUrl = ' http://static.tieba.baidu.com/tb/pms/img/st.gif??',
-            product = (location.hostname || location.host || 'protected').toLowerCase(),
+                logUrl = ' http://static.tieba.baidu.com/tb/pms/img/st.gif??',
+                product = (location.hostname || location.host || 'protected').toLowerCase(),
 
-            // 只针对 baidu 内部产品用户做统计功能。
-            enable = product && /baidu/i.exec(product),
-            base;
+                // 只针对 baidu 内部产品用户做统计功能。
+                enable = product && /baidu/i.exec(product),
+                base;
 
         if (!enable) {
             return;
@@ -8077,8 +8104,8 @@ window.jQuery = $;
 
         function send(data) {
             var obj = $.extend({}, base, data),
-                url = logUrl.replace(/^(.*)\?/, '$1' + $.param(obj)),
-                image = new Image();
+                    url = logUrl.replace(/^(.*)\?/, '$1' + $.param(obj)),
+                    image = new Image();
 
             image.src = url;
         }
@@ -8088,27 +8115,27 @@ window.jQuery = $;
 
             init: function () {
                 var owner = this.owner,
-                    count = 0,
-                    size = 0;
+                        count = 0,
+                        size = 0;
 
                 owner
-                    .on('error', function (code) {
-                        send({
-                            type: 2,
-                            c_error_code: code
-                        });
-                    })
-                    .on('uploadError', function (file, reason) {
-                        send({
-                            type: 2,
-                            c_error_code: 'UPLOAD_ERROR',
-                            c_reason: '' + reason
-                        });
-                    })
-                    .on('uploadComplete', function (file) {
-                        count++;
-                        size += file.size;
-                    }).on('uploadFinished', function () {
+                        .on('error', function (code) {
+                            send({
+                                type: 2,
+                                c_error_code: code
+                            });
+                        })
+                        .on('uploadError', function (file, reason) {
+                            send({
+                                type: 2,
+                                c_error_code: 'UPLOAD_ERROR',
+                                c_reason: '' + reason
+                            });
+                        })
+                        .on('uploadComplete', function (file) {
+                            count++;
+                            size += file.size;
+                        }).on('uploadFinished', function () {
                     send({
                         c_count: count,
                         c_size: size

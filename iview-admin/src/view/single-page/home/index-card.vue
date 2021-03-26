@@ -18,34 +18,31 @@
 </template>
 
 <script>
-export default {
-  name: 'index-card',
-  components: {
-  },
-  props: {
-    widths: Number,
-    data: {
-      type: Object,
-      default () {
-        return {}
-      }
-    },
-    styles: {
-      type: Object,
-      default () {
-        return {}
-      }
+    export default {
+        name: 'index-card',
+        components: {},
+        props: {
+            widths: Number,
+            data: {
+                type: Object,
+                default() {
+                    return {}
+                }
+            },
+            styles: {
+                type: Object,
+                default() {
+                    return {}
+                }
+            }
+        },
+        data() {
+            return {}
+        },
+        mounted() {
+        },
+        methods: {}
     }
-  },
-  data () {
-    return {
-    }
-  },
-  mounted () {
-  },
-  methods: {
-  }
-}
 </script>
 
 <style>

@@ -12,74 +12,71 @@
     </svg>
 </template>
 <script>
-export default {
-  name: 'bingo-file-icon',
-  data () {
-    return {
-      fileType: ''
+    export default {
+        name: 'bingo-file-icon',
+        data() {
+            return {
+                fileType: ''
+            }
+        },
+        components: {},
+        props: {
+            type: {
+                type: String,
+                default: 'xlsx'
+            },
+            width: {
+                type: String,
+                default: '30px'
+            },
+            height: {
+                type: String,
+                default: '30px'
+            }
+        },
+        watch: {
+            type() {
+                if (this.type == 'doc' || this.type == 'docx') {
+                    this.fileType = 'word'
+                } else if (this.type == 'xls' || this.type == 'xlsx') {
+                    this.fileType = 'excel'
+                } else if (this.type == 'ppt' || this.type == 'pptx') {
+                    this.fileType = 'ppt'
+                } else if (this.type == 'pdf') {
+                    this.fileType = 'pdf'
+                } else if (this.type == 'txt') {
+                    this.fileType = 'txt'
+                } else if (this.type == 'mp4') {
+                    this.fileType = 'yinpin'
+                } else if (this.type == 'gif' || this.type == 'jpg' || this.type == 'jpeg' || this.type == 'bmp' || this.type == 'png') {
+                    this.fileType = 'picture'
+                } else {
+                    this.fileType = 'default'
+                }
+            }
+        },
+        mounted() {
+            if (this.type == 'doc' || this.type == 'docx') {
+                this.fileType = 'word'
+            } else if (this.type == 'xls' || this.type == 'xlsx') {
+                this.fileType = 'excel'
+            } else if (this.type == 'ppt' || this.type == 'pptx') {
+                this.fileType = 'ppt'
+            } else if (this.type == 'pdf') {
+                this.fileType = 'pdf'
+            } else if (this.type == 'txt') {
+                this.fileType = 'txt'
+            } else if (this.type == 'mp4') {
+                this.fileType = 'yinpin'
+            } else if (this.type == 'gif' || this.type == 'jpg' || this.type == 'jpeg' || this.type == 'bmp' || this.type == 'png') {
+                this.fileType = 'picture'
+            } else {
+                this.fileType = 'default'
+            }
+        },
+        computed: {},
+        methods: {}
     }
-  },
-  components: {
-  },
-  props: {
-    type: {
-      type: String,
-      default: 'xlsx'
-    },
-    width: {
-      type: String,
-      default: '30px'
-    },
-    height: {
-      type: String,
-      default: '30px'
-    }
-  },
-  watch: {
-    type () {
-      if (this.type == 'doc' || this.type == 'docx') {
-        this.fileType = 'word'
-      } else if (this.type == 'xls' || this.type == 'xlsx') {
-        this.fileType = 'excel'
-      } else if (this.type == 'ppt' || this.type == 'pptx') {
-        this.fileType = 'ppt'
-      } else if (this.type == 'pdf') {
-        this.fileType = 'pdf'
-      } else if (this.type == 'txt') {
-        this.fileType = 'txt'
-      } else if (this.type == 'mp4') {
-        this.fileType = 'yinpin'
-      } else if (this.type == 'gif' || this.type == 'jpg' || this.type == 'jpeg' || this.type == 'bmp' || this.type == 'png') {
-        this.fileType = 'picture'
-      } else {
-        this.fileType = 'default'
-      }
-    }
-  },
-  mounted () {
-    if (this.type == 'doc' || this.type == 'docx') {
-      this.fileType = 'word'
-    } else if (this.type == 'xls' || this.type == 'xlsx') {
-      this.fileType = 'excel'
-    } else if (this.type == 'ppt' || this.type == 'pptx') {
-      this.fileType = 'ppt'
-    } else if (this.type == 'pdf') {
-      this.fileType = 'pdf'
-    } else if (this.type == 'txt') {
-      this.fileType = 'txt'
-    } else if (this.type == 'mp4') {
-      this.fileType = 'yinpin'
-    } else if (this.type == 'gif' || this.type == 'jpg' || this.type == 'jpeg' || this.type == 'bmp' || this.type == 'png') {
-      this.fileType = 'picture'
-    } else {
-      this.fileType = 'default'
-    }
-  },
-  computed: {
-  },
-  methods: {
-  }
-}
 </script>
 <style lang="less" scoped>
 </style>

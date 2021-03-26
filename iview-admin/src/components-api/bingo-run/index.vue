@@ -1,27 +1,27 @@
 <template>
-  <div class="online-run">
-    <online-header class="online-run-header"
-                   @run="handleRun"
-                   @reset="handleReset"
-                   @help="handleHelp"></online-header>
-    <div class="main">
-      <split-pane :value="0.5">
-        <template v-slot:left>
-          <codemirror v-model="code"
-                      :options="cmOptions"></codemirror>
-        </template>
-        <template v-slot:right>
-          <div class="mount-el"
-               id="mount-el"></div>
-        </template>
-      </split-pane>
+    <div class="online-run">
+        <online-header class="online-run-header"
+                       @run="handleRun"
+                       @reset="handleReset"
+                       @help="handleHelp"></online-header>
+        <div class="main">
+            <split-pane :value="0.5">
+                <template v-slot:left>
+                    <codemirror v-model="code"
+                                :options="cmOptions"></codemirror>
+                </template>
+                <template v-slot:right>
+                    <div class="mount-el"
+                         id="mount-el"></div>
+                </template>
+            </split-pane>
+        </div>
     </div>
-  </div>
 </template>
 
 <script>
-// codemirror相关
-    import { codemirror } from 'vue-codemirror'
+    // codemirror相关
+    import {codemirror} from 'vue-codemirror'
     import '@/components-api/bingo-run/codeMirror/index.js'
     import codeTemplate from '@/components-api/bingo-run/codeMirror/codeTemplate.js'
     import '@/components-api/bingo-run/codeMirror/myCodeMirror.css'
@@ -30,7 +30,7 @@
     import OnlineHeader from '@/components-api/bingo-run/components/onlineHeader.vue'
     import SplitPane from '@/components-api/bingo-run/components/splitPane.vue'
     // 导入utils中分割字符串方法
-    import { getSource, getUuid } from '@/components-api/bingo-run/utils/util'
+    import {getSource, getUuid} from '@/components-api/bingo-run/utils/util'
     import Vue from 'vue'
 
     export default {
@@ -40,7 +40,7 @@
             OnlineHeader,
             SplitPane
         },
-        data () {
+        data() {
             return {
                 // code: codeTemplate,
                 cmOptions: {
@@ -80,22 +80,22 @@
         watch: {
             code: {
                 deep: true,
-                handler (value) {
+                handler(value) {
                     this.handleRun()
                 }
             }
         },
         methods: {
-            handleRun () {
+            handleRun() {
                 this.unMountUserCode()
                 this.splitCode()
                 this.mountUserCode()
             },
-            handleReset () {
+            handleReset() {
                 this.code = codeTemplate
                 this.unMountUserCode()
             },
-            handleHelp () {
+            handleHelp() {
                 this.$Modal.info({
                     title: '什么是Run Code',
                     content: `<p>Run Code 是一个集成了 iView 环境的在线运行 iView 示例的工具，您可以直接编写一个 .vue 文件，它包含了 template、script、style 三部分。</p>
@@ -105,7 +105,7 @@
                        <p>本页面是仿写iview Run页面，iview Run的访问地址：https://run.iviewui.com/</p>`
                 })
             },
-            mountUserCode () {
+            mountUserCode() {
                 this.userCode.uuid = getUuid()
                 // 生成vue组件挂载
                 const parseStrToObj = new Function(this.userCode.script)()
@@ -123,7 +123,7 @@
                     document.head.appendChild(styleEl)
                 }
             },
-            unMountUserCode () {
+            unMountUserCode() {
                 // 销毁vue组件
                 if (this.userCode.component) {
                     this.mountEl.removeChild(this.userCode.component.$el)
@@ -136,16 +136,16 @@
                     document.head.removeChild(userStyle)
                 }
             },
-            splitCode () {
+            splitCode() {
                 this.userCode.template = getSource(this.code, 'template')
                 this.userCode.style = getSource(this.code, 'style')
                 this.userCode.script = getSource(this.code, 'script').replace(
-                    /export default/,
-                    'return '
+                        /export default/,
+                        'return '
                 )
             }
         },
-        mounted () {
+        mounted() {
             this.mountEl = document.getElementById('mount-el')
             this.handleRun()
         }
@@ -153,26 +153,26 @@
 </script>
 
 <style lang="less" scoped>
-  .online-run {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    // background-color: rgb(248, 248, 249);
-    &-header {
-      width: 100%;
-      height: 50px;
-      padding: 0 40px;
-      margin-bottom: 1px;
-      box-sizing: border-box;
-      background: #fff;
-      box-shadow: 0 1px 3px rgba(26, 26, 26, 0.1);
+    .online-run {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        // background-color: rgb(248, 248, 249);
+        &-header {
+            width: 100%;
+            height: 50px;
+            padding: 0 40px;
+            margin-bottom: 1px;
+            box-sizing: border-box;
+            background: #fff;
+            box-shadow: 0 1px 3px rgba(26, 26, 26, 0.1);
+        }
+        .main {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: row;
+        }
     }
-    .main {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: row;
-    }
-  }
 </style>

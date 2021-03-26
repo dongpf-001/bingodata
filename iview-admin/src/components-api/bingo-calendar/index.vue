@@ -19,37 +19,36 @@
     </div>
 </template>
 <script>
-import Calendar from '@/components-api/iview/components/calendar'
-export default {
-  name: 'bingo-calendar',
-  data () {
-    return {
+    import Calendar from '@/components-api/iview/components/calendar'
+
+    export default {
+        name: 'bingo-calendar',
+        data() {
+            return {}
+        },
+        props: {
+            value: {
+                type: [Date, String, Number],
+                default() {
+                    return ''
+                }
+            }
+        },
+        components: {
+            Calendar
+        },
+        computed: {
+            date: {
+                get: function () {
+                    return this.value
+                },
+                set: function (value) {
+                    this.$emit('input', value)
+                }
+            }
+        },
+        methods: {}
     }
-  },
-  props: {
-    value: {
-      type: [Date, String, Number],
-      default () {
-        return ''
-      }
-    }
-  },
-  components: {
-    Calendar
-  },
-  computed: {
-    date: {
-      get: function () {
-        return this.value
-      },
-      set: function (value) {
-        this.$emit('input', value)
-      }
-    }
-  },
-  methods: {
-  }
-}
 </script>
 <style lang="less">
 </style>
