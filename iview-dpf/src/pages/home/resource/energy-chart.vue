@@ -18,7 +18,8 @@
             <div v-height="260" style="text-align: center;margin-top: 16px">
                 <div v-for="item in textData" style="margin-bottom: 12px">
                     <Tooltip :content="'用能'+item.value1 +'  节能'+item.value" style="width: 100%">
-                        <Progress :percent="100" :success-percent="item.value1*100/(item.value1+item.value)" hide-info stroke-color="#4c84ff"/>
+                        <Progress :percent="100" :success-percent="item.value1*100/(item.value1+item.value)"
+                                  :stroke-width="15" hide-info stroke-color="#4c84ff"/>
                         <p style="text-align: left">{{item.name}}</p>
                     </Tooltip>
                 </div>
