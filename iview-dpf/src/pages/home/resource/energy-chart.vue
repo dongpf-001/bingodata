@@ -1,16 +1,27 @@
 <template>
     <Row :gutter="24">
-        <Col :xl="16" :lg="12" :md="24" :sm="24" :xs="24">
+        <Col :xl="10" :lg="10" :md="24" :sm="24" :xs="24">
             <h4>用能成本</h4>
             <div ref="visitChart" v-height="260"></div>
         </Col>
-        <Col :xl="8" :lg="12" :md="24" :sm="24" :xs="24">
+        <Col :xl="7" :lg="7" :md="12" :sm="12" :xs="12">
             <h4>合计</h4>
             <div v-height="220" style="text-align: center">
                 <div ref="pie" v-height="220"></div>
             </div>
             <div v-height="40">
                 <p style="padding-top: 12px;font-size: 22px;text-align: center">合计：<span>2939元</span></p>
+            </div>
+        </Col>
+        <Col :xl="7" :lg="7" :md="12" :sm="12" :xs="12">
+            <h4>成本统计</h4>
+            <div v-height="260" style="text-align: center;margin-top: 16px">
+                <div v-for="item in textData" style="margin-bottom: 12px">
+                    <Tooltip :content="'用能'+item.value1 +'  节能'+item.value" style="width: 100%">
+                        <Progress :percent="100" :success-percent="item.value1*100/(item.value1+item.value)" hide-info stroke-color="#4c84ff"/>
+                        <p style="text-align: left">{{item.name}}</p>
+                    </Tooltip>
+                </div>
             </div>
         </Col>
     </Row>
@@ -44,6 +55,28 @@
                         name: '废水',
                         value: '322 m³'
                     }
+                ],
+                textData: [
+                    {
+                        name: '终检、贴膜',
+                        value1: 111,
+                        value: 121
+                    },
+                    {
+                        name: '前处理电泳',
+                        value1: 111,
+                        value: 312
+                    },
+                    {
+                        name: '修饰',
+                        value1: 156,
+                        value: 121
+                    },
+                    {
+                        name: '电泳打磨',
+                        value1: 123,
+                        value: 177
+                    },
                 ]
             }
         },
