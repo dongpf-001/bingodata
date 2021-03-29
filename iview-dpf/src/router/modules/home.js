@@ -21,7 +21,7 @@ export default {
             meta: {
                 ...meta,
                 title: '能耗总览',
-                closable: false
+                closable: true
             },
             component: () => import('@/pages/home/resource')
         },
