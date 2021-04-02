@@ -42,13 +42,13 @@ module.exports = {
         config
             // 开发环境
             .when(process.env.NODE_ENV === 'development',
-                  // sourcemap不包含列信息
-                  config => config.devtool('cheap-source-map')
+                // sourcemap不包含列信息
+                config => config.devtool('cheap-source-map')
             )
             // 非开发环境
             .when(process.env.NODE_ENV !== 'development', config => {
 
-        });
+            });
         // 不编译 iView Pro
         config.module
             .rule('js')

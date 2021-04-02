@@ -188,7 +188,7 @@
                         {
                             type: 'pie',
                             radius: '80%',
-                            center:['40%','50%'],
+                            center:['40%', '50%'],
                             data: data,
                             emphasis: {
                                 itemStyle: {

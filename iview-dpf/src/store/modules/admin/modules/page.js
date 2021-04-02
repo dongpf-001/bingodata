@@ -74,7 +74,7 @@ export default {
                             if (access && !includeArray(find.auth, access)) state = false;
                         }
                         return state;
-                });
+                    });
                 // 根据 opened 数据生成缓存设置
                 commit('keepAliveRefresh');
                 // end
