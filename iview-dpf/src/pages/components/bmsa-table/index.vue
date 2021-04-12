@@ -4,8 +4,9 @@
     </div>
 </template>
 <script>
-    import * as bmsaTable from '@/components/bmsa-table'
+    import bmsaTable from '@/components/bmsa-table'
     export default {
+        name: 'demo-table',
         components: {
             bmsaTable
         },
