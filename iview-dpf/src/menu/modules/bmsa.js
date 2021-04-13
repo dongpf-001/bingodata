@@ -10,5 +10,9 @@ export default {
             path: `${pre}bmsa-table`,
             title: '表格'
         },
+        {
+            path: `${pre}bmsa-shear-image`,
+            title: '图片裁剪'
+        },
     ]
 }

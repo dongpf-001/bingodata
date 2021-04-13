@@ -25,5 +25,15 @@ export default {
             },
             component: () => import('@/pages/components/bmsa-table')
         },
+        {
+            path: 'bmsa-shear-image',
+            name: `${pre}shear-image`,
+            meta: {
+                ...meta,
+                title: '图片裁剪',
+                closable: true
+            },
+            component: () => import('@/pages/components/bmsa-shear-image')
+        },
     ]
 };
