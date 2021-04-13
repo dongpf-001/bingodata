@@ -15,6 +15,7 @@
         },
         data () {
             return {
+                exampleImageSrc: ''
             }
         },
         computed: {},
