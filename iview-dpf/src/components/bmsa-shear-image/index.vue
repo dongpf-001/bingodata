@@ -68,6 +68,10 @@
             cropButtonText: { // 提交按钮名称
                 type: String,
                 default: '裁剪'
+            },
+            angle: { // 旋转角度
+                type: Number,
+                default: 90
             }
         },
         data () {
@@ -106,7 +110,7 @@
                 this.insideSrc = src
             },
             rotate () {
-                this.cropper.rotate(90)
+                this.cropper.rotate(this.angle)
             },
             shrink () {
                 this.cropper.zoom(-0.1)
