@@ -72,31 +72,40 @@
             angle: { // 旋转角度
                 type: Number,
                 default: 90
+            },
+            zoom: { // 放大缩小比例
+                type: Number,
+                default: 0.1
             }
         },
         data () {
             return {
-                cropper: null,
+                cropper: null, // cropper实体
                 insideSrc: ''
             }
         },
         computed: {
+            // 裁剪区域生成id
             imgId () {
                 return `cropper${this._uid}`
             },
+            // 显示区域生成id
             previewId () {
                 return `cropper_preview${this._uid}`
             }
         },
         watch: {
+            // 监听上传地址
             src (src) {
                 this.replace(src)
             },
+            // 监听重新上传图片
             insideSrc (src) {
                 this.replace(src)
             }
         },
         methods: {
+            // 上传前的操作，终止上传，自定义上传
             beforeUpload (file) {
                 const reader = new FileReader()
                 reader.readAsDataURL(file)
@@ -105,22 +114,28 @@
                 }
                 return false
             },
+            // 重新上传图片后获取新的地址
             replace (src) {
                 this.cropper.replace(src)
                 this.insideSrc = src
             },
+            // 旋转
             rotate () {
                 this.cropper.rotate(this.angle)
             },
+            // 缩小
             shrink () {
-                this.cropper.zoom(-0.1)
+                this.cropper.zoom(-this.zoom)
             },
+            // 放大
             magnify () {
-                this.cropper.zoom(0.1)
+                this.cropper.zoom(this.zoom)
             },
+            // 水平或垂直调转
             scale (d) {
                 this.cropper[`scale${d}`](-this.cropper.getData()[`scale${d}`])
             },
+            // 移动
             move (...argu) {
                 this.cropper.move(...argu)
             },
@@ -132,6 +147,7 @@
             }
         },
         mounted () {
+            // 页面渲染完后初始化裁剪实例
             this.$nextTick(() => {
                 let dom = document.getElementById(this.imgId)
                 this.cropper = new Cropper(dom, {
