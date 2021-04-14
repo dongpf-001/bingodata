@@ -4,6 +4,8 @@ import home from './modules/home';
 import bmsa from './modules/bmsa';
 
 import BasicLayout from '@/layouts/basic-layout';
+// 系统管理
+import system from './modules/system';
 
 /**
  * 在主框架内显示
@@ -59,6 +61,7 @@ const frameIn = [
             },
         ]
     },
+    system,
     dashboard,
     home,
     bmsa,

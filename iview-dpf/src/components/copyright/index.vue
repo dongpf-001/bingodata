@@ -26,7 +26,7 @@
                         blankTarget: true
                     }
                 ],
-                copyright: 'Copyright © 2019 北京视图更新科技有限公司'
+                copyright: 'Copyright © 2021 北京视图更新科技有限公司'
             }
         }
     }

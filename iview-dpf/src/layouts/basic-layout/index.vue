@@ -35,7 +35,7 @@
                     </keep-alive>
                 </div>
             </Content>
-            <!--<i-copyright />-->
+            <i-copyright />
         </Layout>
         <div v-if="isMobile && !hideSider">
             <Drawer v-model="showDrawer" placement="left" :closable="false" :class-name="drawerClasses">
@@ -59,7 +59,7 @@
     import iHeaderI18n from './header-i18n';
     import iHeaderSetting from './header-setting';
     import iTabs from './tabs';
-    // import iCopyright from '@/components/copyright';
+    import iCopyright from '@/components/copyright';
 
     import { mapState, mapGetters, mapMutations } from 'vuex';
     import Setting from '@/setting';
@@ -68,7 +68,7 @@
 
     export default {
         name: 'BasicLayout',
-        components: { iMenuHead, iMenuSide, iHeaderLogo, iHeaderCollapse, iHeaderReload, iHeaderBreadcrumb, iHeaderSearch, iHeaderUser, iHeaderI18n, iHeaderLog, iHeaderFullscreen, iHeaderSetting, iHeaderNotice, iTabs },
+        components: { iMenuHead, iMenuSide, iCopyright, iHeaderLogo, iHeaderCollapse, iHeaderReload, iHeaderBreadcrumb, iHeaderSearch, iHeaderUser, iHeaderI18n, iHeaderLog, iHeaderFullscreen, iHeaderSetting, iHeaderNotice, iTabs },
         data () {
             return {
                 showDrawer: false,

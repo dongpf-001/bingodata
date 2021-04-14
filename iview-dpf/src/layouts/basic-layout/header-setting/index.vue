@@ -38,6 +38,12 @@
             <Divider size="small">导航设置</Divider>
 
             <div class="i-layout-header-setting-item">
+                <span class="i-layout-header-setting-item-desc">显示顶栏菜单</span>
+                <span class="i-layout-header-setting-item-action">
+                    <Switch size="small" :value="headerMenu" @on-change="(val) => handleChangeSetting('headerMenu', val)" />
+                </span>
+            </div>
+            <div class="i-layout-header-setting-item">
                 <span class="i-layout-header-setting-item-desc">固定侧边栏</span>
                 <span class="i-layout-header-setting-item-action">
                     <Switch size="small" :value="siderFix" @on-change="(val) => handleChangeSetting('siderFix', val)" />
@@ -177,6 +183,7 @@
                 'siderTheme',
                 'headerTheme',
                 'headerStick',
+                'headerMenu',
                 'siderFix',
                 'headerFix',
                 'headerHide',

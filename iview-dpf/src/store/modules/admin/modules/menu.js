@@ -45,12 +45,16 @@ export default {
                 count: 1
             },
             {
-                path: '/search',
+                path: '/system',
                 text: 'New',
                 type: 'warning'
             },
             {
-                path: '/result',
+                path: '/list',
+                color: 'cyan'
+            },
+            {
+                path: '/list/table-list',
                 color: 'cyan'
             }
         ]

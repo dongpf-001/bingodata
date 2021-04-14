@@ -4,9 +4,12 @@ import dashboard from './modules/dashboard';
 import home from './modules/home';
 // 组件示例
 import bmsa from './modules/bmsa';
+// 系统管理
+import system from './modules/system';
 
 export default [
     dashboard,
     home,
-    bmsa
+    system,
+    bmsa,
 ];

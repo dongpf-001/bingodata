@@ -4,7 +4,7 @@ import '@babel/polyfill';
 import Vue from 'vue';
 import App from './App';
 
-// 表格
+// vxe-table
 import 'xe-utils'
 import VXETable from 'vxe-table'
 import 'vxe-table/lib/style.css'
