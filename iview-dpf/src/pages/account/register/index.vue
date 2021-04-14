@@ -125,7 +125,7 @@
                         })
                             .then(() => {
                                 this.$router.replace({ name: 'register-result' });
-                        });
+                            });
                     }
                 }
             },
