@@ -11,5 +11,5 @@ export default [
     dashboard,
     home,
     system,
-    bmsa,
+    bmsa
 ];

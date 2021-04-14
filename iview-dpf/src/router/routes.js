@@ -64,7 +64,7 @@ const frameIn = [
     system,
     dashboard,
     home,
-    bmsa,
+    bmsa
 ];
 
 /**
