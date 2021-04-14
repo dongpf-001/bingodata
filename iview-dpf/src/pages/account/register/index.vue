@@ -122,10 +122,9 @@
                             password,
                             mobile,
                             captcha
-                        })
-                            .then(() => {
-                                this.$router.replace({ name: 'register-result' });
-                            });
+                        }).then(() => {
+                            this.$router.replace({ name: 'register-result' });
+                        });
                     }
                 }
             },
