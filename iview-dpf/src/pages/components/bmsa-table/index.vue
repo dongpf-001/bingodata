@@ -1,17 +1,6 @@
 <template>
     <div class="content-inner">
-        <!--<bmsa-table></bmsa-table>-->
-        <vxe-toolbar>
-            <template #buttons>
-                <Button type="primary" @click="allAlign = 'left'">
-                    <Icon type="md-trash" size="16" />居左
-                </Button>
-                <Button type="primary" @click="allAlign = 'center'">居中</Button>
-                <Button type="primary" @click="allAlign = 'right'">居右</Button>
-            </template>
-        </vxe-toolbar>
-    
-        <vxe-table ref="xTable1"
+        <bmsa-table ref="xTable1"
                     :align="allAlign"
                    :data="tableData"
                    :cell-style="cellStyle"
@@ -22,6 +11,13 @@
                    height="400px"
                    highlight-hover-row
                    @radio-change="radioChangeEvent">
+            <template slot="buttons">
+                <Button type="primary" @click="allAlign = 'left'">
+                    <Icon type="md-trash" size="16" />居左
+                </Button>
+                <Button type="primary" @click="allAlign = 'center'">居中</Button>
+                <Button type="primary" @click="allAlign = 'right'">居右</Button>
+            </template>
             <vxe-table-column type="seq" title="序号" width="60" align="center" fixed="left"></vxe-table-column>
             <vxe-table-column type="radio" width="60" align="center" >
                 <template #header>
@@ -41,7 +37,7 @@
             <vxe-table-column field="email" title="邮箱" width="200"></vxe-table-column>
             <vxe-table-column field="number" title="身份证号" width="200"></vxe-table-column>
             <vxe-table-column field="school" title="学校" width="200"></vxe-table-column>
-        </vxe-table>
+        </bmsa-table>
     </div>
 </template>
 <script>
