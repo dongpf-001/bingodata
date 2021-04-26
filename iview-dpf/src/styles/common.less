@@ -1,9 +1,47 @@
 #app, body, html{
     height: 100%;
+    overflow: hidden;
 }
 body{
     background-color: @background-color-base;
     font-size: 14px;
+}
+
+#app{
+  >.i-layout,>.i-layout>div,>.i-layout>div>.i-layout-content{
+    height: 100%;
+  }
+  .i-layout-content-main {
+    margin-left: 15px;
+    margin-right:15px;
+    margin-bottom:0;
+    height: calc(~'100% - 50px');
+  }
+
+  .content-inner{
+    height:100%;
+    overflow-y: auto;
+    >div.ivu-card,>div.ivu-card>div.ivu-card-body{
+      height:100%;
+    }
+    >div.ivu-card>div.ivu-card-body{
+      overflow: hidden;
+      padding: 12px;
+    }
+  }
+  .content-bill{
+    height:100%;
+    overflow-y: hidden;
+    >div{
+      height:100%;
+    }
+    >div.ivu-card,>div.ivu-card>div.ivu-card-body{
+      height:100%;
+    }
+    >div.ivu-card>div.ivu-card-body{
+      overflow: auto;
+    }
+  }
 }
 
 // 隐藏滚动条样式

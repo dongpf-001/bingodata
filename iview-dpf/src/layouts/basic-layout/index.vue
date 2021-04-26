@@ -35,7 +35,7 @@
                     </keep-alive>
                 </div>
             </Content>
-            <i-copyright />
+            <!--<i-copyright />-->
         </Layout>
         <div v-if="isMobile && !hideSider">
             <Drawer v-model="showDrawer" placement="left" :closable="false" :class-name="drawerClasses">

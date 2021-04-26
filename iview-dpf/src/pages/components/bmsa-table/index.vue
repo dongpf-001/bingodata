@@ -1,43 +1,44 @@
 <template>
     <div class="content-inner">
-        <bmsa-table ref="xTable1"
-                    :align="allAlign"
-                   :data="tableData"
-                   :cell-style="cellStyle"
-                   resizable
-                   show-header-overflow
-                   class="mytable-scrollbar"
-                   border
-                   height="400px"
-                   highlight-hover-row
-                   @radio-change="radioChangeEvent">
-            <template slot="buttons">
-                <Button type="primary" @click="allAlign = 'left'">
-                    <Icon type="md-trash" size="16" />居左
-                </Button>
-                <Button type="primary" @click="allAlign = 'center'">居中</Button>
-                <Button type="primary" @click="allAlign = 'right'">居右</Button>
-            </template>
-            <vxe-table-column type="seq" title="序号" width="60" align="center" fixed="left"></vxe-table-column>
-            <vxe-table-column type="radio" width="60" align="center" >
-                <template #header>
-                    <vxe-button type="text" @click="clearRadioRowEevnt" :disabled="!selectRow">取消</vxe-button>
+        <Card>
+            <bmsa-table ref="xTable1"
+                        :align="allAlign"
+                        :data="tableData"
+                        :cell-style="cellStyle"
+                        resizable
+                        show-header-overflow
+                        class="mytable-scrollbar"
+                        border
+                        highlight-hover-row
+                        @radio-change="radioChangeEvent">
+                <template slot="buttons">
+                    <Button type="primary" @click="allAlign = 'left'">
+                        <Icon type="md-trash" size="16" />居左
+                    </Button>
+                    <Button type="primary" @click="allAlign = 'center'">居中</Button>
+                    <Button type="primary" @click="allAlign = 'right'">居右</Button>
                 </template>
-            </vxe-table-column>
-            <vxe-table-column field="name" title="Name" fixed="left" :formatter="formatterNum" width="120"></vxe-table-column>
-            <vxe-table-column field="sex" title="Sex" :filters="[{label: 'Man', value: 'Man'}, {label: 'Woman', value: 'Woman'}]" width="200">
-            </vxe-table-column>
-            <vxe-table-column type="html" field="address" show-overflow title='<span style="color: blue">HTML 标签与格式化</span>' width="200"></vxe-table-column>
-            <vxe-table-column field="age" title="Age" sortable :filters="[{ data: '' }]" :filter-method="filterAgeMethod" width="200">
-                <template #filter="{ $panel, column }">
-                    <input type="type" v-for="(option, index) in column.filters" :key="index" v-model="option.data" @input="$panel.changeOption($event, !!option.data, option)">
-                </template>
-            </vxe-table-column>
-            <vxe-table-column field="face" title="政治面貌" width="200"></vxe-table-column>
-            <vxe-table-column field="email" title="邮箱" width="200"></vxe-table-column>
-            <vxe-table-column field="number" title="身份证号" width="200"></vxe-table-column>
-            <vxe-table-column field="school" title="学校" width="200"></vxe-table-column>
-        </bmsa-table>
+                <vxe-table-column type="seq" title="序号" width="60" align="center" fixed="left"></vxe-table-column>
+                <vxe-table-column type="radio" width="60" align="center" >
+                    <template #header>
+                        <vxe-button type="text" @click="clearRadioRowEevnt" :disabled="!selectRow">取消</vxe-button>
+                    </template>
+                </vxe-table-column>
+                <vxe-table-column field="name" title="Name" fixed="left" :formatter="formatterNum" width="120"></vxe-table-column>
+                <vxe-table-column field="sex" title="Sex" :filters="[{label: 'Man', value: 'Man'}, {label: 'Woman', value: 'Woman'}]" width="200">
+                </vxe-table-column>
+                <vxe-table-column type="html" field="address" show-overflow title='<span style="color: blue">HTML 标签与格式化</span>' width="200"></vxe-table-column>
+                <vxe-table-column field="age" title="Age" sortable :filters="[{ data: '' }]" :filter-method="filterAgeMethod" width="200">
+                    <template #filter="{ $panel, column }">
+                        <input type="type" v-for="(option, index) in column.filters" :key="index" v-model="option.data" @input="$panel.changeOption($event, !!option.data, option)">
+                    </template>
+                </vxe-table-column>
+                <vxe-table-column field="face" title="政治面貌" width="200"></vxe-table-column>
+                <vxe-table-column field="email" title="邮箱" width="200"></vxe-table-column>
+                <vxe-table-column field="number" title="身份证号" width="200"></vxe-table-column>
+                <vxe-table-column field="school" title="学校" width="200"></vxe-table-column>
+            </bmsa-table>
+        </Card>
     </div>
 </template>
 <script>
@@ -110,32 +111,5 @@
     .demo-table {
         width: 100%;
         height: 100%;
-    }
-
-    /*滚动条整体部分*/
-    .mytable-scrollbar ::-webkit-scrollbar {
-        width: 10px;
-        height: 10px;
-    }
-    /*滚动条的轨道*/
-    .mytable-scrollbar ::-webkit-scrollbar-track {
-        background-color: #FFFFFF;
-    }
-    /*滚动条里面的小方块，能向上向下移动*/
-    .mytable-scrollbar ::-webkit-scrollbar-thumb {
-        background-color: #bfbfbf;
-        border-radius: 5px;
-        border: 1px solid #F1F1F1;
-        box-shadow: inset 0 0 6px rgba(0,0,0,.3);
-    }
-    .mytable-scrollbar ::-webkit-scrollbar-thumb:hover {
-        background-color: #A8A8A8;
-    }
-    .mytable-scrollbar ::-webkit-scrollbar-thumb:active {
-        background-color: #787878;
-    }
-    /*边角，即两个滚动条的交汇处*/
-    .mytable-scrollbar ::-webkit-scrollbar-corner {
-        background-color: #FFFFFF;
     }
 </style>
