@@ -1,7 +1,7 @@
 <template>
     <div class="bmsa-table-wrapper">
         <!--toolbar区域-->
-        <vxe-toolbar class-name="bmsa-table-toolbar">
+        <vxe-toolbar class-name="bmsa-table-toolbar" v-if="showToolbar">
             <template #buttons><!-- toolbar左侧 -->
                 <div class="bmsa-table-btn">
                     <slot name="buttons"></slot>
@@ -43,20 +43,23 @@
             </template>
         </vxe-toolbar>
         <!--普通表格区域-->
-        <vxe-table ref="vxeTable"
-                   class="bmsa-table"
-                   v-bind="$attrs"
-                   v-on="$listeners"
-                   auto-resize>
-            <slot></slot>
-        </vxe-table>
+        <div :style="getTableHeight">
+            <vxe-table ref="vxeTable"
+                       class="bmsa-table"
+                       v-bind="$attrs"
+                       v-on="$listeners"
+                       :height="height"
+                       auto-resize>
+                <slot></slot>
+            </vxe-table>
+        </div>
         <!--分页-->
         <vxe-pager
                 border
+                v-if="showPage"
                 class-name="bmsa-table-page"
                 size="medium"
                 align="center"
-                :loading="loading"
                 :current-page="page.currentPage"
                 :page-size="page.pageSize"
                 :total="page.totalResult"
@@ -72,7 +75,6 @@
         data () {
             return {
                 isFullScreen: false, // 全屏控制
-                loading: false, // 表格加载
                 page: { // 表格分页
                     currentPage: 1, // 查询页数
                     pageSize: 10, // 查询数量
@@ -80,7 +82,36 @@
                 }
             }
         },
-        computed: {},
+        props: {
+            showToolbar: { // 是否显示toolbar
+                type: Boolean,
+                default: true
+            },
+            showPage: { // 是否显示分页
+                type: Boolean,
+                default: true
+            },
+            height: { // 表格的高度
+                type: String,
+                default: 'auto'
+            }
+        },
+        computed: {
+            // 获取表格高度
+            getTableHeight () {
+                let html = ''
+                if (this.showToolbar && this.showPage) { // 显示toolbar和page
+                    html = 'height: calc(100% - 96px)'
+                } else {
+                    if (this.showToolbar) { // 只显示toolbar
+                        html = 'height: calc(100% - 44px)'
+                    } else if (this.showPage) { // 只显示page
+                        html = 'height: calc(100% - 52px)'
+                    }
+                }
+                return html
+            }
+        },
         created () {},
         methods: {
             // 导出方法
@@ -95,12 +126,19 @@
             handlePrint () {
                 this.$emit('on-print');
             },
+            // 刷新方法
+            handleRefresh () {
+                this.$emit('on-refresh');
+            },
             // 开关方法，切换到卡片形式
             handleSwitch () {
                 this.$emit('on-switch');
             },
             // 全屏方法
             handleFullScreen () {
+            },
+            // 分页方法
+            handlePageChange () {
             }
         },
         mounted () {},
@@ -126,7 +164,7 @@
         }
     }
     .bmsa-table-page { // 分页
-        height: 44px;
+        padding-top: 12px;
     }
 
     /*滚动条整体部分*/

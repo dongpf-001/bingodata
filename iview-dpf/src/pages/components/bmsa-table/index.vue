@@ -98,7 +98,7 @@
             // 单选
             clearRadioRowEevnt () {
                 this.selectRow = null
-                this.$refs.xTable1.clearRadioRow()
+                this.$refs.xTable1.$refs.vxeTable.clearRadioRow()
             },
             // 筛选年龄
             filterAgeMethod ({ option, row }) {
