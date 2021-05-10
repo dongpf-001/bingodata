@@ -15,7 +15,27 @@ module.exports = {
     runtimeCompiler: true,
     productionSourceMap: false,
     devServer: {
-        publicPath: Setting.publicPath
+        publicPath: Setting.publicPath,
+        proxy: (() => {
+            if (!Setting.proxyTable) {
+                throw new Error('Proxy table must be defined in src/setting.env.js!')
+            }
+            let proxyTable = {}
+            for (let path in Setting.proxyTable) {
+                proxyTable[path] = {
+                    ws: true,
+                    changeOrigin: true,
+                    target: Setting.proxyTable[path],
+                    pathRewrite: (() => {
+                        let conf = {}
+                        conf['^' + path] = ''
+                        return conf
+                    })()
+                }
+            }
+            console.log('Defined proxy table:', proxyTable)
+            return proxyTable
+        })()
     },
     css: {
         loaderOptions: {

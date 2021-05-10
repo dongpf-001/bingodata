@@ -3,7 +3,8 @@
  * */
 
 const env = process.env.NODE_ENV;
-
+const bmsaBaseUrl = 'http://172.20.30.85:30316/'
+const baseUrl = 'http://172.20.30.85:30316/'  // 服务器
 const Setting = {
     // 是否使用 Mock 的数据，默认 开发环境为 true，生产环境为 false
     isMock: true,
@@ -20,7 +21,11 @@ const Setting = {
     // 详见 https://www.iviewui.com/docs/guide/iview-loader
     iviewLoaderOptions: {
         prefix: false
-    }
+    },
+    proxyTable: env === 'development' ? {
+        '/bmsaApi': bmsaBaseUrl,
+        '/api': baseUrl
+    } : {}
 };
 
 module.exports = Setting;
