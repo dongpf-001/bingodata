@@ -1,7 +1,7 @@
 <template>
     <div class="content-inner">
         <Card>
-            <bmsa-table>
+            <bmsa-table-tool>
                 <template slot="buttons">
                     <Button type="primary" @click="allAlign = 'left'">
                         <Icon type="md-trash" size="16" />居左
@@ -42,16 +42,16 @@
                     <vxe-table-column field="number" title="身份证号" width="200"></vxe-table-column>
                     <vxe-table-column field="school" title="学校" width="200"></vxe-table-column>
                 </vxe-table>
-            </bmsa-table>
+            </bmsa-table-tool>
         </Card>
     </div>
 </template>
 <script>
-    import bmsaTable from '@/components/bmsa-table'
+    import bmsaTableTool from '@/components/bmsa-table-tool'
     export default {
         name: 'demo-table',
         components: {
-            bmsaTable
+            bmsaTableTool
         },
         data () {
             return {

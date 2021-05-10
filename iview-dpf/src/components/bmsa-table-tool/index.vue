@@ -1,14 +1,14 @@
 <template>
-    <div class="bmsa-table-wrapper">
+    <div class="bmsa-table-tool-wrapper">
         <!--toolbar区域-->
-        <vxe-toolbar class-name="bmsa-table-toolbar" v-if="showToolbar">
+        <vxe-toolbar class-name="bmsa-table-tool-toolbar" v-if="showToolbar">
             <template #buttons><!-- toolbar左侧 -->
-                <div class="bmsa-table-btn">
+                <div class="bmsa-table-tool-btn">
                     <slot name="buttons"></slot>
                 </div>
             </template>
             <template #tools><!-- toolbar右侧-->
-                <div class="bmsa-table-tool">
+                <div class="bmsa-table-tool-tool">
                     <Tooltip transfer :content="$t('page.common.export')">
                         <span @click="handleExport">
                             <i class="icon iconfont icondaochu"></i>
@@ -50,7 +50,7 @@
         <vxe-pager
                 border
                 v-if="showPage"
-                class-name="bmsa-table-page"
+                class-name="bmsa-table-tool-page"
                 size="medium"
                 align="center"
                 :current-page="page.currentPage"
@@ -63,7 +63,7 @@
 </template>
 <script>
     export default {
-        name: 'bmsa-table',
+        name: 'bmsa-table-tool',
         components: {},
         data () {
             return {
