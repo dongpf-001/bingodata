@@ -55,6 +55,7 @@
     </div>
 </template>
 <script>
+    import Api from '@/api/bmsa/system'
     import bmsaTableTool from '@/components/bmsa-table-tool'
     export default {
         name: 'demo-table',
@@ -126,7 +127,10 @@
             },
             // 查询
             handleGetData () {
-            
+                let params = {}
+                Api.tableList(params).then((res) => {
+                    debugger
+                })
             },
             // 重置
             handleReset () {
