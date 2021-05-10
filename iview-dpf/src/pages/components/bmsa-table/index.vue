@@ -1,16 +1,7 @@
 <template>
     <div class="content-inner">
         <Card>
-            <bmsa-table ref="xTable1"
-                        :align="allAlign"
-                        :data="tableData"
-                        :cell-style="cellStyle"
-                        resizable
-                        show-header-overflow
-                        class="mytable-scrollbar"
-                        border
-                        highlight-hover-row
-                        @radio-change="radioChangeEvent">
+            <bmsa-table>
                 <template slot="buttons">
                     <Button type="primary" @click="allAlign = 'left'">
                         <Icon type="md-trash" size="16" />居左
@@ -18,25 +9,39 @@
                     <Button type="primary" @click="allAlign = 'center'">居中</Button>
                     <Button type="primary" @click="allAlign = 'right'">居右</Button>
                 </template>
-                <vxe-table-column type="seq" title="序号" width="60" align="center" fixed="left"></vxe-table-column>
-                <vxe-table-column type="radio" width="60" align="center" >
-                    <template #header>
-                        <vxe-button type="text" @click="clearRadioRowEevnt" :disabled="!selectRow">取消</vxe-button>
-                    </template>
-                </vxe-table-column>
-                <vxe-table-column field="name" title="Name" fixed="left" :formatter="formatterNum" width="120"></vxe-table-column>
-                <vxe-table-column field="sex" title="Sex" :filters="[{label: 'Man', value: 'Man'}, {label: 'Woman', value: 'Woman'}]" width="200">
-                </vxe-table-column>
-                <vxe-table-column type="html" field="address" show-overflow title='<span style="color: blue">HTML 标签与格式化</span>' width="200"></vxe-table-column>
-                <vxe-table-column field="age" title="Age" sortable :filters="[{ data: '' }]" :filter-method="filterAgeMethod" width="200">
-                    <template #filter="{ $panel, column }">
-                        <input type="type" v-for="(option, index) in column.filters" :key="index" v-model="option.data" @input="$panel.changeOption($event, !!option.data, option)">
-                    </template>
-                </vxe-table-column>
-                <vxe-table-column field="face" title="政治面貌" width="200"></vxe-table-column>
-                <vxe-table-column field="email" title="邮箱" width="200"></vxe-table-column>
-                <vxe-table-column field="number" title="身份证号" width="200"></vxe-table-column>
-                <vxe-table-column field="school" title="学校" width="200"></vxe-table-column>
+                <vxe-table ref="xTable1"
+                           slot="table"
+                           :align="allAlign"
+                           :data="tableData"
+                           :cell-style="cellStyle"
+                           height="auto"
+                           auto-resize
+                           resizable
+                           border
+                           show-header-overflow
+                           highlight-hover-row
+                           @radio-change="radioChangeEvent"
+                           class="bmsa-table">
+                    <vxe-table-column type="seq" title="序号" width="60" align="center" fixed="left"></vxe-table-column>
+                    <vxe-table-column type="radio" width="60" align="center" >
+                        <template #header>
+                            <vxe-button type="text" @click="clearRadioRowEevnt" :disabled="!selectRow">取消</vxe-button>
+                        </template>
+                    </vxe-table-column>
+                    <vxe-table-column field="name" title="Name" fixed="left" :formatter="formatterNum" width="120"></vxe-table-column>
+                    <vxe-table-column field="sex" title="Sex" :filters="[{label: 'Man', value: 'Man'}, {label: 'Woman', value: 'Woman'}]" width="200">
+                    </vxe-table-column>
+                    <vxe-table-column type="html" field="address" show-overflow title='<span style="color: blue">HTML 标签与格式化</span>' width="200"></vxe-table-column>
+                    <vxe-table-column field="age" title="Age" sortable :filters="[{ data: '' }]" :filter-method="filterAgeMethod" width="200">
+                        <template #filter="{ $panel, column }">
+                            <input type="type" v-for="(option, index) in column.filters" :key="index" v-model="option.data" @input="$panel.changeOption($event, !!option.data, option)">
+                        </template>
+                    </vxe-table-column>
+                    <vxe-table-column field="face" title="政治面貌" width="200"></vxe-table-column>
+                    <vxe-table-column field="email" title="邮箱" width="200"></vxe-table-column>
+                    <vxe-table-column field="number" title="身份证号" width="200"></vxe-table-column>
+                    <vxe-table-column field="school" title="学校" width="200"></vxe-table-column>
+                </vxe-table>
             </bmsa-table>
         </Card>
     </div>

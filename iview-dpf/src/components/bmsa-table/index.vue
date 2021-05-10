@@ -42,16 +42,9 @@
                 </div>
             </template>
         </vxe-toolbar>
-        <!--普通表格区域-->
+        <!--表格区域-->
         <div :style="getTableHeight">
-            <vxe-table ref="vxeTable"
-                       class="bmsa-table"
-                       v-bind="$attrs"
-                       v-on="$listeners"
-                       :height="height"
-                       auto-resize>
-                <slot></slot>
-            </vxe-table>
+            <slot name="table"></slot>
         </div>
         <!--分页-->
         <vxe-pager
@@ -145,52 +138,4 @@
     };
 </script>
 <style lang="less">
-    .bmsa-table-wrapper {
-        width: 100%;
-        height: 100%;
-    }
-    .bmsa-table-toolbar { // toolbar
-        height: 52px;
-        .bmsa-table-btn { // toolbar按钮区域
-            button {
-                margin-right: 8px;
-            }
-        }
-        .bmsa-table-tool { // toolbar工具栏区域
-            i {
-                font-size: 18px;
-                margin: 0 8px 0 8px;
-            }
-        }
-    }
-    .bmsa-table-page { // 分页
-        padding-top: 12px;
-    }
-
-    /*滚动条整体部分*/
-    .bmsa-table ::-webkit-scrollbar {
-        width: 10px;
-        height: 10px;
-    }
-    /*滚动条的轨道*/
-    .bmsa-table ::-webkit-scrollbar-track {
-        background-color: #FFFFFF;
-    }
-    /*滚动条里面的小方块，能向上向下移动*/
-    .bmsa-table ::-webkit-scrollbar-thumb {
-        background-color: #bfbfbf;
-        border-radius: 5px;
-        border: 1px solid #F1F1F1;
-        box-shadow: inset 0 0 6px rgba(0,0,0,.3);
-    }
-    .bmsa-table ::-webkit-scrollbar-thumb:hover {
-        background-color: #A8A8A8;
-    }
-    .bmsa-table ::-webkit-scrollbar-thumb:active {
-        background-color: #787878;
-    }
-    /*边角，即两个滚动条的交汇处*/
-    .bmsa-table ::-webkit-scrollbar-corner {
-        background-color: #FFFFFF;
-    }
 </style>
