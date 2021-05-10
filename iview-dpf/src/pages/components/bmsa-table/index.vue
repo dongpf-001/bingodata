@@ -1,7 +1,15 @@
 <template>
     <div class="content-inner">
         <Card>
-            <bmsa-table-tool>
+            <bingo-query ref="query" type="float" :col="query.col" :labelWidth="query.labelWidth" @on-submit="handleGetData"
+                         @on-reset="handleReset" :data="queryData" >
+                <bingo-grid-item>
+                    <bingo-form-item label="菜单名称" label-for="name">
+                        <Input v-model.trim="queryData.name" />
+                    </bingo-form-item>
+                </bingo-grid-item>
+            </bingo-query>
+            <bmsa-table-tool class="bmsa-query-height">
                 <template slot="buttons">
                     <Button type="primary" @click="allAlign = 'left'">
                         <Icon type="md-trash" size="16" />居左
@@ -69,6 +77,13 @@
                     { id: 10006, name: 'Test4', number: '220182199304115336', school: '清华大学', face: '党员', email: '249009909@qq.com', role: 'Designer', sex: 'Women ', age: 24, address: 'Shanghai' }
                 ],
                 selectRow: null, // 单选
+                query: { // 过滤区域
+                    col: 3, // 显示几列
+                    labelWidth: 100 // label宽度
+                },
+                queryData: {
+                    name: ''
+                },
             }
         },
         computed: {},
@@ -108,6 +123,14 @@
             // 筛选年龄
             filterAgeMethod ({ option, row }) {
                 return row.age === Number(option.data)
+            },
+            // 查询
+            handleGetData () {
+            
+            },
+            // 重置
+            handleReset () {
+            
             }
         }
     };

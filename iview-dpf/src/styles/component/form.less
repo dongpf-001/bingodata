@@ -1,0 +1,79 @@
+.ivu-form .ivu-form-item-label{
+  word-break: break-all;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  position: relative;
+  height:34px;
+  &:after{
+    content: ":";
+    position: absolute;
+    top: 10px;
+    right:0;
+    text-align: center;
+    width: 12px;
+  }
+  >span{
+    font-size: 0;
+    max-width: calc(~'100% - 20px');
+    display: inline-block;
+    vertical-align: top;
+  }
+  .ivu-tooltip {
+    width: 100%;   //表单有tooltip时，调整宽度，  modify---yuannan  2020-03-12
+    font-size: 0;
+  }
+  .ivu-tooltip-rel {
+    width: 100%;
+    word-break: break-all;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+    font-size: 14px;
+    &:after {
+      content: ":";
+      position: absolute;
+      top: 10px;
+      right: 0;
+      text-align: center;
+      width: 12px;
+    }
+  }
+}
+//只读状态下 不显示手型
+.ivu-select-disabled{
+  .ivu-tag .ivu-icon-ios-close{
+    cursor: inherit;
+  }
+}
+//
+.ivu-input[disabled], fieldset[disabled] .ivu-input, .ivu-input-number-input[disabled], .ivu-select-input[disabled],.ivu-select-disabled .ivu-select-selection{
+  color:#515a6e!important;
+}
+.ivu-input-number-disabled .ivu-input-number-input {
+  opacity: 1;
+}
+.ivu-select-input[disabled]{
+  -webkit-text-fill-color: #515a6e;
+}
+.ivu-date-picker{
+  width:100%;
+}
+.ivu-input-wrapper:hover .ivu-input[disabled]{
+  border-color:#dcdee2;
+}
+//必填*的大小，影响表单串行
+// 相关代码屏蔽，已通过另外方式解决  modify by yuannan  2020-03-12
+/*.ivu-form .ivu-form-item-required .ivu-form-item-label{
+  &:before {
+    font-size: calc(~"@{font-size-base} - 1px")!important;
+  }
+}*/
+
+.ivu-form-item-required{
+  .ivu-form-item-label:before{
+    vertical-align: top;
+  }
+}
+

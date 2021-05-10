@@ -47,6 +47,10 @@ import iFrame from '@/components/frame';
 import './styles/index.less';
 import './libs/iview-pro/iview-pro.css';
 
+// bingo-components
+import bingoComponents from 'bingo-components';
+Vue.use(bingoComponents);
+
 if (window) window.$t = (key, value) => i18n.t(key, value);
 
 Vue.use(plugins);
