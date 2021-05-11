@@ -10,12 +10,22 @@
                 </bingo-grid-item>
             </bingo-query>
             <bmsa-table-tool class="bmsa-query-height">
-                <template slot="buttons">
+                <template #left-buttons>
                     <Button type="primary" @click="allAlign = 'left'">
                         <Icon type="md-trash" size="16" />居左
                     </Button>
                     <Button type="primary" @click="allAlign = 'center'">居中</Button>
                     <Button type="primary" @click="allAlign = 'right'">居右</Button>
+                </template>
+                <template #other-buttons>
+                    <Input  shape="circle" suffix="ios-search" style="width: auto" />
+                </template>
+                <template #right-buttons>
+                    <Tooltip transfer content="自定义">
+                        <span>
+                            <i class="icon iconfont iconshanchu"></i>
+                        </span>
+                    </Tooltip>
                 </template>
                 <vxe-table ref="xTable1"
                            slot="table"

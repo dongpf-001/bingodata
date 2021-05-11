@@ -3,16 +3,26 @@
   height: 100%;
 }
 .bmsa-table-tool-toolbar { // toolbar
-  height: 52px;
+  height: 40px;
+  margin-bottom: 8px;
   .bmsa-table-tool-btn { // toolbar按钮区域
     button {
       margin-right: 8px;
     }
   }
   .bmsa-table-tool-tool { // toolbar工具栏区域
-    i {
-      font-size: 18px;
-      margin: 0 8px 0 8px;
+    border: 1px solid #dcdee2;
+    border-radius: 4px;
+    padding: 0 10px;
+    margin-left: 8px;
+    .button-icon {
+      padding: 3px 0;
+      i {
+        padding: 0 8px;
+        &:hover {
+          color: #57a3f3;
+        }
+      }
     }
   }
 }

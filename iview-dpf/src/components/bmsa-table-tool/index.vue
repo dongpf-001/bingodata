@@ -4,41 +4,45 @@
         <vxe-toolbar class-name="bmsa-table-tool-toolbar" v-if="showToolbar">
             <template #buttons><!-- toolbar左侧 -->
                 <div class="bmsa-table-tool-btn">
-                    <slot name="buttons"></slot>
+                    <slot name="left-buttons"></slot>
                 </div>
             </template>
             <template #tools><!-- toolbar右侧-->
+                <slot name="other-buttons"></slot>
                 <div class="bmsa-table-tool-tool">
-                    <Tooltip transfer :content="$t('page.common.export')">
-                        <span @click="handleExport">
-                            <i class="icon iconfont icondaochu"></i>
-                        </span>
-                    </Tooltip>
-                    <Tooltip transfer :content="$t('page.common.import')">
-                        <span @click="handleImport">
-                            <i class="icon iconfont icondaoru"></i>
-                        </span>
-                    </Tooltip>
-                    <Tooltip transfer :content="$t('page.common.print')">
-                        <span @click="handlePrint">
-                            <i class="icon iconfont icondayin"></i>
-                        </span>
-                    </Tooltip>
-                    <Tooltip transfer :content="$t('page.common.refresh')">
-                        <span @click="handleRefresh">
-                            <i class="icon iconfont iconshuaxin"></i>
-                        </span>
-                    </Tooltip>
-                    <Tooltip transfer content="开关">
-                        <span @click="handleSwitch">
-                            <i class="icon iconfont iconweibiaoti--"></i>
-                        </span>
-                    </Tooltip>
-                    <Tooltip transfer :content="!isFullScreen?$t('page.common.fullScreen'):$t('page.common.reduction')">
-                        <span @click="handleFullScreen">
-                            <i :class="!isFullScreen?'icon iconfont iconzuidahua':'icon iconfont iconzuidahua-huanyuan'"></i>
-                        </span>
-                    </Tooltip>
+                    <div class="button-icon">
+                        <slot name="right-buttons"></slot>
+                        <Tooltip transfer :content="$t('page.common.export')">
+                            <span @click="handleExport">
+                                <i class="icon iconfont icondaochu"></i>
+                            </span>
+                        </Tooltip>
+                        <Tooltip transfer :content="$t('page.common.import')">
+                            <span @click="handleImport">
+                                <i class="icon iconfont icondaoru"></i>
+                            </span>
+                        </Tooltip>
+                        <Tooltip transfer :content="$t('page.common.print')">
+                            <span @click="handlePrint">
+                                <i class="icon iconfont icondayin"></i>
+                            </span>
+                        </Tooltip>
+                        <Tooltip transfer :content="$t('page.common.refresh')">
+                            <span @click="handleRefresh">
+                                <i class="icon iconfont iconshuaxin"></i>
+                            </span>
+                        </Tooltip>
+                        <Tooltip transfer content="开关">
+                            <span @click="handleSwitch">
+                                <i class="icon iconfont iconweibiaoti--"></i>
+                            </span>
+                        </Tooltip>
+                        <Tooltip transfer :content="!isFullScreen?$t('page.common.fullScreen'):$t('page.common.reduction')">
+                            <span @click="handleFullScreen">
+                                <i :class="!isFullScreen?'icon iconfont iconzuidahua':'icon iconfont iconzuidahua-huanyuan'"></i>
+                            </span>
+                        </Tooltip>
+                    </div>
                 </div>
             </template>
         </vxe-toolbar>
@@ -58,6 +62,16 @@
                 :total="page.totalResult"
                 :layouts="['Total', 'PrevPage', 'JumpNumber', 'NextPage', 'Sizes']"
                 @page-change="handlePageChange">
+            <template #right>
+                <vxe-button size="small" align="right">
+                    <template #default>设置</template>
+                    <template #dropdowns>
+                        <vxe-button type="text">批量修改</vxe-button>
+                        <vxe-button type="text">批量管理</vxe-button>
+                        <vxe-button type="text">批量删除</vxe-button>
+                    </template>
+                </vxe-button>
+            </template>
         </vxe-pager>
     </div>
 </template>
