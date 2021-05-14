@@ -14,5 +14,9 @@ export default {
             path: `${pre}bmsa-shear-image`,
             title: '图片裁剪'
         },
+        {
+            path: `${pre}bmsa-org-tree`,
+            title: '组织机构'
+        },
     ]
 }

@@ -51,6 +51,11 @@ import './libs/iview-pro/iview-pro.css';
 import bingoComponents from 'bingo-components';
 Vue.use(bingoComponents);
 
+// org-tree
+import VOrgTree from 'v-org-tree'
+import 'v-org-tree/dist/v-org-tree.css'
+Vue.use(VOrgTree)
+
 if (window) window.$t = (key, value) => i18n.t(key, value);
 
 Vue.use(plugins);

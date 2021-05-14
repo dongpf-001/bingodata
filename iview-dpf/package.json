@@ -56,7 +56,8 @@
     "svg-sprite-loader": "^3.8.0",
     "text-loader": "0.0.1",
     "vue-template-compiler": "^2.6.12",
-    "bingo-components": "1.4.8"
+    "bingo-components": "1.4.8",
+    "v-org-tree": "^1.0.6"
   },
   "lint-staged": {
     "*.js": [

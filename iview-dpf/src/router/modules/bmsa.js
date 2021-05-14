@@ -35,5 +35,15 @@ export default {
             },
             component: () => import('@/pages/components/bmsa-shear-image')
         },
+        {
+            path: 'bmsa-org-tree',
+            name: `${pre}org-tree`,
+            meta: {
+                ...meta,
+                title: '组织结构',
+                closable: true
+            },
+            component: () => import('@/pages/components/bmsa-org-tree')
+        },
     ]
 };
