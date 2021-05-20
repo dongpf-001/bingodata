@@ -1,3 +1,4 @@
+import system from './system/en-US';
 
 export default {
     locale: 'en-US',
@@ -5,6 +6,7 @@ export default {
     menu: {
         i18n: 'Internationalization'
     },
+    system:system,
     page: {
         common:{
             SystemName:'Painting central control system',
@@ -324,9 +326,9 @@ export default {
             ThisWeek:'This week',
             ThisMonth:'This month',
             LastMonth:'Last month',
-            LastThreeMonths:'Last mhree months',
-            NearlyHalfAYear:'Nearly half a year',
-            NearlyAYear:'Nearly a year',
+            LastThreeMonths:'Three months',
+            NearlyHalfAYear:'Half a year',
+            NearlyAYear:'A year',
         }
     }
 };

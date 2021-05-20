@@ -55,7 +55,55 @@
 .bmsa-table ::-webkit-scrollbar-corner {
   background-color: #FFFFFF;
 }
-//有query时表格的高度
+// 有query时表格的高度
 .bmsa-query-height {
-  height: calc(~'100% - 54px')
+  height: calc(~'100% - 80px')
+}
+
+// 表格更多下拉
+.bmsa-table-dropdown {
+  padding: 0 5px!important;
+  button {
+    text-align: left;
+    font-size: 12px;
+    display: block;
+    width: 100%;
+    margin: 4px 0;
+    i {
+      margin-right: 2px;
+    }
+  }
+}
+// 表格更多下拉
+.bmsa-table-dropdown-btn {
+  font-size: 12px;
+  background: #2db7f5;
+  color: #fff;
+  display: inline-block;
+  border-color: #2db7f5;
+  cursor: pointer;
+  text-align: center;
+  border-radius: 3px;
+  height: 24px;
+  line-height: 24px;
+  vertical-align: middle;
+  padding: 0 8px;
+  padding-right: 15px;
+  a {
+    color: #fff;
+  }
+  i.ivu-icon {
+    position: absolute;
+    top: 6px;
+  }
+}
+// 表格更多下拉
+.bmsa-table-action {
+  button {
+    margin-right: 5px;
+    i {
+      margin-right: 2px;
+    }
+    font-size: 12px;
+  }
 }

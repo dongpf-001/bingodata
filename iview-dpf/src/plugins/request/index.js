@@ -54,7 +54,8 @@ service.interceptors.request.use(
         // 在请求发送之前做一些处理
         const token = util.cookies.get('token');
         // 让每个请求携带token-- ['X-Token']为自定义key 请根据实际情况自行修改
-        config.headers['access-token'] = token
+        config.headers['access-token'] = '912823394993442816'
+        config.headers['prod'] = 'prod_002'
         return config;
     },
     error => {
@@ -78,6 +79,9 @@ service.interceptors.response.use(
         } else {
             // 有 code 代表这是一个后端接口 可以进行进一步的判断
             switch (code) {
+            case 200:
+                // [ 示例 ] code === 200 代表没有错误
+                return dataAxios.data
             case 0:
                 // [ 示例 ] code === 0 代表没有错误
                 return dataAxios.data;

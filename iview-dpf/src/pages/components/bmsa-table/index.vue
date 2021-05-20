@@ -11,11 +11,8 @@
             </bingo-query>
             <bmsa-table-tool class="bmsa-query-height">
                 <template #left-buttons>
-                    <Button type="primary" @click="allAlign = 'left'">
-                        <Icon type="md-trash" size="16" />居左
-                    </Button>
-                    <Button type="primary" @click="allAlign = 'center'">居中</Button>
-                    <Button type="primary" @click="allAlign = 'right'">居右</Button>
+                    <Button type="primary" customIcon="iconfont iconxinjian" @click="onNewMenu">{{ $t('page.common.new') }}</Button>
+                    <Button type="primary" customIcon="iconfont iconshanchu" @click="onNewMenu">批量操作</Button>
                 </template>
                 <template #other-buttons>
                     <Input  shape="circle" suffix="ios-search" style="width: auto" />
@@ -31,62 +28,83 @@
                            slot="table"
                            :align="allAlign"
                            :data="tableData"
+                           size="small"
                            :cell-style="cellStyle"
                            height="auto"
                            auto-resize
                            resizable
                            border
+                           keep-source
                            show-header-overflow
+                           show-overflow
                            highlight-hover-row
                            @radio-change="radioChangeEvent"
+                           :edit-config="{trigger: 'dblclick', mode: 'cell', showStatus: true}"
                            class="bmsa-table">
-                    <vxe-table-column type="seq" title="序号" width="60" align="center" fixed="left"></vxe-table-column>
-                    <vxe-table-column type="radio" width="60" align="center" >
-                        <template #header>
-                            <vxe-button type="text" @click="clearRadioRowEevnt" :disabled="!selectRow">取消</vxe-button>
+                    <vxe-table-column type="checkbox" width="60" align="center" fixed="left"></vxe-table-column>
+                    <vxe-table-column type="seq" :title="$t('page.common.index')" width="60" align="center" fixed="left"></vxe-table-column>
+                    <vxe-table-column field="nameCn" :title="$t('system.page.user.UserName')" :edit-render="{name: 'input'}" width="120"></vxe-table-column>
+                    <vxe-table-column field="account" :title="$t('system.page.user.accountNumber')" :edit-render="{name: 'input'}" :title-help="{message: '用户账号，用于登录，确保唯一。'}" width="120"></vxe-table-column>
+                    <vxe-table-column field="sexValue" :title="$t('system.page.user.Gender')" :filters="[{label: '男', value: '男'}, {label: '女', value: '女'}]" width="120"></vxe-table-column>
+                    <vxe-table-column field="mobile" :title="$t('system.page.user.cellPhoneNumber')" width="120"></vxe-table-column>
+                    <vxe-table-column field="email" :title="$t('system.page.user.mailbox')" width="120"></vxe-table-column>
+                    <vxe-table-column field="deptValue" :title="$t('system.page.user.Department')" width="140"></vxe-table-column>
+                    <vxe-table-column field="creator" :title="$t('system.page.common.Founder')" width="150"></vxe-table-column>
+                    <vxe-table-column field="createTime" :title="$t('system.page.common.CreationTime')" width="180"></vxe-table-column>
+                    <vxe-table-column field="modifier" :title="$t('system.page.common.ModifiedBy')" width="150"></vxe-table-column>
+                    <vxe-table-column field="modifyTime" :title="$t('system.page.common.ModificationTime')" width="180"></vxe-table-column>
+                    <vxe-table-column field="action" :title="$t('page.common.action')" fixed="right" align="center" width="190">
+                        <template slot="default" slot-scope="{ row }">
+                            <div class="bmsa-table-action">
+                                <Button type="primary" size="small" @click="onEditMenu(row)">
+                                    <i class="icon iconfont iconbianji" />
+                                    <span>{{$t('page.common.edit')}}</span>
+                                </Button>
+                                <Button type="error" size="small" @click="onDeleteBtn(row)">
+                                    <i class="icon iconfont iconshanchu" />
+                                    <span>{{$t('page.common.delete')}}</span>
+                                </Button>
+                                <Dropdown transfer-class-name="bmsa-table-dropdown" trigger="click" transfer>
+                                    <Button size="small" class="bmsa-table-dropdown-btn" type="default">{{ $t('page.common.more') }}<Icon type="md-arrow-dropdown" /></Button>
+                                    <Dropdown-menu slot="list">
+                                        <Button size="small">
+                                            <Icon type="ios-lock-outline" />
+                                            <span class="font">{{$t('system.page.common.PasswordReset')}}</span>
+                                        </Button>
+                                    </Dropdown-menu>
+                                    <Dropdown-menu slot="list">
+                                        <Button size="small">
+                                            <i class="icon iconfont iconqunzuguanli" />
+                                            <span class="font">{{$t('system.page.common.AssignmentGroup')}}</span>
+                                        </Button>
+                                    </Dropdown-menu>
+                                    <Dropdown-menu slot="list">
+                                        <Button size="small">
+                                            <i class="icon iconfont iconjiaoseguanli" />
+                                            <span class="font">{{$t('system.page.common.AssignRoles')}}</span>
+                                        </Button>
+                                    </Dropdown-menu>
+                                </Dropdown>
+                            </div>
                         </template>
                     </vxe-table-column>
-                    <vxe-table-column field="name" title="Name" fixed="left" :formatter="formatterNum" width="120"></vxe-table-column>
-                    <vxe-table-column field="sex" title="Sex" :filters="[{label: 'Man', value: 'Man'}, {label: 'Woman', value: 'Woman'}]" width="200">
-                    </vxe-table-column>
-                    <vxe-table-column type="html" field="address" show-overflow title='<span style="color: blue">HTML 标签与格式化</span>' width="200"></vxe-table-column>
-                    <vxe-table-column field="age" title="Age" sortable :filters="[{ data: '' }]" :filter-method="filterAgeMethod" width="200">
-                        <template #filter="{ $panel, column }">
-                            <input type="type" v-for="(option, index) in column.filters" :key="index" v-model="option.data" @input="$panel.changeOption($event, !!option.data, option)">
-                        </template>
-                    </vxe-table-column>
-                    <vxe-table-column field="face" title="政治面貌" width="200"></vxe-table-column>
-                    <vxe-table-column field="email" title="邮箱" width="200"></vxe-table-column>
-                    <vxe-table-column field="number" title="身份证号" width="200"></vxe-table-column>
-                    <vxe-table-column field="school" title="学校" width="200"></vxe-table-column>
                 </vxe-table>
             </bmsa-table-tool>
         </Card>
     </div>
 </template>
 <script>
-    import Api from '@/api/bmsa/system'
+    import Api from '@/api/bmsa/user'
     import bmsaTableTool from '@/components/bmsa-table-tool'
     export default {
-        name: 'demo-table',
+        name: 'bmsa-table',
         components: {
             bmsaTableTool
         },
         data () {
             return {
                 allAlign: null,
-                tableData: [
-                    { id: 10001, name: 'Test1', number: '220182199304115336', school: '清华大学', face: '党员', email: '249009909@qq.com', role: 'Develop', sex: 'Man', age: 28, address: 'vxe-table 从入门到放弃，超长字符串，超长字符串，超长字符串，超长字符串' },
-                    { id: 10002, name: 'Test2', number: '220182199304115336', school: '清华大学', face: '党员', email: '249009909@qq.com', role: 'Test', sex: 'Women', age: 22, address: '<img height="40" src="https://xuliangzhan_admin.gitee.io/vxe-table/static/other/img1.gif">' },
-                    { id: 10003, name: 'Test3', number: '220182199304115336', school: '清华大学', face: '党员', email: '249009909@qq.com', role: 'PM', sex: 'Man', age: 32, address: 'Shanghai' },
-                    { id: 10004, name: 'Test4', number: '220182199304115336', school: '清华大学', face: '党员', email: '249009909@qq.com', role: 'Designer', sex: 'Women ', age: 24, address: 'Shanghai' },
-                    { id: 10005, name: 'Test3', number: '220182199304115336', school: '清华大学', face: '党员', email: '249009909@qq.com', role: 'PM', sex: 'Man', age: 32, address: 'Shanghai' },
-                    { id: 10006, name: 'Test4', number: '220182199304115336', school: '清华大学', face: '党员', email: '249009909@qq.com', role: 'Designer', sex: 'Women ', age: 24, address: 'Shanghai' },
-                    { id: 10005, name: 'Test3', number: '220182199304115336', school: '清华大学', face: '党员', email: '249009909@qq.com', role: 'PM', sex: 'Man', age: 32, address: 'Shanghai' },
-                    { id: 10006, name: 'Test4', number: '220182199304115336', school: '清华大学', face: '党员', email: '249009909@qq.com', role: 'Designer', sex: 'Women ', age: 24, address: 'Shanghai' },
-                    { id: 10005, name: 'Test3', number: '220182199304115336', school: '清华大学', face: '党员', email: '249009909@qq.com', role: 'PM', sex: 'Man', age: 32, address: 'Shanghai' },
-                    { id: 10006, name: 'Test4', number: '220182199304115336', school: '清华大学', face: '党员', email: '249009909@qq.com', role: 'Designer', sex: 'Women ', age: 24, address: 'Shanghai' }
-                ],
+                tableData: [],
                 selectRow: null, // 单选
                 query: { // 过滤区域
                     col: 3, // 显示几列
@@ -99,7 +117,10 @@
         },
         computed: {},
         created () {},
-        mounted () {},
+        mounted () {
+            // 获取表格数据
+            this.handleGetData()
+        },
         methods: {
             // 格式化姓名
             formatterNum ({ cellValue, row, column }) {
@@ -139,12 +160,26 @@
             handleGetData () {
                 let params = {}
                 Api.tableList(params).then((res) => {
-                    debugger
+                    this.tableData = res.rows
+                    this.tableData.forEach(item => {
+                        item.sexCode = item.sex.code
+                        item.sexValue = item.sex.value
+                        item.deptCode = item.deptId.code
+                        item.deptValue = item.deptId.value
+                    })
                 })
             },
             // 重置
             handleReset () {
-            
+
+            },
+            // 编辑
+            onEditMenu (row) {
+
+            },
+            // 删除
+            onDeleteBtn (row) {
+
             }
         }
     };
@@ -153,5 +188,8 @@
     .demo-table {
         width: 100%;
         height: 100%;
+    }
+    .menu-vxe-left {
+        margin-left: 8px;
     }
 </style>
