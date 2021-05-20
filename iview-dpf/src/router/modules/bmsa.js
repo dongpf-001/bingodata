@@ -45,5 +45,15 @@ export default {
             },
             component: () => import('@/pages/components/bmsa-org-tree')
         },
+        {
+            path: 'bmsa-drop-grid',
+            name: `${pre}drop-grid`,
+            meta: {
+                ...meta,
+                title: '下拉表格',
+                closable: true
+            },
+            component: () => import('@/pages/components/bmsa-drop-grid')
+        },
     ]
 };

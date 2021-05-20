@@ -18,5 +18,9 @@ export default {
             path: `${pre}bmsa-org-tree`,
             title: '组织机构'
         },
+        {
+            path: `${pre}bmsa-drop-grid`,
+            title: '下拉表格'
+        },
     ]
 }
