@@ -1,6 +1,9 @@
 <template>
     <Card class="content-inner">
-        <bmsa-drop-grid :api="api" :columns="column">
+        <bmsa-drop-grid :api="api" :columns="column"
+                        rowName="carVin"
+                        :defaultRadio="defaultSelect"
+                        @on-select="handleSelect">
         </bmsa-drop-grid>
     </Card>
 </template>
@@ -24,15 +27,26 @@
                     { field: 'colorCode', title: '颜色编码', width: 130 },
                     { field: 'orderNo', title: '订单号', width: 180 },
                     { field: 'orderType', title: '订单类型', width: 120 },
-                ]
+                ],
+                defaultSelect: {
+                    id: 671,
+                    carVin: '8B4453A4FBC2'
+                }, // 选中的数据
             }
         },
         computed: {},
         methods: {
+            // 单选
+            handleSelect (row) {
+                if (JSON.stringify(row) == '{}') {
+                    this.defaultSelect = {}
+                } else {
+                    this.defaultSelect = row
+                }
+            }
         },
         created () {},
         mounted () {
-            debugger
         },
     };
 </script>
