@@ -62,7 +62,7 @@
                     button: false
                 },
                 defaultRadio: 671, // radio选中的数据
-                defaultCheckbox: [671, 672], // check选中的数据
+                defaultCheckbox: [670, 671, 672, 673], // check选中的数据
             }
         },
         computed: {},
