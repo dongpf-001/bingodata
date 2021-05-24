@@ -135,7 +135,7 @@
             }
         },
         computed: {
-            getTooltip () {
+            getTooltip () { // 构造显示的tooltip
                 let message = []
                 if (this.checkSelect.length) {
                     this.checkSelect.forEach((item, key) => {
@@ -186,6 +186,9 @@
                         this.gridOptions.data = res.rows
                         this.page.totalResult = res.total
                         this.gridOptions.loading = false
+                        if (this.$refs.xTable) { // 构造回显后必须从新reloadData下表格
+                            this.$refs.xTable.reloadData(this.gridOptions.data)
+                        }
                         resolve(res.rows)
                     })
                 })
@@ -210,9 +213,6 @@
                                 this.radioSelect = item
                             }
                         })
-                    }
-                    if (this.$refs.xTable) { // 构造回显后必须从新reloadData下表格
-                        this.$refs.xTable.reloadData(this.gridOptions.data)
                     }
                 })
             },
@@ -264,17 +264,60 @@
                 this.$emit('on-delete', deleteItem)
             },
             // 多选事件
-            handleCheckChange ({ records, row }) {
-                this.checkSelect = records
+            handleCheckChange ({ row }) {
+                let flag = true // true为选中，false为取消选中
+                let index = 0
+                for (let i=0; i<this.checkSelect.length; i++) {
+                    let item = this.checkSelect[i]
+                    if (item[this.rowId] == row[this.rowId]) {
+                        flag = false
+                        index = i
+                        break
+                    }
+                }
+                if (flag) { // 选中添加
+                    this.checkSelect.push(row)
+                } else { // 取消删除
+                    this.checkSelect.splice(index, 1)
+                }
                 // 选中的全部数据/参数为当前选中的数据
                 this.$emit('on-select', this.checkSelect, row)
             },
             // 全选事件
             handleCheckAll ({ records }) {
-                this.checkSelect = records
+                let datas = JSON.parse(JSON.stringify(this.checkSelect)) // 拷贝当前选中的数据
+                if (records.length) { // 表示选中当前页数据
+                    this.gridOptions.data.forEach(item => { // 当前页数据循环
+                        let flag = true
+                        datas.forEach(item2 => {
+                            if (item[this.rowId] == item2[this.rowId]) { // 代表选中的数据中已存在该数据
+                                flag = false
+                            }
+                        })
+                        if (flag) { // 添加
+                            this.checkSelect.push(item)
+                        }
+                    })
+                } else { // 表示取消选中当前页数据
+                    this.gridOptions.data.forEach(item => { // 当前页数据循环
+                        let rowId = null
+                        datas.forEach(item2 => {
+                            if (item[this.rowId] == item2[this.rowId]) { // 代表选中的数据中已存在该数据
+                                rowId = item2[this.rowId]
+                            }
+                        })
+                        if (rowId) { // 添加
+                            this.checkSelect.forEach((item, index) => {
+                                if (item[this.rowId] == rowId) {
+                                    this.checkSelect.splice(index, 1)
+                                }
+                            })
+                        }
+                    })
+                }
                 this.$emit('on-select', this.checkSelect)
             },
-            // 多选的取消选中
+            // 多选时删除input中标签
             handleCheckClose (row) {
                 for (let i=0; i<this.checkSelect.length; i++) {
                     let item = this.checkSelect[i]
