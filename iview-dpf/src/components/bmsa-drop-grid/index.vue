@@ -14,10 +14,10 @@
                 </vxe-input>
                 <!--选中数据后显示-->
                 <div class="bmsa-drop-grid-tag" v-if="multiple">
-                
+                    <Tag v-for="item in checkSelect" :closable="!showDrop" @on-close="handleCheckClose(item)">{{item[rowName]}}</Tag>
                 </div>
-                <div class="bmsa-drop-grid-tag" v-else-if="!multiple && JSON.stringify(defaultRadio)!='{}'">
-                    <Tag closable @on-close="handleRadioClose">{{defaultRadio[rowName]}}</Tag>
+                <div class="bmsa-drop-grid-tag" v-else-if="!multiple && JSON.stringify(radioSelect)!='{}'">
+                    <Tag :closable="!showDrop" @on-close="handleRadioClose">{{radioSelect[rowName]}}</Tag>
                 </div>
             </div>
             <template #dropdown>
@@ -25,8 +25,11 @@
                     <slot name="header"></slot>
                     <vxe-grid ref="xTable" v-bind="gridOptions" class="bmsa-table"
                               :row-id="rowId"
-                              :radio-config="{checkRowKey: defaultRadio[rowId]}"
-                              @radio-change="handleRadioChange">
+                              :radio-config="{checkRowKey: defaultRadioId}"
+                              @radio-change="handleRadioChange"
+                              :checkbox-config="{checkRowKeys: defaultCheckbox}"
+                              @checkbox-change="handleCheckChange"
+                              @checkbox-all="handleCheckAll">
                         <!--单选-->
                         <template #radio="{ row }">
                             <vxe-button type="text" @click="handleClearRadioRow" v-if="JSON.stringify(radioSelect)!='{}'">取消</vxe-button>
@@ -78,6 +81,7 @@
                     totalResult: 0, // 总数量
                 },
                 radioSelect: {}, // 单选选中的数据
+                checkSelect: {}, // 多选选中的数据
             }
         },
         props: {
@@ -93,16 +97,6 @@
                     return {}
                 }
             },
-            multiple: { // 是否支持多选
-                type: Boolean,
-                default: false
-            },
-            defaultRadio: { // 单选时默认回显的数据
-                type: Object,
-                default: () => {
-                    return {}
-                }
-            },
             rowId: { // 区分数据唯一的字段
                 type: String,
                 default: 'id'
@@ -110,6 +104,20 @@
             rowName: { // 选中后显示的字段
                 type: String,
                 default: 'name'
+            },
+            multiple: { // 是否支持多选
+                type: Boolean,
+                default: false
+            },
+            defaultRadioId: { // 单选时默认回显的数据
+                type: [String, Number],
+                default: null
+            },
+            defaultCheckbox: { // 多选时默认回显的数据
+                type: Array,
+                default: () => {
+                    return []
+                }
             },
             maxTagCount: { // input框最多显示的个数
                 type: Number,
@@ -123,7 +131,12 @@
             setColumns () {
                 if (this.columns && this.columns.length) {
                     if (this.multiple) { // 多选
-
+                        this.columns.unshift({
+                            type: 'checkbox',
+                            align: 'center',
+                            fixed: 'left',
+                            width: 60
+                        })
                     } else { // 单选
                         this.columns.unshift({
                             type: 'radio',
@@ -145,11 +158,39 @@
                     page = Object.assign(page, params)
                 }
                 this.gridOptions.loading = true
-                this.api.getList(page).then(res=>{
-                    this.gridOptions.data = res.rows
-                    this.page.totalResult = res.total
-                    this.gridOptions.loading = false
-                    this.$refs.xTable.reloadData(this.gridOptions.data) // 从新加载表格，用于选中回显
+                return new Promise((resolve) => {
+                    this.api.getList(page).then(res=>{
+                        this.gridOptions.data = res.rows
+                        this.page.totalResult = res.total
+                        this.gridOptions.loading = false
+                        resolve(res.rows)
+                    })
+                })
+            },
+            // 获取默认选中的数据
+            getDefaultSelect () {
+                this.getList().then(() => {
+                    // 获取默认选中的数据
+                    this.radioSelect = {} // 单选时回显
+                    this.checkSelect = [] // 多选时
+                    if (this.multiple && this.defaultCheckbox.length) { // 多选
+                        this.gridOptions.data.forEach(item => {
+                            this.defaultCheckbox.forEach(item2 => {
+                                if (item[this.rowId] == item2) {
+                                    this.checkSelect.push(item)
+                                }
+                            })
+                        })
+                    } else if (!this.multiple && this.defaultRadioId) { // 单选
+                        this.gridOptions.data.forEach(item => {
+                            if (item[this.rowId] == this.defaultRadioId) {
+                                this.radioSelect = item
+                            }
+                        })
+                    }
+                    if (this.$refs.xTable) { // 构造回显后必须从新reloadData下表格
+                        this.$refs.xTable.reloadData(this.gridOptions.data)
+                    }
                 })
             },
             // 点击展开下拉时触发
@@ -167,10 +208,9 @@
                     pageSize: 10,
                     totalResult: 0,
                 }
-                this.radioSelect = this.defaultRadio
                 this.$refs.xDown.showPanel()
                 this.showDrop = true
-                this.getList() // 获取列表数据
+                this.getDefaultSelect() // 获取列表数据
             },
             // 隐藏时触发
             handleHide () {
@@ -193,23 +233,52 @@
                 this.$refs.xTable.clearRadioRow()
                 this.$emit('on-select', this.radioSelect) // 选完查询条件后的回调
             },
-            // 删除input中标签
+            // 单选时删除input中标签
             handleRadioClose () {
+                let deleteItem = JSON.parse(JSON.stringify(this.radioSelect))
+                this.radioSelect = {}
                 this.$emit('on-select', {}) // 选完查询条件后的回调
-                this.$emit('on-delete', this.radioSelect)
+                this.$emit('on-delete', deleteItem)
+            },
+            // 多选事件
+            handleCheckChange ({ records, row }) {
+                this.checkSelect = records
+                // 选中的全部数据/参数为当前选中的数据
+                this.$emit('on-select', this.checkSelect, row)
+            },
+            // 全选事件
+            handleCheckAll ({ records }) {
+                this.checkSelect = records
+                this.$emit('on-select', this.checkSelect)
+            },
+            // 多选的取消选中
+            handleCheckClose (row) {
+                for (let i=0; i<this.checkSelect.length; i++) {
+                    let item = this.checkSelect[i]
+                    if (item[this.rowId] == row[this.rowId]) {
+                        this.checkSelect.splice(i, 1)
+                        break
+                    }
+                }
+                this.$emit('on-select', this.checkSelect) // 选完查询条件后的回调
+                this.$emit('on-delete', row)
             }
         },
         computed: {
         },
         mounted () {
             this.setColumns()
+            this.getDefaultSelect()
         }
     }
 </script>
 <style lang="less" scoped>
     .bmsa-drop-grid-wrapper {
+        /deep/ .vxe-pulldown {
+            width: 100%;
+        }
         .bmsa-drop-grid-input { // 显示选择数据的input框
-            width: 260px;
+            width: 100%;
         }
     }
     .bmsa-drop-grid-drop { // 下拉
@@ -224,7 +293,7 @@
             max-width: calc(~'100% - 40px');
             overflow: hidden;
             position: absolute;
-            top: 5px;
+            top: 2px;
             left: 4px;
         }
         .ivu-select-arrow {
