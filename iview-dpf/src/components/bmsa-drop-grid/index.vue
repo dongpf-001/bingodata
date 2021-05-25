@@ -3,11 +3,15 @@
         <vxe-pulldown ref="xDown" transfer @hide-panel="handleHide">
             <div class="bmsa-drop-grid-tooltip" slot="default">
                 <!--显示框区域，可自定义头尾图标-->
-                <vxe-input v-model="inputShow" readonly class="bmsa-drop-grid-input"
-                           :class="showDrop ? 'is--active' : ''" @focus="handleShow">
-                    <template #prefix>
-                        <slot name="prefix"></slot>
-                    </template>
+                <vxe-input ref="tagTable" v-model="queryRadioData"
+                           @keydown="handleRadioQuery"
+                           :readonly="multiple"
+                           :clearable="!multiple"
+                           class="bmsa-drop-grid-input"
+                           :class="showDrop ? 'is--active' : ''"
+                           @focus="handleShow"
+                           @blur="handleBlur"
+                           @clear="handleRadioClose">
                     <template #suffix>
                         <i class="ivu-icon ivu-icon-ios-arrow-down ivu-select-arrow" @click="handleShow"/>
                     </template>
@@ -25,9 +29,6 @@
                             + {{checkSelect.length-maxTagCount}}...
                         </Tag>
                     </Tooltip>
-                </div>
-                <div class="bmsa-drop-grid-tag" v-else-if="!multiple && JSON.stringify(radioSelect)!='{}'">
-                    <Tag closable @on-close="handleRadioClose">{{radioSelect[rowName]}}</Tag>
                 </div>
             </div>
             <template #dropdown>
@@ -68,7 +69,7 @@
         name: 'bmsa-drop-grid',
         data () {
             return {
-                inputShow: '', // 选中后显示的内容
+                queryRadioData: '', // 选中后显示的内容
                 showDrop: false, // 是否显示下拉表格
                 gridOptions: { // 表格的通用配置
                     height: this.height,
@@ -118,6 +119,10 @@
             rowName: { // 选中后显示的字段
                 type: String,
                 default: 'name'
+            },
+            radioQuery: { // 单选时查询的字段
+                type: String,
+                default: 'carVin'
             },
             query: { // 自定义的过滤条件
                 type: Object,
@@ -197,13 +202,16 @@
                 })
             },
             //获取列表数据源
-            getData () {
+            getData (params) {
                 let page = {
                     pageNum: this.page.currentPage,
                     pageSize: this.page.pageSize,
                 }
                 if (JSON.stringify(this.query)!='{}') { // 有查询条件
                     page = Object.assign(page, this.query)
+                }
+                if (params) { // 有查询条件
+                    page = Object.assign(page, params)
                 }
                 this.gridOptions.loading = true
                 this.getApiData(page).then(res=>{
@@ -229,6 +237,7 @@
                     } else if (!this.multiple && this.defaultRadio) { // 单选
                         if (this.defaultRadio.constructor === Object) { // 判断是对象
                             this.radioSelect = this.defaultRadio
+                            this.queryRadioData = this.radioSelect[this.rowName]
                         } else {
                             this.$Message.warning('回显的参数(defaultRadio)必须是对象！')
                         }
@@ -261,6 +270,7 @@
                         this.getApiData(page).then(res => {
                             if (res.rows.length) {
                                 this.radioSelect = res.rows[0]
+                                this.queryRadioData = this.radioSelect[this.rowName]
                             }
                         })
                     }
@@ -297,6 +307,16 @@
                 this.showDrop = true
                 this.getData() // 获取列表数据源
             },
+            // 失焦事件
+            handleBlur () {
+                if (!this.multiple) { // 单选
+                    if (JSON.stringify(this.radioSelect)!='{}') {
+                        this.queryRadioData = this.radioSelect[this.rowName]
+                    } else {
+                        this.queryRadioData = ''
+                    }
+                }
+            },
             // 隐藏时触发
             handleHide () {
                 this.showDrop = false
@@ -310,6 +330,7 @@
             // 单选事件
             handleRadioChange ({ row }) {
                 this.radioSelect = row
+                this.queryRadioData = this.radioSelect[this.rowName]
                 this.$emit('on-select', this.radioSelect) // 选完查询条件后的回调
             },
             // 单选的取消选中
@@ -322,7 +343,6 @@
             handleRadioClose () {
                 let deleteItem = JSON.parse(JSON.stringify(this.radioSelect))
                 this.radioSelect = {}
-                this.$refs.xTable.clearCurrentRow() // 去掉高亮
                 this.$emit('on-select', {}) // 选完查询条件后的回调
                 this.$emit('on-delete', deleteItem)
             },
@@ -392,6 +412,12 @@
                 this.$refs.xTable.reloadData(this.gridOptions.data) // 从新加载数据
                 this.$emit('on-select', this.checkSelect) // 选完查询条件后的回调
                 this.$emit('on-delete', row)
+            },
+            // 单选查询
+            handleRadioQuery () {
+                let params = {}
+                params[this.radioQuery] = this.queryRadioData
+                this.getData(params)
             }
         },
         mounted () {
@@ -407,6 +433,10 @@
         }
         .bmsa-drop-grid-input { // 显示选择数据的input框
             width: 100%;
+            /deep/ .vxe-icon--close {
+                padding-left: 18px;
+                font-size: 12px;
+            }
         }
     }
     .bmsa-drop-grid-drop { // 下拉
