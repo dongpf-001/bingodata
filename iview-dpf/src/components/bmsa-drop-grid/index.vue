@@ -182,6 +182,7 @@
         methods: {
             // 构造表格列
             setColumns () {
+                // 多选时添加选框
                 if (this.columns && this.columns.length) {
                     if (this.multiple) { // 多选
                         this.columns.unshift({
@@ -195,13 +196,14 @@
             },
             // 调用接口(核心接口)，接口返回数据格式是data[rows:{}]
             getApiData (params) {
+                // 核心api，需要自定义传，要求根据分页查询。
                 return new Promise((resolve) => {
                     this.api.getList(params).then(res=>{
                         resolve(res)
                     })
                 })
             },
-            //获取列表数据源
+            // 获取列表数据源，刷新数据一律走此方法
             getData (params) {
                 let page = {
                     pageNum: this.page.currentPage,
@@ -214,19 +216,20 @@
                     page = Object.assign(page, params)
                 }
                 this.gridOptions.loading = true
-                this.getApiData(page).then(res=>{
-                    this.gridOptions.data = res.rows
-                    this.page.totalResult = res.total
+                this.getApiData(page).then(res => { // 调用接口
+                    this.gridOptions.data = res.rows // 获取数据源
+                    this.page.totalResult = res.total // 获取总数
                     this.gridOptions.loading = false
-                    // 构造回显后必须从新reloadData下表格
+                    // 构造回显后必须从新reloadData下表格，多选时回显需要此方法
                     if (this.$refs.xTable) {
                         this.$refs.xTable.reloadData(this.gridOptions.data)
                     }
-                    // 单选的时候回显高亮
+                    // 单选的时候回显高亮，单选时回显需要此方法
                     this.getRadioHighlight()
                 })
             },
-            // 获取默认选中的数据
+            // 获取默认选中的数据，单选：radioSelect，多选：checkSelect。代表选中的数据，组件初始化的时候就要获取到
+            // 要求构造好回显参数再触发组件渲染，此方法多选时略卡，所以没做监听，只在初始化时触发一次
             getDefaultSelect () {
                 // 获取默认选中的数据
                 this.radioSelect = {} // 单选时回显
@@ -254,7 +257,7 @@
                             const oneApi = this.getApiData(page)
                             allApi.push(oneApi)
                         })
-                        Promise.all(allApi).then((data) => {
+                        Promise.all(allApi).then((data) => { // 获取选中的数据
                             data.forEach(item => {
                                 item.rows.forEach(item2 => {
                                     this.checkSelect.push(item2)
@@ -276,7 +279,7 @@
                     }
                 }
             },
-            // 单选的时候回显触发高亮 每次getData都要触发
+            // 单选的时候回显触发高亮，由于接口分页，所以每次getData都要触发
             getRadioHighlight () {
                 if (!this.multiple && this.defaultRadio) {
                     for (let i=0; i<this.gridOptions.data.length; i++) {
@@ -303,11 +306,11 @@
                     pageSize: 10,
                     totalResult: 0,
                 }
-                this.$refs.xDown.showPanel()
-                this.showDrop = true
+                this.$refs.xDown.showPanel() // 展开下拉
+                this.showDrop = true // 该属性用于组件input框样式
                 this.getData() // 获取列表数据源
             },
-            // 失焦事件
+            // 失焦事件 用于单选时，input框重置数据
             handleBlur () {
                 if (!this.multiple) { // 单选
                     if (JSON.stringify(this.radioSelect)!='{}') {
@@ -319,7 +322,7 @@
             },
             // 隐藏时触发
             handleHide () {
-                this.showDrop = false
+                this.showDrop = false // 该属性用于组件input框样式
             },
             // 切换页码
             handlePageChange ({ currentPage, pageSize }) {
@@ -333,7 +336,7 @@
                 this.queryRadioData = this.radioSelect[this.rowName]
                 this.$emit('on-select', this.radioSelect) // 选完查询条件后的回调
             },
-            // 单选的取消选中
+            // 单选的取消选中，即删除，由于是失焦时触发，而数据是在聚焦时获取高亮，所以不用清空
             handleClearRadioRow () {
                 this.radioSelect = {}
                 this.$refs.xTable.clearRadioRow()
@@ -344,7 +347,7 @@
                 let deleteItem = JSON.parse(JSON.stringify(this.radioSelect))
                 this.radioSelect = {}
                 this.$emit('on-select', {}) // 选完查询条件后的回调
-                this.$emit('on-delete', deleteItem)
+                this.$emit('on-delete', deleteItem) // 单独提供删除的回调方法
             },
             // 多选事件
             handleCheckChange ({ row }) {
@@ -416,13 +419,13 @@
             // 单选查询
             handleRadioQuery () {
                 let params = {}
-                params[this.radioQuery] = this.queryRadioData
-                this.getData(params)
+                params[this.radioQuery] = this.queryRadioData // input框输入的条件
+                this.getData(params) // 根据条件从新查询数据
             }
         },
         mounted () {
-            this.setColumns()
-            this.getDefaultSelect()
+            this.setColumns() // 构造表格列
+            this.getDefaultSelect() // 获取选中数据
         }
     }
 </script>

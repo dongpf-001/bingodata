@@ -62,7 +62,7 @@
         </bingo-form>
         <Divider>详细描述</Divider>
         <h3>使用注意事项</h3>
-        <p style="margin-top: 12px">1、下拉表格必须传入api和columns，且api接口名称必须叫getList</p>
+        <p style="margin-top: 12px">1、下拉表格必须传入api和columns，且api接口名称必须叫getList，接口根据分页查询，数据返回格式是data[rows:{}]</p>
         <p style="margin-top: 12px">2、组件必须传入rowId属性，即代表数据唯一的字段(默认是id字段)</p>
         <p style="margin-top: 12px">3、组件必须传入rowName属性，即代表数据显示的字段(默认是name字段)</p>
         <p style="margin-top: 12px">4、选中数据时监听on-select方法获取选中的数据，没有v-model，所有选中、全选、取消全选、删除都会走on-select</p>
