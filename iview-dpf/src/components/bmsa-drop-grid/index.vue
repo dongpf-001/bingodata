@@ -35,9 +35,8 @@
                     <slot name="header"></slot>
                     <vxe-grid ref="xTable" v-bind="gridOptions" class="bmsa-table"
                               :row-id="rowId"
-                              :radio-config="{checkRowKey: defaultRadioId}"
-                              @radio-change="handleRadioChange"
-                              :checkbox-config="{checkRowKeys: defaultCheckbox}"
+                              @current-change="handleRadioChange"
+                              :checkbox-config="{checkRowKeys: getCheckDefault}"
                               @checkbox-change="handleCheckChange"
                               @checkbox-all="handleCheckAll">
                         <!--单选-->
@@ -81,6 +80,7 @@
                     autoResize: true,
                     highlightHoverRow: true,
                     loading: false,
+                    highlightCurrentRow: !this.multiple,
                     size: 'small',
                     stripe: true, // 斑马纹
                     columns: this.columns
@@ -119,8 +119,12 @@
                 type: Boolean,
                 default: false
             },
-            defaultRadioId: { // 单选时默认回显的数据
-                type: [String, Number],
+            isDefaultGather: { // 回显时是否根据数据集回显，默认是直接根据rowId回显
+                type: Boolean,
+                default: false
+            },
+            defaultRadio: { // 单选时默认回显的数据
+                type: [String, Number, Object],
                 default: null
             },
             defaultCheckbox: { // 多选时默认回显的数据
@@ -145,6 +149,17 @@
                     })
                 }
                 return message.join(',')
+            },
+            getCheckDefault () { // 多选情况下获取默认回显的字段集合
+                let rowIds = []
+                if (this.isDefaultGather) { // 根据数据集回显
+                    this.defaultCheckbox.forEach(item => {
+                        rowIds.push(item[this.rowId])
+                    })
+                } else {
+                    rowIds = this.defaultCheckbox
+                }
+                return rowIds
             }
         },
         watch: {
@@ -160,19 +175,19 @@
                             fixed: 'left',
                             width: 60
                         })
-                    } else { // 单选
-                        this.columns.unshift({
-                            type: 'radio',
-                            slots: { header: 'radio' },
-                            align: 'center',
-                            fixed: 'left',
-                            width: 60
-                        })
                     }
                 }
             },
-            //获取列表数据
-            getList(params){
+            // 调用接口(核心接口)，接口返回数据格式是data[rows:{}]
+            getApiData (params) {
+                return new Promise((resolve) => {
+                    this.api.getList(params).then(res=>{
+                        resolve(res)
+                    })
+                })
+            },
+            //获取列表数据源
+            getData(params){
                 let page = {
                     pageNum: this.page.currentPage,
                     pageSize: this.page.pageSize,
@@ -181,16 +196,24 @@
                     page = Object.assign(page, params)
                 }
                 this.gridOptions.loading = true
-                return new Promise((resolve) => {
-                    this.api.getList(page).then(res=>{
-                        this.gridOptions.data = res.rows
-                        this.page.totalResult = res.total
-                        this.gridOptions.loading = false
-                        if (this.$refs.xTable) { // 构造回显后必须从新reloadData下表格
-                            this.$refs.xTable.reloadData(this.gridOptions.data)
+                this.getApiData(page).then(res=>{
+                    this.gridOptions.data = res.rows
+                    this.page.totalResult = res.total
+                    this.gridOptions.loading = false
+                    // 构造回显后必须从新reloadData下表格
+                    if (this.$refs.xTable) {
+                        this.$refs.xTable.reloadData(this.gridOptions.data)
+                    }
+                    // 单选的时候回显高亮
+                    if (!this.multiple && this.defaultRadio) {
+                        for (let i=0; i<this.gridOptions.data.length; i++) {
+                            let item = this.gridOptions.data[i]
+                            if (item[this.rowId] == (this.isDefaultGather ? this.defaultRadio[this.rowId] : this.defaultRadio)) {
+                                this.$refs.xTable.setCurrentRow(this.gridOptions.data[i])
+                                break
+                            }
                         }
-                        resolve(res.rows)
-                    })
+                    }
                 })
             },
             // 获取默认选中的数据
@@ -198,31 +221,47 @@
                 // 获取默认选中的数据
                 this.radioSelect = {} // 单选时回显
                 this.checkSelect = [] // 多选时
-                const allApi = [] // 异步接口集合
-                let page = {
-                    pageNum: this.page.currentPage,
-                    pageSize: this.page.pageSize,
-                }
-                if (this.multiple && this.defaultCheckbox.length) { // 多选
-                    this.defaultCheckbox.forEach(item => {
-                        page[this.rowId] = item
-                        const oneApi = this.api.getList(page)
-                        allApi.push(oneApi)
-                    })
-                    Promise.all(allApi).then((data) => {
-                        data.forEach(item => {
-                            item.rows.forEach(item2 => {
-                                this.checkSelect.push(item2)
+                if (this.isDefaultGather) { // 根据数据集回显
+                    if (this.multiple && this.defaultCheckbox.length) { // 多选
+                        this.checkSelect = this.defaultCheckbox
+                    } else if (!this.multiple && this.defaultRadio) { // 单选
+                        if (this.defaultRadio.constructor === Object) { // 判断是对象
+                            this.radioSelect = this.defaultRadio
+                        } else {
+                            this.$Message.warning('回显的参数(defaultRadio)必须是对象！')
+                        }
+                    }
+                } else { // 根据rowId回显
+                    const allApi = [] // 异步接口集合
+                    if (this.multiple && this.defaultCheckbox.length) { // 多选
+                        this.defaultCheckbox.forEach(item => {
+                            let page = {
+                                pageNum: this.page.currentPage,
+                                pageSize: this.page.pageSize,
+                            }
+                            page[this.rowId] = item
+                            const oneApi = this.getApiData(page)
+                            allApi.push(oneApi)
+                        })
+                        Promise.all(allApi).then((data) => {
+                            data.forEach(item => {
+                                item.rows.forEach(item2 => {
+                                    this.checkSelect.push(item2)
+                                })
                             })
                         })
-                    })
-                } else if (!this.multiple && this.defaultRadioId) { // 单选
-                    page[this.rowId] = this.defaultRadioId
-                    this.api.getList(page).then(res => {
-                        if (res.rows.length) {
-                            this.radioSelect = res.rows[0]
+                    } else if (!this.multiple && this.defaultRadio) { // 单选
+                        let page = {
+                            pageNum: this.page.currentPage,
+                            pageSize: this.page.pageSize,
                         }
-                    })
+                        page[this.rowId] = this.defaultRadio
+                        this.getApiData(page).then(res => {
+                            if (res.rows.length) {
+                                this.radioSelect = res.rows[0]
+                            }
+                        })
+                    }
                 }
             },
             // 点击展开下拉时触发
@@ -242,7 +281,7 @@
                 }
                 this.$refs.xDown.showPanel()
                 this.showDrop = true
-                this.getList() // 获取列表数据
+                this.getData() // 获取列表数据源
             },
             // 隐藏时触发
             handleHide () {
@@ -252,7 +291,7 @@
             handlePageChange ({ currentPage, pageSize }) {
                 this.page.currentPage = currentPage
                 this.page.pageSize = pageSize
-                this.getList() // 获取列表数据
+                this.getData() // 获取列表数据源
             },
             // 单选事件
             handleRadioChange ({ row }) {
