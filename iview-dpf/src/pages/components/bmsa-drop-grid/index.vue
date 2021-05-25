@@ -198,5 +198,31 @@
         },
     };
 </script>
-<style lang="less" scoped>
+<style lang="less">
+    /*滚动条整体部分*/
+    .bmsa-table ::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+    }
+    /*滚动条的轨道*/
+    .bmsa-table ::-webkit-scrollbar-track {
+        background-color: #FFFFFF;
+    }
+    /*滚动条里面的小方块，能向上向下移动*/
+    .bmsa-table ::-webkit-scrollbar-thumb {
+        background-color: #bfbfbf;
+        border-radius: 5px;
+        border: 1px solid #F1F1F1;
+        box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    }
+    .bmsa-table ::-webkit-scrollbar-thumb:hover {
+        background-color: #A8A8A8;
+    }
+    .bmsa-table ::-webkit-scrollbar-thumb:active {
+        background-color: #787878;
+    }
+    /*边角，即两个滚动条的交汇处*/
+    .bmsa-table ::-webkit-scrollbar-corner {
+        background-color: #FFFFFF;
+    }
 </style>
