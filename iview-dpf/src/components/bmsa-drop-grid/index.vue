@@ -195,26 +195,35 @@
             },
             // 获取默认选中的数据
             getDefaultSelect () {
-                this.getList().then(() => {
-                    // 获取默认选中的数据
-                    this.radioSelect = {} // 单选时回显
-                    this.checkSelect = [] // 多选时
-                    if (this.multiple && this.defaultCheckbox.length) { // 多选
-                        this.gridOptions.data.forEach(item => {
-                            this.defaultCheckbox.forEach(item2 => {
-                                if (item[this.rowId] == item2) {
-                                    this.checkSelect.push(item)
-                                }
+                // 获取默认选中的数据
+                this.radioSelect = {} // 单选时回显
+                this.checkSelect = [] // 多选时
+                const allApi = [] // 异步接口集合
+                let page = {
+                    pageNum: this.page.currentPage,
+                    pageSize: this.page.pageSize,
+                }
+                if (this.multiple && this.defaultCheckbox.length) { // 多选
+                    this.defaultCheckbox.forEach(item => {
+                        page[this.rowId] = item
+                        const oneApi = this.api.getList(page)
+                        allApi.push(oneApi)
+                    })
+                    Promise.all(allApi).then((data) => {
+                        data.forEach(item => {
+                            item.rows.forEach(item2 => {
+                                this.checkSelect.push(item2)
                             })
                         })
-                    } else if (!this.multiple && this.defaultRadioId) { // 单选
-                        this.gridOptions.data.forEach(item => {
-                            if (item[this.rowId] == this.defaultRadioId) {
-                                this.radioSelect = item
-                            }
-                        })
-                    }
-                })
+                    })
+                } else if (!this.multiple && this.defaultRadioId) { // 单选
+                    page[this.rowId] = this.defaultRadioId
+                    this.api.getList(page).then(res => {
+                        if (res.rows.length) {
+                            this.radioSelect = res.rows[0]
+                        }
+                    })
+                }
             },
             // 点击展开下拉时触发
             handleShow () {
@@ -233,7 +242,7 @@
                 }
                 this.$refs.xDown.showPanel()
                 this.showDrop = true
-                this.getDefaultSelect() // 获取列表数据
+                this.getList() // 获取列表数据
             },
             // 隐藏时触发
             handleHide () {
