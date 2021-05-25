@@ -1,17 +1,17 @@
 <template>
     <Card class="content-inner">
         <bingo-form :col="query.col" :labelWidth="query.labelWidth" :data="data"
-                    ref="form" :button="query.button">
+                    ref="form" :button="query.button" :rules="rules">
             <bingo-grid-item>
-                <bingo-form-item label="单选根据字段回显" prop="type" label-for="type">
+                <bingo-form-item label="单选根据字段回显" prop="defaultRadio1" label-for="defaultRadio1">
                     <bmsa-drop-grid :api="api"
                                     :columns="column1"
                                     rowId="id"
                                     rowName="carVin"
-                                    :defaultRadio="defaultRadio1"
+                                    :defaultRadio="data.defaultRadio1"
                                     @on-select="handleRadioSelect">
                     </bmsa-drop-grid>
-                    {{defaultRadio1}}
+                    {{data.defaultRadio1}}
                 </bingo-form-item>
             </bingo-grid-item>
             <bingo-grid-item>
@@ -23,13 +23,13 @@
                                     rowName="carVin"
                                     :query="queryData"
                                     :multiple="true"
-                                    :defaultCheckbox="defaultCheckbox1"
+                                    :defaultCheckbox="data.defaultCheckbox1"
                                     @on-select="handleCheckSelect">
                         <template #query>
                             <Input v-model.trim="queryData.carVin" placeholder="VIN:" icon="ios-search" @on-enter="handleQuery" @on-click="handleQuery" style="margin-bottom: 12px;width: 230px;"/>
                         </template>
                     </bmsa-drop-grid>
-                    {{defaultCheckbox1}}
+                    {{data.defaultCheckbox1}}
                 </bingo-form-item>
             </bingo-grid-item>
             <bingo-grid-item>
@@ -39,10 +39,10 @@
                                     :isDefaultGather="true"
                                     rowId="id"
                                     rowName="carVin"
-                                    :defaultRadio="defaultRadio2"
+                                    :defaultRadio="data.defaultRadio2"
                                     @on-select="handleRadioSelect2">
                     </bmsa-drop-grid>
-                    {{defaultRadio2}}
+                    {{data.defaultRadio2}}
                 </bingo-form-item>
             </bingo-grid-item>
             <bingo-grid-item>
@@ -53,10 +53,10 @@
                                     rowId="id"
                                     rowName="carVin"
                                     :multiple="true"
-                                    :defaultCheckbox="defaultCheckbox2"
+                                    :defaultCheckbox="data.defaultCheckbox2"
                                     @on-select="handleCheckSelect2">
                     </bmsa-drop-grid>
-                    {{defaultCheckbox2}}
+                    {{data.defaultCheckbox2}}
                 </bingo-form-item>
             </bingo-grid-item>
         </bingo-form>
@@ -86,7 +86,15 @@
         data () {
             return {
                 api: Api,
-                data: {},
+                data: {
+                    defaultRadio1: 661, // radio选中的数据
+                    defaultRadio2: { id: 672, carVin: '141DB6437C56'},
+                    defaultCheckbox1: [670, 671, 672, 661], // check选中的数据
+                    defaultCheckbox2: [
+                        {id: 673, carVin: 'A7E5134FAE6B'},
+                        {id: 659, carVin: 'A209623A8B0E'}
+                    ],
+                },
                 queryData: {
                     carVin: ''
                 },
@@ -135,13 +143,11 @@
                     labelWidth: 160,
                     button: false
                 },
-                defaultRadio1: 661, // radio选中的数据
-                defaultRadio2: { id: 672, carVin: '141DB6437C56'},
-                defaultCheckbox1: [670, 671, 672, 661], // check选中的数据
-                defaultCheckbox2: [
-                    {id: 673, carVin: 'A7E5134FAE6B'},
-                    {id: 659, carVin: 'A209623A8B0E'}
-                ]
+                rules: {
+                    defaultRadio1: [
+                        {required: true, type: 'number', message: $t('page.common.noEmpty'), trigger: 'change'},
+                    ],
+                }
             }
         },
         computed: {},
@@ -149,37 +155,37 @@
             // 单选
             handleRadioSelect (row) {
                 if (JSON.stringify(row) == '{}') {
-                    this.defaultRadio1 = null
+                    this.data.defaultRadio1 = null
                 } else {
-                    this.defaultRadio1 = row.id
+                    this.data.defaultRadio1 = row.id
                 }
             },
             // 单选2
             handleRadioSelect2 (row) {
                 if (JSON.stringify(row) == '{}') {
-                    this.defaultRadio2 = {}
+                    this.data.defaultRadio2 = {}
                 } else {
-                    this.defaultRadio2 = row
+                    this.data.defaultRadio2 = row
                 }
             },
             // 多选
             handleCheckSelect (rows) {
-                this.defaultCheckbox1 = []
+                this.data.defaultCheckbox1 = []
                 if (rows && rows.length) {
                     rows.forEach(item => {
-                        this.defaultCheckbox1.push(item.id)
+                        this.data.defaultCheckbox1.push(item.id)
                     })
                 } else {
-                    this.defaultCheckbox1 = []
+                    this.data.defaultCheckbox1 = []
                 }
             },
             // 多选2
             handleCheckSelect2 (rows) {
-                this.defaultCheckbox2 = []
+                this.data.defaultCheckbox2 = []
                 if (rows && rows.length) {
-                    this.defaultCheckbox2 = rows
+                    this.data.defaultCheckbox2 = rows
                 } else {
-                    this.defaultCheckbox2 = []
+                    this.data.defaultCheckbox2 = []
                 }
             },
             // 查询

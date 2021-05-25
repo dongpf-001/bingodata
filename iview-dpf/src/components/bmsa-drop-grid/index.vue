@@ -3,12 +3,11 @@
         <vxe-pulldown ref="xDown" transfer @hide-panel="handleHide">
             <div class="bmsa-drop-grid-tooltip" slot="default">
                 <!--显示框区域，可自定义头尾图标-->
-                <vxe-input ref="tagTable" v-model="queryRadioData"
-                           @keydown="handleRadioQuery"
+                <vxe-input ref="tagTable" v-model="queryRadioData" class="bmsa-drop-grid-input"
                            :readonly="multiple"
                            :clearable="!multiple"
-                           class="bmsa-drop-grid-input"
                            :class="showDrop ? 'is--active' : ''"
+                           @keyup="handleRadioQuery"
                            @focus="handleShow"
                            @blur="handleBlur"
                            @clear="handleRadioClose">
@@ -18,8 +17,7 @@
                 </vxe-input>
                 <!--选中数据后显示-->
                 <div class="bmsa-drop-grid-tag" v-if="multiple">
-                    <Tag v-for="(item, key) in checkSelect"
-                         v-if="key<maxTagCount"
+                    <Tag v-for="(item, key) in checkSelect" v-if="key<maxTagCount"
                          closable
                          @on-close="handleCheckClose(item)">
                         {{item[rowName]}}
@@ -36,8 +34,8 @@
                     <slot name="query"></slot>
                     <vxe-grid ref="xTable" v-bind="gridOptions" class="bmsa-table"
                               :row-id="rowId"
-                              @current-change="handleRadioChange"
                               :checkbox-config="{checkRowKeys: getCheckDefault}"
+                              @current-change="handleRadioChange"
                               @checkbox-change="handleCheckChange"
                               @checkbox-all="handleCheckAll">
                         <!--单选-->
