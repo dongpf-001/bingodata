@@ -28,7 +28,7 @@
                 </bingo-form-item>
             </bingo-grid-item>
             <bingo-grid-item>
-                <bingo-form-item label="单选根据数据集回显回显" prop="type" label-for="type">
+                <bingo-form-item label="单选根据数据集回显" prop="type" label-for="type">
                     <bmsa-drop-grid :api="api"
                                     :columns="column3"
                                     :isDefaultGather="true"
