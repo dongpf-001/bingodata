@@ -16,7 +16,7 @@
                 <div class="bmsa-drop-grid-tag" v-if="multiple">
                     <Tag v-for="(item, key) in checkSelect"
                          v-if="key<maxTagCount"
-                         :closable="!showDrop"
+                         closable
                          @on-close="handleCheckClose(item)">
                         {{item[rowName]}}
                     </Tag>
@@ -27,7 +27,7 @@
                     </Tooltip>
                 </div>
                 <div class="bmsa-drop-grid-tag" v-else-if="!multiple && JSON.stringify(radioSelect)!='{}'">
-                    <Tag :closable="!showDrop" @on-close="handleRadioClose">{{radioSelect[rowName]}}</Tag>
+                    <Tag closable @on-close="handleRadioClose">{{radioSelect[rowName]}}</Tag>
                 </div>
             </div>
             <template #dropdown>
@@ -205,15 +205,7 @@
                         this.$refs.xTable.reloadData(this.gridOptions.data)
                     }
                     // 单选的时候回显高亮
-                    if (!this.multiple && this.defaultRadio) {
-                        for (let i=0; i<this.gridOptions.data.length; i++) {
-                            let item = this.gridOptions.data[i]
-                            if (item[this.rowId] == (this.isDefaultGather ? this.defaultRadio[this.rowId] : this.defaultRadio)) {
-                                this.$refs.xTable.setCurrentRow(this.gridOptions.data[i])
-                                break
-                            }
-                        }
-                    }
+                    this.getRadioHighlight()
                 })
             },
             // 获取默认选中的数据
@@ -264,6 +256,18 @@
                     }
                 }
             },
+            // 单选的时候回显触发高亮 每次getData都要触发
+            getRadioHighlight () {
+                if (!this.multiple && this.defaultRadio) {
+                    for (let i=0; i<this.gridOptions.data.length; i++) {
+                        let item = this.gridOptions.data[i]
+                        if (item[this.rowId] == (this.isDefaultGather ? this.defaultRadio[this.rowId] : this.defaultRadio)) {
+                            this.$refs.xTable.setCurrentRow(this.gridOptions.data[i])
+                            break
+                        }
+                    }
+                }
+            },
             // 点击展开下拉时触发
             handleShow () {
                 if (!this.columns.length) {
@@ -308,6 +312,7 @@
             handleRadioClose () {
                 let deleteItem = JSON.parse(JSON.stringify(this.radioSelect))
                 this.radioSelect = {}
+                this.$refs.xTable.clearCurrentRow() // 去掉高亮
                 this.$emit('on-select', {}) // 选完查询条件后的回调
                 this.$emit('on-delete', deleteItem)
             },
@@ -374,6 +379,7 @@
                         break
                     }
                 }
+                this.$refs.xTable.reloadData(this.gridOptions.data) // 从新加载数据
                 this.$emit('on-select', this.checkSelect) // 选完查询条件后的回调
                 this.$emit('on-delete', row)
             }
