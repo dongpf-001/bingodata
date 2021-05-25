@@ -41,7 +41,7 @@
                 </bingo-form-item>
             </bingo-grid-item>
             <bingo-grid-item>
-                <bingo-form-item label="多选根据字段回显" prop="type" label-for="type">
+                <bingo-form-item label="多选根据数据集回显" prop="type" label-for="type">
                     <bmsa-drop-grid :api="api"
                                     :columns="column4"
                                     :isDefaultGather="true"
@@ -111,7 +111,7 @@
                 ],
                 query: {
                     col: 2,
-                    labelWidth: 150,
+                    labelWidth: 160,
                     button: false
                 },
                 defaultRadio1: 661, // radio选中的数据

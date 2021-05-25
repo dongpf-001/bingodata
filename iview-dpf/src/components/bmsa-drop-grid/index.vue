@@ -71,7 +71,7 @@
                 inputShow: '', // 选中后显示的内容
                 showDrop: false, // 是否显示下拉表格
                 gridOptions: { // 表格的通用配置
-                    height: '300',
+                    height: this.height,
                     data: [],
                     border: true,
                     resizable: true,
@@ -100,6 +100,10 @@
                 default: () => {
                     return []
                 }
+            },
+            height: { // 下拉表格的高度
+                type: [String, Number],
+                default: '300'
             },
             api: { // 查询数据源的api，接口方法名固定是getList
                 type: Object,
