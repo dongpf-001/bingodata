@@ -17,12 +17,17 @@
             <bingo-grid-item>
                 <bingo-form-item label="多选根据字段回显" prop="type" label-for="type">
                     <bmsa-drop-grid :api="api"
+                                    ref="xDrop"
                                     :columns="column2"
                                     rowId="id"
                                     rowName="carVin"
+                                    :query="queryData"
                                     :multiple="true"
                                     :defaultCheckbox="defaultCheckbox1"
                                     @on-select="handleCheckSelect">
+                        <template #query>
+                            <Input v-model.trim="queryData.carVin" placeholder="VIN:" icon="ios-search" @on-enter="handleQuery" @on-click="handleQuery" style="margin-bottom: 12px;width: 230px;"/>
+                        </template>
                     </bmsa-drop-grid>
                     {{defaultCheckbox1}}
                 </bingo-form-item>
@@ -69,6 +74,9 @@
             return {
                 api: Api,
                 data: {},
+                queryData: {
+                    carVin: ''
+                },
                 column1: [
                     { type: 'seq', title: $t('page.common.index'), align: 'center', fixed: 'left', width: 60 },
                     { field: 'carVin', title: 'VIN', width: 200 },
@@ -161,6 +169,10 @@
                     this.defaultCheckbox2 = []
                 }
             },
+            // 查询
+            handleQuery () {
+                this.$refs.xDrop.getData()
+            }
         },
         created () {},
         mounted () {

@@ -32,7 +32,7 @@
             </div>
             <template #dropdown>
                 <div class="bmsa-drop-grid-drop">
-                    <slot name="header"></slot>
+                    <slot name="query"></slot>
                     <vxe-grid ref="xTable" v-bind="gridOptions" class="bmsa-table"
                               :row-id="rowId"
                               @current-change="handleRadioChange"
@@ -119,6 +119,12 @@
                 type: String,
                 default: 'name'
             },
+            query: { // 自定义的过滤条件
+                type: Object,
+                default: () => {
+                    return {}
+                }
+            },
             multiple: { // 是否支持多选
                 type: Boolean,
                 default: false
@@ -191,13 +197,13 @@
                 })
             },
             //获取列表数据源
-            getData(params){
+            getData () {
                 let page = {
                     pageNum: this.page.currentPage,
                     pageSize: this.page.pageSize,
                 }
-                if (params) { // 有查询条件
-                    page = Object.assign(page, params)
+                if (JSON.stringify(this.query)!='{}') { // 有查询条件
+                    page = Object.assign(page, this.query)
                 }
                 this.gridOptions.loading = true
                 this.getApiData(page).then(res=>{
