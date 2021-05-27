@@ -30,7 +30,7 @@
                 </div>
             </div>
             <template #dropdown>
-                <div class="bmsa-drop-grid-drop">
+                <div class="bmsa-drop-grid-drop" :style="'width:' + width + 'px'">
                     <slot name="query"></slot>
                     <vxe-grid ref="xTable" v-bind="gridOptions" class="bmsa-table"
                               :row-id="rowId"
@@ -103,6 +103,10 @@
             height: { // 下拉表格的高度
                 type: [String, Number],
                 default: '300'
+            },
+            width: { // 下拉表格的宽度
+                type: [String, Number],
+                default: '600'
             },
             api: { // 查询数据源的api，接口方法名固定是getList
                 type: Object,
@@ -441,8 +445,7 @@
         }
     }
     .bmsa-drop-grid-drop { // 下拉
-        width: 600px;
-        padding: 12px 12px 0 12px;
+        padding: 12px 0 0 0;
         box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.1);
     }
     .bmsa-drop-grid-tooltip { // input框
