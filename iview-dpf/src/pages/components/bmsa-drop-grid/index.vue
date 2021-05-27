@@ -26,7 +26,7 @@
                                     :defaultCheckbox="data.defaultCheckbox1"
                                     @on-select="handleCheckSelect">
                         <template #query>
-                            <Input v-model.trim="queryData.carVin" placeholder="VIN:" icon="ios-search" @on-enter="handleQuery" @on-click="handleQuery" style="margin-bottom: 12px;width: 230px;margin-left: 12px"/>
+                            <Input v-model.trim="queryData.carVin" placeholder="VIN:" icon="ios-search" @on-enter="handleQuery" @on-click="handleQuery" style="margin: 12px;width: 230px"/>
                         </template>
                     </bmsa-drop-grid>
                     {{data.defaultCheckbox1}}

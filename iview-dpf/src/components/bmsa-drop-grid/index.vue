@@ -445,7 +445,7 @@
         }
     }
     .bmsa-drop-grid-drop { // 下拉
-        padding: 12px 0 0 0;
+        /*padding: 12px 0 0 0;*/
         box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.1);
     }
     .bmsa-drop-grid-tooltip { // input框
