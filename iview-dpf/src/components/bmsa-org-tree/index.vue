@@ -8,6 +8,7 @@
         <org-view
           v-if="data"
           :data="data"
+          :isRender="isRender"
           :zoom-handled="zoomHandled"
           @on-menu-click="handleMenuClick"
         ></org-view>
@@ -43,6 +44,10 @@
                 default: () => {
                     return {}
                 }
+            },
+            isRender: { // 是否自定义render
+                type: Boolean,
+                default: true
             }
         },
         computed: {
