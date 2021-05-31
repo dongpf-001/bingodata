@@ -49,7 +49,6 @@
                             }, m.label),
                             h('p', { // phone字段，有这个字段的话才显示
                                 class: 'node-phone',
-                                vIf: m.level == 4,
                             }, m.phone)
                         ])
                     }
