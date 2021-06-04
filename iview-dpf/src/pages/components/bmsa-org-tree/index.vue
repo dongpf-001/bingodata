@@ -18,11 +18,9 @@
     </div>
 </template>
 <script>
-    import bmsaOrgTree from '@/components/bmsa-org-tree'
     export default {
         name: 'bmsa-org-tree-demo',
         components: {
-            bmsaOrgTree
         },
         data () {
             return {

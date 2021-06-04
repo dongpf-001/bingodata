@@ -85,11 +85,9 @@
 </template>
 <script>
     import Api from '@/api/demo';
-    import bmsaDropGrid from '@/components/bmsa-drop-grid'
     export default {
         name: 'bmsa-drop-grid-demo',
         components: {
-            bmsaDropGrid
         },
         data () {
             return {

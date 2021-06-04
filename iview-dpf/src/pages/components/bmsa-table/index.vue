@@ -95,11 +95,9 @@
 </template>
 <script>
     import Api from '@/api/bmsa/user'
-    import bmsaTableTool from '@/components/bmsa-table-tool'
     export default {
         name: 'bmsa-table',
         components: {
-            bmsaTableTool
         },
         data () {
             return {

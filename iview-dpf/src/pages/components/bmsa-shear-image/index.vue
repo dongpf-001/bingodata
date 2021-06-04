@@ -19,11 +19,9 @@
     </div>
 </template>
 <script>
-    import bmsaShearImage from '@/components/bmsa-shear-image'
     export default {
         name: 'demo-shear-image',
         components: {
-            bmsaShearImage
         },
         data () {
             return {

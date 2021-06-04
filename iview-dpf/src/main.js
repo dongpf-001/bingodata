@@ -4,6 +4,10 @@ import '@babel/polyfill';
 import Vue from 'vue';
 import App from './App';
 
+// 全部组件
+import allComponents from '@/components';
+Vue.use(allComponents)
+
 // vxe-table
 import 'xe-utils'
 import VXETable from 'vxe-table'
@@ -48,8 +52,8 @@ import './styles/index.less';
 import './libs/iview-pro/iview-pro.css';
 
 // bingo-components
-import bingoComponents from 'bingo-components';
-Vue.use(bingoComponents);
+// import bingoComponents from 'bingo-components';
+// Vue.use(bingoComponents);
 
 // org-tree
 import VOrgTree from 'v-org-tree'
