@@ -1,6 +1,20 @@
 <template>
     <div class="content-inner">
-        <bmsa-org-tree :data="data1" :isRender="true"></bmsa-org-tree>
+        <Card>
+            <Split v-model="split1">
+                <div slot="left" class="demo-split-pane">
+                    <h3>自定义render示例</h3>
+                    <bmsa-org-tree :data="data1" :isRender="true"></bmsa-org-tree>
+                </div>
+                <div slot="right" class="demo-split-pane">
+                    <Divider>详细描述</Divider>
+                    <h3>使用注意事项</h3>
+                    <p style="margin-top: 12px">1、需要构造树形结构数据，isRender默认是false，代表组件内部给渲染节点，显示数据中label和name字段</p>
+                    <p style="margin-top: 12px">2、将isRender树形设置成true，可根据自己的业务自定义render来渲染每个节点</p>
+                    <p style="margin-top: 12px">3、isRender默认为false时，组件自带双击节点、右键节点功能，目前处于开发中。</p>
+                </div>
+            </Split>
+        </Card>
     </div>
 </template>
 <script>
@@ -12,6 +26,7 @@
         },
         data () {
             return {
+                split1: 0.7,
                 data1: {},
                 data: [
                     {id: 1, parentId: 0, label: 'ET部门名称', level: 1},
