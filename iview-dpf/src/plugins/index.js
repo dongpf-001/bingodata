@@ -8,6 +8,8 @@ import pluginError from '@/plugins/error';
 import pluginLog from '@/plugins/log';
 // 鉴权指令
 import directiveAuth from '@/plugins/auth';
+//滚动触发方法
+import scroll from '@/plugins/scroll';
 
 export default {
     async install (Vue, options) {
@@ -17,5 +19,6 @@ export default {
 
         // 指令
         Vue.directive('auth', directiveAuth);
+        Vue.directive('scroll', scroll);
     }
 }

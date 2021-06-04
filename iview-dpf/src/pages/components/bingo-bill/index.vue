@@ -45,7 +45,7 @@
                 <Table border :columns="columns1" :data="data1"></Table>
             </div>
             <div slot="two" :style="isScroll ? 'height: 500px' : 'height: 100%'">
-                <bingo-tabs value="name1">
+                <Tabs value="name1">
                     <TabPane label="标签一" name="name1">标签一的内容</TabPane>
                     <TabPane label="标签二" name="name2">标签二的内容</TabPane>
                     <TabPane label="标签三" name="name3">标签三的内容</TabPane>
@@ -53,7 +53,7 @@
                     <TabPane label="标签五" name="name5">标签五的内容</TabPane>
                     <TabPane label="标签六" name="name6">标签六的内容</TabPane>
                     <TabPane label="标签七" name="name7">标签七的内容</TabPane>
-                </bingo-tabs>
+                </Tabs>
             </div>
             <div slot="three" :style="isScroll ? 'height: 500px' : 'height: 100%'">
                 ------------ three
