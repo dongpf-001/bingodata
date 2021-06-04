@@ -1,0 +1,268 @@
+.bill {
+  margin: 10px 0 0 10px;
+  .shrink-card-icon {
+    position: absolute;
+    right: 60px;
+    top: 10px;
+  }
+  .shrink-card-icon1 {
+    position: absolute;
+    right: 16px;
+    top: 10px;
+  }
+}
+.bill .ivu-menu-vertical.ivu-menu-light:after {
+  display: none;
+}
+
+.bill .ivu-menu-light.ivu-menu-vertical .ivu-menu-item-active:not(.ivu-menu-submenu):after {
+  display: none;
+}
+.bill .ivu-menu-light {
+  background: none;
+  z-index: 1;
+}
+
+.bill .content {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  float: left;
+}
+
+.bill .content::-webkit-scrollbar {
+  /*display: none;*/
+}
+
+.bill .h400 {
+  height: 500px;
+}
+
+.bill {
+  height: 100%;
+}
+
+.demo-scroll-top {
+  height: 400px;
+  overflow: auto;
+  border: 1px solid #999;
+}
+
+/*全屏*/
+.bill-full .card-full {
+  position: fixed!important;
+  top: 0;
+  left: 0;
+  z-index: 99;
+  width: 100%!important;
+  height: 100%!important;
+}
+.bill-full .ivu-fr {
+  display: none;
+}
+
+/*横向样式*/
+.bill-horizontal .hContent .content-card {
+  height: calc(~"100% - 48px");
+}
+.bill-horizontal .content-card .ivu-card-body {
+  height: 100%;
+}
+.bill-horizontal .hContent {
+  width: 100%;
+  height: 100%;
+}
+.bill-horizontal .hContent-hy {
+  width: 100%;
+}
+/*纵向样式*/
+.bill-vertical {
+  position: relative;
+}
+.bill-vertical .content-card {
+  width: calc(~"100% - 150px");
+}
+.bill-vertical .ivu-fr {
+  position: absolute;
+  top: 0;
+  right: 10px;
+}
+.bill-vertical .bill-line {
+  position: absolute;
+  top: 0;
+  right: 132px;
+  width: 1px;
+  background-color: #e5e5e5;
+  height: 100%;
+}
+.bill-vertical .bill-menu-item {
+  margin-top: 10px;
+  height: 32px;
+  line-height: 50%;
+  background-color: #fff;
+  border: 1px solid #e5e5e5;
+  position: relative;
+}
+.bill-vertical .bill-menu-item .ivu-menu-item .ivu-icon{ /*去掉tab带图标的样式*/
+  line-height: 0!important;
+}
+.bill-vertical .bill-menu-item .bill-menu-back {
+  position: absolute;
+  top: -4px;
+  right: 122px;
+  z-index: -1;
+  border-right: 6px solid #c8c9c9;
+  border-bottom: 3px solid transparent;
+  border-top: 3px solid transparent;
+  height: 38.5px;
+}
+.bill-vertical .bill-menu-item .bill-menu-back1 {
+  position: absolute;
+  top: -4px;
+  right: 122px;
+  z-index: -1;
+  border-right: 6px solid #025690;
+  border-bottom: 3px solid transparent;
+  border-top: 3px solid transparent;
+  height: 38.5px;
+}
+.bill-vertical .bill-menu-item .ivu-menu-item{
+  height: 32px;
+}
+.bill-vertical .bill-menu-item .ivu-menu-item-selected:not(.ivu-menu-submenu) {
+  color: #fff;
+  background: #0077c8;
+  height: 100%;
+  z-index: 2;
+}
+.bill-vertical .bill-menu-item:before{
+  width: 0;
+  height: 0;
+  left: 90%;
+  position: absolute;
+  content: "";
+  top: -1px;
+  z-index: 3;
+  border-color: #e5e5e5 transparent;
+  border-width: 16px 0px 16px 13px;
+  border-style: solid;
+}
+.bill-vertical .bill-menu-item:after{
+  width: 0;
+  height: 0;
+  left: 90.5%;
+  position: absolute;
+  content: "";
+  top: -1px;
+  z-index: 3;
+  border-color: #f7f7f7 transparent;
+  border-width: 16px 0px 16px 13px;
+  border-style: solid;
+}
+
+/* 横向单据样式 */
+.bill-horizontal .content-card {
+  margin-top: 10px;
+}
+.bill-horizontal {
+  position: relative;
+}
+.bill-horizontal .bill-hor-line { /*背景线*/
+  position: absolute;
+  z-index: 1;
+  top: 34px;
+  height: 1px;
+  background-color: #e5e5e5;
+  width: 100%;
+}
+.bill-horizontal .ivu-menu-horizontal {
+  height: 38px;
+  line-height: 40px;
+}
+.bill-horizontal .bill-menu-hor {
+  height: 40px;
+  max-width: 213px;
+  margin-left: 10px;
+  float: left;
+  position: relative;
+  /*.ivu-menu-submenu-title-icon {*/
+  /*    position: absolute;*/
+  /*    top: 14px;*/
+  /*    right: 0;*/
+  /*}*/
+}
+.bill-horizontal .ivu-menu-horizontal:after {
+  display: none;
+}
+.bill-horizontal .bill-menu-hor {
+  .ivu-menu-item {
+    overflow: hidden;
+    word-break: keep-all;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .ivu-menu-item, .ivu-menu-submenu {
+    background: #f7f7f7;
+    height: 40px;
+    width: 100%;
+    border-radius: 5px 5px 0 0;
+    border: 1px solid #e5e5e5;
+  }
+  .ivu-menu-submenu:hover {
+    border-bottom: 1px solid #e5e5e5;
+  }
+}
+.bill-horizontal .bill-menu-hor {
+  .ivu-menu-item-selected {
+    color: #fff;
+    background: #0077c8;
+    border: 1px solid #0077c8;
+    height: 100%;
+    z-index: 2;
+  }
+  .ivu-menu-child-item-active {
+    color: #fff;
+    /*background: #0077c8;
+    border: 1px solid #0077c8;*/
+    height: 100%;
+    z-index: 2;
+    .ivu-menu-item-selected {
+      /*color: #0077c8!important;
+      background: none!important;*/
+    }
+  }
+  .ivu-menu-child-item-active:hover {
+   /* color: #fff!important;
+    background: #0077c8!important;*/
+  }
+}
+.bill-horizontal .bill-menu-hor .bill-menu-back { /* 背景小三角 */
+  position: absolute;
+  top: 35px;
+  left: -3px;
+  z-index: -1;
+  border-left: 2px solid transparent;
+  border-right: 2px solid transparent;
+  border-top: 3px solid #c8c9c9;
+  width: calc(~"100% + 6px");
+}
+.bill-horizontal .bill-menu-hor .bill-menu-back1 {
+  position: absolute;
+  top: 35px;
+  left: -3px;
+  z-index: -1;
+  border-left: 2px solid transparent;
+  border-right: 2px solid transparent;
+  border-top: 3px solid #025690;
+  width: calc(~"100% + 6px");
+}
+.ivu-menu-horizontal .ivu-menu-light:after {
+  display: none;
+}
+
+.ivu-menu-horizontal .ivu-menu-item-active:not(.ivu-menu-submenu):after {
+  display: none;
+}
+.ivu-menu-light.ivu-menu-horizontal .ivu-menu-item:hover { /* 去掉滑动显示的蓝线 */
+  border-bottom: 1px solid #e5e5e5;
+}

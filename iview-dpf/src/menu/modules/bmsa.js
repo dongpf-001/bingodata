@@ -32,6 +32,10 @@ export default {
                     path: `${pre}bmsa-org-tree`,
                     title: '组织机构'
                 },
+                {
+                    path: `${pre}bingo-bill`,
+                    title: '单据'
+                },
             ]
         },
     ]

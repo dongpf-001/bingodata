@@ -1,0 +1,31 @@
+.shrink-view {
+  -webkit-transition-duration: 300ms;
+  -moz-transition-duration: 300ms;
+  -ms-transition-duration: 300ms;
+  -o-transition-duration: 300ms;
+  transition-duration: 300ms;
+
+  overflow: hidden;
+}
+
+.shrink-card-wrapper {
+  position: relative;
+  .card-full {
+    position: fixed!important;
+    top: 0;
+    left: 0;
+    z-index: 99;
+    width: 100%!important;
+    height: 100%!important;
+  }
+  .shrink-card-icon {
+    position: absolute;
+    right: 60px;
+    top: 10px;
+  }
+  .shrink-card-icon1 {
+    position: absolute;
+    right: 16px;
+    top: 10px;
+  }
+}

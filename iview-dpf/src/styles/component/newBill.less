@@ -1,0 +1,310 @@
+.bill-new-component{
+  >h3{ // 标题的样式
+    padding-top:5px;
+    height: 35px;
+  }
+  .ivu-menu-vertical.ivu-menu-light:after {
+    display: none!important;
+  }
+  .ivu-menu-item-active:not(.ivu-menu-submenu):after {
+    display: none!important;
+  }
+  .expendClass .ivu-card-body{
+    padding: 0px !important;
+  }
+  .bill-full .fullScreen{
+    height: calc(100% - 156px)!important;
+    position: fixed!important;
+    top: 56px!important;
+    background-color: #fff;
+  }
+  .bill-toolbar-select {
+    width: 30px;
+    color: #fff;
+    .ivu-select-item:after {
+      right: 0!important;
+    }
+    .ivu-select-selection {
+      background-color: #0086e2;
+    }
+    .ivu-select-selection:hover {
+      background-color: #0071be;
+    }
+    .ivu-tag-checked {
+      display: none;
+    }
+    .ivu-icon {
+      color: #fff
+    }
+    .ivu-icon:before {
+      content: "\f337"!important;
+    }
+  }
+}
+.bill-drop-menu-context { // 标签页布局下拉
+  padding: 16px;
+}
+.bill-drop-menu-button { // 标签页布局下拉按钮
+  text-align: right;
+  margin:5px;
+  .btn-close:first-child {
+    margin-right: 12px;
+  }
+}
+.bill-new-wrapper{
+  height: 100%;
+  .shrink-card-icon {
+    position: absolute;
+    right: 60px;
+    top: 10px;
+    z-index: 2;
+  }
+  .shrink-card-icon1 {
+    position: absolute;
+    right: 16px;
+    top: 10px;
+    z-index: 2;
+  }
+  .shrink-card-icon2 {
+    position: absolute;
+    right: 104px;
+    top: 10px;
+    z-index: 2;
+    .ivu-select-selection {
+      background-color: #fff!important;
+    }
+    .ivu-select-selection:hover {
+      background-color: #fff!important;
+    }
+    .ivu-icon {
+      color: rgba(51, 63, 72, 0.5)
+    }
+  }
+  .content { // 明细内容
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    float: left;
+    .ivu-tabs {
+      margin-top: -53px;
+      z-index: 1;
+      .ivu-tabs-bar { // 明细下的tab
+        border-bottom: none;
+        width: calc(~"100% - 100px");
+        .ivu-tabs-nav {
+          width: 100%;
+          display: flex;
+          .ivu-tabs-tab {
+            text-align: center;
+            flex: 1;
+          }
+        }
+      }
+    }
+  }
+  .h400 {
+    height: 500px;
+  }
+  .bill-new-menu-icon {
+    color: #2d8cf0;
+  }
+  .ivu-menu-right .ivu-menu-light:after {
+    display: none!important;
+  }
+  .ivu-menu-horizontal.ivu-menu-light:after {
+    display: none;
+  }
+  .n-scrollbar { // 是否带滚动
+    .ivu-card {
+      height: calc(~"100% - 16px");
+      .ivu-card-body {
+        height: calc(~"100% - 52px");
+        .ivu-tabs {
+          height: calc(~"100% + 53px");
+          .ivu-tabs-content {
+            height: 100%;
+          }
+        }
+      }
+    }
+  }
+}
+
+.ivu-card-bordered {
+  border: 1px solid rgba(51,63,72,0.15) !important;
+}
+.i-layout-tabs-main {
+  background: #f3f5f5;
+  margin: 0 15px 0 15px;
+}
+.ivu-card-head .ivu-icon{
+  color: rgba(51,63,72,0.5);
+}
+.ivu-menu-item > i {
+  margin-right: 5px !important;
+}
+.ivu-menu-top {
+  height: 36px;
+  line-height: 36px;
+}
+.ivu-menu-light .ivu-menu-item-active:not(.ivu-menu-submenu) {
+  color: #fff !important;
+  background: #0077c8 !important;
+  border-radius: 4px!important;
+}
+.ivu-menu-light.ivu-menu-top .ivu-select-dropdown {
+  margin: 1px!important;
+  .ivu-menu-item {
+    border: none!important;
+    border-bottom: 1px solid #dcdee2!important;
+  }
+  .ivu-menu-item:last-child {
+    border-bottom: 0px solid #dcdee2!important;
+  }
+}
+.ivu-menu-top .ivu-menu-item{
+  bottom: 0!important;
+}
+
+.ivu-btn-icon-box{
+  position: absolute; top: 8px; right:16px;
+}
+.ivu-btn-icon-box button{
+  margin-left: 8px;
+}
+.ivu-btn-icon-box button:first-child{
+  margin-left: 0;
+}
+.ivu-btn-icon-bill{
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  font-size: 16px;
+  border-radius: 30px;
+  background-color:rgba(51,63,72,0.05) !important;
+}
+
+
+.bill-new-wrapper .ivu-menu-light.ivu-menu-right .ivu-menu-item-active:not(.ivu-menu-submenu):after {
+  display: none!important;;
+}
+.bill-new-wrapper .ivu-menu-light {
+  background: none;
+  z-index: 1;
+}
+
+.demo-scroll-top {
+  height: 400px;
+  overflow: auto;
+  border: 1px solid #999;
+}
+
+/* 横向单据样式 */
+.bill-top {
+  position: relative;
+  .bill-new-menu-svg {
+    position: absolute;
+    top: 3px;
+    left: 12px;
+  }
+  .ivu-top {
+    margin: 10px 0 16px 0;
+  }
+  .hContent{
+    width: 100%;
+    height: calc(~"100% - 38px");
+    margin-top: -4px;
+    >.content-card{
+      &,>.ivu-card-body{
+        height: 100%;
+      }
+    }
+  }
+  .hContent-hy {
+    width: 100%;
+  }
+  .ivu-menu-top {
+    height: 38px;
+    line-height: 40px;
+  }
+  .bill-item-top {
+    height: 40px;
+    max-width: 213px;
+    margin-left: 10px;
+    float: left;
+    position: relative;
+  }
+  .ivu-menu-top:after {
+    display: none;
+  }
+  .bill-item-top {
+    .ivu-menu-item {
+      overflow: hidden;
+      word-break: keep-all;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    .ivu-menu-item, .ivu-menu-submenu {
+      background: #fff;
+      height: 40px;
+      width: 100%;
+      border-radius: 4px;
+      border: 1px solid #e5e5e5;
+    }
+    .ivu-menu-submenu:hover {
+      border-bottom: 1px solid #e5e5e5;
+    }
+  }
+  .bill-item-top {
+    .ivu-menu-item-selected {
+      color: #fff;
+      background: #0077c8;
+      border: 1px solid #0077c8;
+      height: 100%;
+      z-index: 2;
+    }
+    .ivu-menu-child-item-active {
+      color: #fff;
+      background: #0077c8;
+      border: 1px solid #0077c8;
+      height: 100%;
+      z-index: 2;
+      .ivu-menu-item-selected {
+        color: #0077c8!important;
+        background: none!important;
+      }
+    }
+    .ivu-menu-child-item-active:hover {
+      color: #fff!important;
+      background: #0077c8!important;
+    }
+  }
+}
+
+.ivu-menu-top .ivu-menu-light:after {
+  display: none;
+}
+.ivu-menu-top .ivu-menu-item-active:not(.ivu-menu-submenu):after {
+  display: none;
+}
+.ivu-menu-light.ivu-menu-top .ivu-menu-item:hover { /* 去掉滑动显示的蓝线 */
+  border-bottom: 1px solid #e5e5e5;
+}
+
+
+/*全屏*/
+.bill-full{
+  .card-full {
+    position: fixed!important;
+    top: 0;
+    left: 0;
+    z-index: 99;
+    width: 100%!important;
+    height: 100%!important;
+    margin-top: 0;
+  }
+  .ivu-right {
+    display: none;
+  }
+}
+/*UI标准-单据结束*/

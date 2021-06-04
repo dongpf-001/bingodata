@@ -5,6 +5,7 @@ const meta = {
 };
 
 const pre = 'bmsa-';
+const oldpre = 'bingo-';
 
 export default {
     path: '/bmsa',
@@ -54,6 +55,16 @@ export default {
                 closable: true
             },
             component: () => import('@/pages/components/bmsa-drop-grid')
+        },
+        {
+            path: 'bingo-bill',
+            name: `${oldpre}bill`,
+            meta: {
+                ...meta,
+                title: '单据',
+                closable: true
+            },
+            component: () => import('@/pages/components/bingo-bill')
         },
     ]
 };
