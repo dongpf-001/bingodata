@@ -1,5 +1,4 @@
 import dashboard from './modules/dashboard';
-import home from './modules/home';
 // 组件
 import bmsa from './modules/bmsa';
 
@@ -63,7 +62,6 @@ const frameIn = [
     },
     system,
     dashboard,
-    home,
     bmsa
 ];
 
