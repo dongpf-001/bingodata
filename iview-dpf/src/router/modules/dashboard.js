@@ -20,28 +20,10 @@ export default {
             name: `${pre}console`,
             meta: {
                 ...meta,
-                title: '主控台',
+                title: '脑图',
                 closable: false
             },
             component: () => import('@/pages/dashboard/console')
         },
-        {
-            path: 'monitor',
-            name: `${pre}monitor`,
-            meta: {
-                ...meta,
-                title: '监控页'
-            },
-            component: () => import('@/pages/dashboard/monitor')
-        },
-        {
-            path: 'workplace',
-            name: `${pre}workplace`,
-            meta: {
-                ...meta,
-                title: '工作台'
-            },
-            component: () => import('@/pages/dashboard/workplace')
-        }
     ]
 };
