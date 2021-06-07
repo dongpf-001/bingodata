@@ -1,6 +1,6 @@
 <template>
     <div class="shrink-card-wrapper" :class="expend ? '' : 'shrink-card-wrapper-expend'">
-        <Card class="ivu-mb-8" :class='[fullFlag ? "card-full" : ""]'>
+        <Card class="ivu-mb-8" dis-hover :class='[fullFlag ? "card-full" : ""]'>
             <!--            <span>收缩展开添加动画</span>-->
             <!--            <Icon type="ios-arrow-down" @click="open=!open"/>-->
             <p slot="title">
