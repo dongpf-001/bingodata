@@ -66,5 +66,15 @@ export default {
             },
             component: () => import('@/pages/components/bingo-bill')
         },
+        {
+            path: 'bingo-toolbar',
+            name: `${oldpre}toolbar`,
+            meta: {
+                ...meta,
+                title: 'toolbar',
+                closable: true
+            },
+            component: () => import('@/pages/components/bingo-toolbar')
+        },
     ]
 };

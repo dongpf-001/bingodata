@@ -7,6 +7,16 @@ export default {
     custom: 'i-icon-demo i-icon-demo-dashboard',
     children: [
         {
+            path: '/base',
+            title: '基础组件',
+            children: [
+                {
+                    path: `${pre}bingo-toolbar`,
+                    title: 'toolbar'
+                },
+            ]
+        },
+        {
             path: '/form',
             title: '表单组件',
             children: [
