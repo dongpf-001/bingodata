@@ -15,4 +15,8 @@
     }
 </script>
 <style lang="less" scoped>
+    .console-wrapper {
+        height: 100%;
+        width: 100%;
+    }
 </style>
