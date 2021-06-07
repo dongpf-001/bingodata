@@ -7,7 +7,7 @@ import bingoBill from './bingo-bill';
 import bingoForm from './bingo-form';
 import bingoFormItem from './bingo-form-item';
 import bingoGridItem from './bingo-grid-item';
-import bingoShrink from './bingo-shrink';
+import bingoShrinkCard from './bingo-shrink-card';
 import bingoToolbar from './bingo-toolbar';
 import bingoQuery from './bingo-query';
 
@@ -21,7 +21,7 @@ const components = {
     bingoForm,
     bingoFormItem,
     bingoGridItem,
-    bingoShrink,
+    bingoShrinkCard,
     bingoToolbar,
     bingoQuery,
 }

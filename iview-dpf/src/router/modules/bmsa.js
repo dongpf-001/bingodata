@@ -86,5 +86,15 @@ export default {
             },
             component: () => import('@/pages/components/bingo-query')
         },
+        {
+            path: 'bingo-shrink-card',
+            name: `${oldpre}shrink-card`,
+            meta: {
+                ...meta,
+                title: '收缩展开',
+                closable: true
+            },
+            component: () => import('@/pages/components/bingo-shrink-card')
+        },
     ]
 };

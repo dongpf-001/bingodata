@@ -18,6 +18,10 @@ export default {
                     path: `${pre}bingo-query`,
                     title: 'query'
                 },
+                {
+                    path: `${pre}bingo-shrink-card`,
+                    title: '收缩展开'
+                },
             ]
         },
         {
