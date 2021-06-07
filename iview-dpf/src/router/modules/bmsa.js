@@ -76,5 +76,15 @@ export default {
             },
             component: () => import('@/pages/components/bingo-toolbar')
         },
+        {
+            path: 'bingo-query',
+            name: `${oldpre}query`,
+            meta: {
+                ...meta,
+                title: 'toolbar',
+                closable: true
+            },
+            component: () => import('@/pages/components/bingo-query')
+        },
     ]
 };

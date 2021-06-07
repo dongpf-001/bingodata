@@ -14,6 +14,10 @@ export default {
                     path: `${pre}bingo-toolbar`,
                     title: 'toolbar'
                 },
+                {
+                    path: `${pre}bingo-query`,
+                    title: 'query'
+                },
             ]
         },
         {

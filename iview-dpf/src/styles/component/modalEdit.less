@@ -1,0 +1,89 @@
+/*UI标准-弹出层开始*/
+.ivu-modal{
+    .ivu-modal-header {
+        border-bottom: 1px solid #e8eaec;
+        border-bottom: 1px solid #e8eaec;
+        background: #0077c8;
+        background: -webkit-linear-gradient(90deg,#0062d1,#0077c8,#0098ff);
+        background: -moz-linear-gradient(to right,#0062d1,#0077c8,#0098ff);
+        background: -o-linear-gradient(to right,#0062d1,#0077c8,#0098ff);
+        background: linear-gradient(90deg,#0062d1,#0077c8,#0098ff);
+        border-radius: 6px 6px 0 0;
+        color:#fff;
+        .ivu-modal-header-inner, p{
+            color:#fff;
+        }
+    }
+    .ivu-modal-close .ivu-icon-ios-close {
+        color: #fff;
+    }
+    .ivu-modal-close .ivu-icon-ios-close:hover {
+        color:#fff;
+    }
+    .ivu-modal-header，.ivu-modal-footer {
+        padding: 12px 16px;
+    }
+    .ivu-modal-content {
+        >.ivu-modal-body{
+            >.toolbar-wrapper{
+                top: -16px;
+                margin-left: -16px;
+                margin-right: -16px;
+            }
+            .content-inner-tabs {
+                margin-top: 0 !important;
+            }
+        }
+    }
+    .ivu-modal-confirm-head-title{
+        span{
+            font-size: 12px;
+            padding-left: 15px;
+            color: #acabab;
+        }
+    }
+}
+
+.modal-edit-wrapper {
+    .ivu-tabs { // 使用tabs标签时，标签显示在title上
+        position: static;
+        .ivu-tabs-bar {
+            position: absolute;
+            border-bottom: none;
+            top: 12px;
+            left: 15%;
+            width: 70%;
+            margin-bottom: 0;
+            .ivu-tabs-nav {
+                /*width: 100%;*/
+                text-align: center;
+                padding-left: 0;
+                margin: 0;
+                list-style: none;
+                box-sizing: border-box;
+                position: relative;
+                transition: transform 0.5s ease-in-out;
+            }
+            .ivu-tabs-tab {
+                background: none!important;
+                border: none!important;
+                color: #fff!important;
+                .ivu-tabs-close {
+                    color: #fff!important;
+                    font-weight: bold;
+                }
+            }
+            .ivu-tabs-tab-active {
+                border-bottom: 2px solid rgba(255, 199, 44, 1)!important;
+            }
+            .ivu-icon-ios-arrow-back, .ivu-icon-ios-arrow-forward { // tab前后滚动箭头
+                color: #fff;
+                font-size: 16px;
+            }
+        }
+    }
+    .ivu-tabs.ivu-tabs-card > .ivu-tabs-bar .ivu-tabs-tab{
+        padding-left:12px;
+        padding-right:12px;
+    }
+}
