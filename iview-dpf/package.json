@@ -15,7 +15,7 @@
   "dependencies": {
     "@babel/polyfill": "^7.6.0",
     "@babel/runtime": "^7.2.0",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "better-scroll": "^1.12.1",
     "cropperjs": "^1.2.2",
     "dayjs": "^1.8.9",
