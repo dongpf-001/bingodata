@@ -96,5 +96,15 @@ export default {
             },
             component: () => import('@/pages/components/bingo-shrink-card')
         },
+        {
+            path: 'bingo-modal',
+            name: `${oldpre}modal`,
+            meta: {
+                ...meta,
+                title: '收缩展开',
+                closable: true
+            },
+            component: () => import('@/pages/components/bingo-modal')
+        },
     ]
 };

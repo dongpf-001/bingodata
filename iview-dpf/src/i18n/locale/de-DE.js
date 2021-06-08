@@ -1,4 +1,5 @@
 import system from './system/de-DE';
+import bmsa from './bmsa/de-DE';
 
 export default {
     locale: 'de-DE',
@@ -6,7 +7,8 @@ export default {
     menu: {
         i18n: 'Internationalization'
     },
-    system:system,
+    system: system,
+    bmsa: bmsa,
     page: {
         common: {
             SystemName:'Anwendungsplattform für Beschichtung',

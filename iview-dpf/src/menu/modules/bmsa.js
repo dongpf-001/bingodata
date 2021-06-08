@@ -54,6 +54,10 @@ export default {
                     path: `${pre}bingo-bill`,
                     title: '单据'
                 },
+                {
+                    path: `${pre}bingo-modal`,
+                    title: '弹窗组件'
+                },
             ]
         },
     ]

@@ -1,4 +1,5 @@
 import system from './system/zh-CN';
+import bmsa from './bmsa/zh-CN';
 
 export default {
     locale: 'zh-CN',
@@ -6,7 +7,8 @@ export default {
     menu: {
         i18n: '多语言'
     },
-    system:system,
+    system: system,
+    bmsa: bmsa,
     page: {
         common:{
             SystemName:'涂装中控系统',

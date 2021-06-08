@@ -1,4 +1,5 @@
 import system from './system/en-US';
+import bmsa from './system/en-US';
 
 export default {
     locale: 'en-US',
@@ -6,7 +7,8 @@ export default {
     menu: {
         i18n: 'Internationalization'
     },
-    system:system,
+    system: system,
+    bmsa: bmsa,
     page: {
         common:{
             SystemName:'Painting central control system',
