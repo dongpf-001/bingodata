@@ -116,5 +116,15 @@ export default {
             },
             component: () => import('@/pages/components/bingo-head-photo')
         },
+        {
+            path: 'bingo-super-flow',
+            name: `${oldpre}super-flow`,
+            meta: {
+                ...meta,
+                title: '流程组件',
+                closable: true
+            },
+            component: () => import('@/pages/components/bingo-super-flow')
+        },
     ]
 };

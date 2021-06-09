@@ -62,6 +62,10 @@ export default {
                     path: `${pre}bingo-head-photo`,
                     title: '头像组件'
                 },
+                {
+                    path: `${pre}bingo-super-flow`,
+                    title: '流程组件'
+                },
             ]
         },
     ]
