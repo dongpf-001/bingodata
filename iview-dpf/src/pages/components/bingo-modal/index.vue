@@ -225,7 +225,8 @@
                 <div slot="right" class="demo-split-pane">
                     <Divider>详细描述</Divider>
                     <h3>使用注意事项</h3>
-                    <p style="margin-top: 12px">1、下拉表格必须传入api和columns，且api接口名称必须叫getList，接口根据分页查询，数据返回格式是data[rows:{}]</p>
+                    <p style="margin-top: 12px">1、bingo-modal 弹窗组件</p>
+                    <p style="margin-top: 12px">2、bingo-modal-edit 编辑框组件，两个按钮时自定义footer插槽显示在下面，两个以上按钮显示在toolbar上</p>
                 </div>
             </Split>
         </Card>
