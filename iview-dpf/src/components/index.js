@@ -12,6 +12,7 @@ import bingoToolbar from './bingo-toolbar';
 import bingoQuery from './bingo-query';
 import bingoModal from './bingo-modal';
 import bingoModalEdit from './bingo-modal-edit';
+import bingoHeadPhoto from './bingo-head-photo';
 
 const components = {
     bmsaDropGrid,
@@ -28,6 +29,7 @@ const components = {
     bingoQuery,
     bingoModal,
     bingoModalEdit,
+    bingoHeadPhoto,
 }
 const install = Vue => {
     Object.keys(components).forEach((key) => {

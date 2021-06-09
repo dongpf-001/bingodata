@@ -36,6 +36,9 @@ import menuHeader from '@/menu/header';
 import menuSider from '@/menu/sider';
 import { frameInRoutes } from '@/router/routes';
 
+// 增加iconfont彩色图标
+import './styles/font/iconfont.js';
+
 // 多语言
 import i18n from '@/i18n';
 

@@ -58,6 +58,10 @@ export default {
                     path: `${pre}bingo-modal`,
                     title: '弹窗组件'
                 },
+                {
+                    path: `${pre}bingo-head-photo`,
+                    title: '头像组件'
+                },
             ]
         },
     ]

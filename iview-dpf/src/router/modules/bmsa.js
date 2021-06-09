@@ -106,5 +106,15 @@ export default {
             },
             component: () => import('@/pages/components/bingo-modal')
         },
+        {
+            path: 'bingo-head-photo',
+            name: `${oldpre}head-photo`,
+            meta: {
+                ...meta,
+                title: '头像组件',
+                closable: true
+            },
+            component: () => import('@/pages/components/bingo-head-photo')
+        },
     ]
 };

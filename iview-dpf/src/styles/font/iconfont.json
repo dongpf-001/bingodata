@@ -6,6 +6,20 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "14094464",
+      "name": "user-girl",
+      "font_class": "user-girl-copy",
+      "unicode": "ead4",
+      "unicode_decimal": 60116
+    },
+    {
+      "icon_id": "14094605",
+      "name": "user-boy",
+      "font_class": "user-boy-copy",
+      "unicode": "ead5",
+      "unicode_decimal": 60117
+    },
+    {
       "icon_id": "6400267",
       "name": "开关",
       "font_class": "weibiaoti--",
