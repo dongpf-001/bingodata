@@ -10,13 +10,13 @@
         <Dropdown transfer ref="contentMenu" style="display: none" trigger="click" transfer-class-name="tree-drop-down"
                   v-if="!disabledAll" @on-click="changeClick">
             <DropdownMenu slot="list">
-                <slot></slot>
+                <slot name="topItem" :nodeInfo="nodeInfo"></slot>
                 <DropdownItem name="add" v-if="!disabledAdd"><Icon custom="iconfont iconxinjian1" style="margin-right: 10px"></Icon>{{this.addName}}</DropdownItem>
                 <DropdownItem name="edit" v-if="!disabledEdit"><Icon type="md-create" style="margin-right: 10px" size="16"></Icon>{{this.editName}}</DropdownItem>
                 <DropdownItem name="delete" v-if="node.nodeKey != 0 && !disabledDelete">
                     <Icon type="md-trash" style="margin-right: 10px" size="16"></Icon>{{this.deleteName}}
                 </DropdownItem>
-                <slot name="bottomItem"></slot>
+                <slot name="bottomItem" :nodeInfo="nodeInfo"></slot>
             </DropdownMenu>
         </Dropdown>
     </div>
@@ -154,15 +154,13 @@
                                             if (item[_this.keyId] !== data[_this.keyId]) {
                                                 item.selected = false
                                                 // item.checked = false
+                                            } else { // 控制当前选中的节点不可以取消选中
+                                                item.selected = true
                                             }
                                         })
-                                        // data.selected = true
-                                        // data.checked = !data.checked
                                         _this.selectData = []
                                         _this.selectData.push(data)
-                                        // _this.onSelectChange(data, data)
                                     }
-                                    // data.checked = !data.checked
                                 }, 200)
                             }
                         },
@@ -177,7 +175,7 @@
                         },
                         contextmenu: (e) => {
                             // 当有默认按钮显示或者有自定义按钮显示时
-                            if ((!this.disabledAll && (!data.disabledEdit || !data.disabledDelete || !data.disabledAdd)) || this.$slots.default.length>0) {
+                            if (!(this.disabledAll || (data.disabledEdit && !data.disabledDelete && !data.disabledAdd) || data.disabledAll)) {
                                 this.disabledEdit = data.disabledEdit
                                 this.disabledDelete = data.disabledDelete
                                 this.disabledAdd = data.disabledAdd
@@ -188,6 +186,8 @@
                                 this.$refs.contentMenu.$refs.reference = event.target
                                 this.$refs.contentMenu.currentVisible = !this.$refs.contentMenu.currentVisible
                                 this.$emit('on-context-menu', data)
+                            } else {
+                                e.preventDefault()
                             }
                         },
                         // 拖拽

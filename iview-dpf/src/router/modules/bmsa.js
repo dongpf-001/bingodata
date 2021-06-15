@@ -136,5 +136,15 @@ export default {
             },
             component: () => import('@/pages/components/bingo-select-icon')
         },
+        {
+            path: 'bingo-tree',
+            name: `${oldpre}tree`,
+            meta: {
+                ...meta,
+                title: '树组件',
+                closable: true
+            },
+            component: () => import('@/pages/components/bingo-tree')
+        },
     ]
 };

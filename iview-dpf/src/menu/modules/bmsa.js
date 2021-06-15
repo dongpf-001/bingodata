@@ -70,6 +70,10 @@ export default {
                     path: `${pre}bingo-super-flow`,
                     title: '流程组件'
                 },
+                {
+                    path: `${pre}bingo-tree`,
+                    title: '树组件'
+                },
             ]
         },
     ]
