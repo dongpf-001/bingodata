@@ -3,12 +3,13 @@
         <Card>
             <Split v-model="split1">
                 <div slot="left" class="demo-split-pane">
-                   图标选择
+                   <bingo-select-icon :showValue="showValue"></bingo-select-icon>
                 </div>
                 <div slot="right" class="demo-split-pane">
                     <Divider>详细描述</Divider>
                     <h3>使用注意事项</h3>
-                    <p style="margin-top: 12px">1、必备src属性，代表上传地址</p>
+                    <p style="margin-top: 12px">1、showValue属性为组件选中的内容，model代表选中的类型，type代表选中的icon、icon-font图标，before和after
+                    代表选中的svg图标</p>
                 </div>
             </Split>
         </Card>
@@ -22,6 +23,9 @@
         data () {
             return {
                 split1: 0.7,
+                showValue: {
+                    model: 'icon',
+                }
             }
         },
         computed: {},

@@ -1,25 +1,25 @@
 <template>
-  <div class="icon-wrapper">
-    <Dropdown :trigger="disabled ? 'click' : 'hover'" @on-click="onClick" :transfer="transfer" style="width: 110px;float: left">
-      <div style="width: 100%">
-        <Button style="width: 100%" :disabled="disabled">
-          {{model}}
-          <Icon type="ios-arrow-down" v-if="!disabled"></Icon>
-        </Button>
-      </div>
-      <DropdownMenu slot="list" v-for="(item, index) in items" :key="index">
-        <DropdownItem :name="item.name" :key="item.name">{{item.value}}</DropdownItem>
-      </DropdownMenu>
-    </Dropdown>
-    <Dropdown :trigger="disabled ? '' : 'click'" placement="bottom-start" transfer-class-name="icon-drop-wrapper" :transfer="transfer" class="icon-input">
-      <div class="ivu-btn ivu-btn-default" style="width: 100%;position: relative" :disabled="disabled">
+    <div class="icon-wrapper">
+        <Dropdown :trigger="disabled ? 'click' : 'hover'" @on-click="onClick" :transfer="transfer" style="width: 110px;float: left">
+            <div style="width: 100%">
+                <Button style="width: 100%" :disabled="disabled">
+                    {{model}}
+                    <Icon type="ios-arrow-down" v-if="!disabled"></Icon>
+                </Button>
+            </div>
+            <DropdownMenu slot="list" v-for="(item, index) in items" :key="index">
+                <DropdownItem :name="item.name" :key="item.name">{{item.value}}</DropdownItem>
+            </DropdownMenu>
+        </Dropdown>
+        <Dropdown :trigger="disabled ? '' : 'click'" placement="bottom-start" transfer-class-name="icon-drop-wrapper" :transfer="transfer" class="icon-input">
+            <div class="ivu-btn ivu-btn-default" style="width: 100%;position: relative" :disabled="disabled">
                 <span style="position: absolute;left: 0;top: 5px" v-if="model=='icon'">
                     <Icon v-for="item in selectItem" :type="item.type" style="width: 30px;height: 30px" size="18"/>
                 </span>
-        <span style="position: absolute;left: 0;top: 5px" v-if="model=='icon-font'">
+                <span style="position: absolute;left: 0;top: 5px" v-if="model=='icon-font'">
                     <Icon v-for="item in selectItem" :custom="item.type" style="width: 30px;height: 30px" size="16"/>
                 </span>
-        <span style="position: absolute;left: 0;top: 5px" v-if="model=='svg'">
+                <span style="position: absolute;left: 0;top: 5px" v-if="model=='svg'">
                     <span v-for="(item, index) in selectItem" :key="index">
                         <svg class="icon-svg-wrapper" aria-hidden="true">
                             <use :xlink:href="item.before"></use>
@@ -29,36 +29,34 @@
                         </svg>
                     </span>
                 </span>
-      </div>
-      <DropdownMenu slot="list">
-        <div v-if="model=='icon'">
-                    <span v-for="item in iconDatas" @click="selectClick(item)">
-                        <Icon :type="item.type" class="dropdown-span"
-                              style="width: 35px;height: 35px;line-height: 35px;" size="18"/>
-                    </span>
-        </div>
-        <div v-if="model=='icon-font'">
-                    <span v-for="item in iconFontDatas" @click="selectClick(item)">
-                        <Icon :custom="item.type" class="dropdown-span"
-                              style="width: 35px;height: 35px;line-height: 35px;" size="16"/>
-                    </span>
-        </div>
-        <div v-if="model=='svg'">
-          <div v-for="item in svgDatas" @click="selectClick(item)" class="svg-div">
-            <svg class="icon-svg-wrapper" aria-hidden="true">
-              <use :xlink:href="item.before"></use>
-            </svg>
-            <svg class="icon-svg-wrapper" aria-hidden="true" v-if="item.after != ''">
-              <use :xlink:href="item.after"></use>
-            </svg>
-          </div>
-        </div>
-        <div v-if="model=='img'">
-          <span style="margin-left: 5px;color: #808695">{{$t('bmsa.baise.noMessage')}}</span>
-        </div>
-      </DropdownMenu>
-    </Dropdown>
-  </div>
+            </div>
+            <DropdownMenu slot="list">
+            <div v-if="model=='icon'">
+                <span v-for="item in iconDatas" @click="selectClick(item)">
+                    <Icon :type="item.type" class="dropdown-span" style="width: 35px;height: 35px;line-height: 35px;" size="18"/>
+                </span>
+            </div>
+            <div v-if="model=='icon-font'">
+                <span v-for="item in iconFontDatas" @click="selectClick(item)">
+                    <Icon :custom="item.type" class="dropdown-span" style="width: 35px;height: 35px;line-height: 35px;" size="16"/>
+                </span>
+            </div>
+            <div v-if="model=='svg'">
+                <div v-for="item in svgDatas" @click="selectClick(item)" class="svg-div">
+                    <svg class="icon-svg-wrapper" aria-hidden="true">
+                        <use :xlink:href="item.before"></use>
+                    </svg>
+                    <svg class="icon-svg-wrapper" aria-hidden="true" v-if="item.after != ''">
+                        <use :xlink:href="item.after"></use>
+                    </svg>
+                </div>
+            </div>
+            <div v-if="model=='img'">
+                <span style="margin-left: 5px;color: #808695">{{$t('bmsa.baise.noMessage')}}</span>
+            </div>
+            </DropdownMenu>
+        </Dropdown>
+    </div>
 </template>
 <script>
     export default {
