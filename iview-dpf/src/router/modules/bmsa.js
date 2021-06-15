@@ -126,5 +126,15 @@ export default {
             },
             component: () => import('@/pages/components/bingo-super-flow')
         },
+        {
+            path: 'bingo-select-icon',
+            name: `${oldpre}select-icon`,
+            meta: {
+                ...meta,
+                title: '图标选择组件',
+                closable: true
+            },
+            component: () => import('@/pages/components/bingo-select-icon')
+        },
     ]
 };
