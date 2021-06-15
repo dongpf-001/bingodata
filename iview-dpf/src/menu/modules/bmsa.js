@@ -32,6 +32,10 @@ export default {
                     path: `${pre}bmsa-drop-grid`,
                     title: '下拉表格'
                 },
+                {
+                    path: `${pre}bingo-select-icon`,
+                    title: '图标选择组件'
+                },
             ]
         },
         {
@@ -65,10 +69,6 @@ export default {
                 {
                     path: `${pre}bingo-super-flow`,
                     title: '流程组件'
-                },
-                {
-                    path: `${pre}bingo-select-icon`,
-                    title: '图标选择组件'
                 },
             ]
         },
