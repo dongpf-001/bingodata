@@ -146,5 +146,25 @@ export default {
             },
             component: () => import('@/pages/components/bingo-tree')
         },
+        {
+            path: 'bingo-quill',
+            name: `${oldpre}quill`,
+            meta: {
+                ...meta,
+                title: '富文本',
+                closable: true
+            },
+            component: () => import('@/pages/components/bingo-quill')
+        },
+        {
+            path: 'billPage/:id',
+            name: 'billPage',
+            meta: {
+                ...meta,
+                title: '单据',
+                closable: true
+            },
+            component: () => import('@/pages/components/bingo-quill/bill.vue')
+        },
     ]
 };

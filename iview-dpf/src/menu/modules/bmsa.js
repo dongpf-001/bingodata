@@ -36,6 +36,10 @@ export default {
                     path: `${pre}bingo-select-icon`,
                     title: '图标选择组件'
                 },
+                {
+                    path: `${pre}bingo-quill`,
+                    title: '富文本'
+                },
             ]
         },
         {
