@@ -8,7 +8,7 @@ export default {
     children: [
         {
             path: `${pre}console`,
-            title: '脑图'
+            title: '图'
         },
     ]
 }

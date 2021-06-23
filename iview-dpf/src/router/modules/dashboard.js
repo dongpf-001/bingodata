@@ -20,7 +20,7 @@ export default {
             name: `${pre}console`,
             meta: {
                 ...meta,
-                title: '脑图',
+                title: '图',
                 closable: false
             },
             component: () => import('@/pages/dashboard/console')
