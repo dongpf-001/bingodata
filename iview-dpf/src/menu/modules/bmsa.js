@@ -44,6 +44,10 @@ export default {
                     path: `${pre}bingo-select`,
                     title: '下拉选择组件'
                 },
+                {
+                    path: `${pre}bingo-create-info`,
+                    title: '创建修改信息'
+                },
             ]
         },
         {

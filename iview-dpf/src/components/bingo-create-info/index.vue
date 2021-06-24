@@ -1,14 +1,14 @@
 <template>
     <div class="create-wrapper">
         <bingo-grid-item style="width: 50%">
-            <FormItem label="创建信息">
+            <bingo-form-item label="创建信息">
                 <Input v-model="data.creator + '      ' + data.createTime" disabled/>
-            </FormItem>
+            </bingo-form-item>
         </bingo-grid-item>
         <bingo-grid-item style="width: 50%">
-            <FormItem label="修改信息">
+            <bingo-form-item label="修改信息">
                 <Input v-model="data.modifier + '      ' + data.modifyTime" disabled/>
-            </FormItem>
+            </bingo-form-item>
         </bingo-grid-item>
     </div>
 </template>

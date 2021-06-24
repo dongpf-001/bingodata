@@ -176,5 +176,15 @@ export default {
             },
             component: () => import('@/pages/components/bingo-select')
         },
+        {
+            path: 'bingo-create-info',
+            name: `${oldpre}create-info`,
+            meta: {
+                ...meta,
+                title: '创建修改信息',
+                closable: true
+            },
+            component: () => import('@/pages/components/bingo-create-info')
+        },
     ]
 };
