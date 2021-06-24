@@ -40,6 +40,10 @@ export default {
                     path: `${pre}bingo-quill`,
                     title: '富文本'
                 },
+                {
+                    path: `${pre}bingo-select`,
+                    title: '下拉选择组件'
+                },
             ]
         },
         {

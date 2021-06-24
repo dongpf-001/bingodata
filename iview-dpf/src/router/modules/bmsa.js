@@ -166,5 +166,15 @@ export default {
             },
             component: () => import('@/pages/components/bingo-quill/bill.vue')
         },
+        {
+            path: 'bingo-select',
+            name: `${oldpre}select`,
+            meta: {
+                ...meta,
+                title: '下拉选择组件',
+                closable: true
+            },
+            component: () => import('@/pages/components/bingo-select')
+        },
     ]
 };
