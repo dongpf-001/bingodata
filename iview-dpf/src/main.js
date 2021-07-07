@@ -36,6 +36,10 @@ import menuHeader from '@/menu/header';
 import menuSider from '@/menu/sider';
 import { frameInRoutes } from '@/router/routes';
 
+// 实际打包时应该不引入mock
+/* eslint-disable */
+if (process.env.NODE_ENV !== 'production') require('@/mock')
+
 // 增加iconfont彩色图标
 import './styles/font/iconfont.js';
 

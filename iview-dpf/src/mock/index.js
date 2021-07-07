@@ -8,3 +8,5 @@ const options = req(require.context('./api/', true, /\.js$/))
 options.forEach(option => {
     adminMock.load(option);
 });
+
+export default adminMock

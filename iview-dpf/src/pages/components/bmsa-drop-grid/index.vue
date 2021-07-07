@@ -7,10 +7,10 @@
                                 ref="form" :button="query.button" :rules="rules">
                         <bingo-grid-item>
                             <bingo-form-item label="单选根据字段回显" prop="defaultRadio1" label-for="defaultRadio1">
-                                <bmsa-drop-grid :api="api"
+                                <bmsa-drop-grid :apiList="api.getList"
                                                 :columns="column1"
                                                 rowId="id"
-                                                rowName="carVin"
+                                                rowName="userName"
                                                 :defaultRadio="data.defaultRadio1"
                                                 @on-select="handleRadioSelect">
                                 </bmsa-drop-grid>
@@ -19,29 +19,29 @@
                         </bingo-grid-item>
                         <bingo-grid-item>
                             <bingo-form-item label="多选根据字段回显" prop="defaultCheckbox1" label-for="defaultCheckbox1">
-                                <bmsa-drop-grid :api="api"
+                                <bmsa-drop-grid :apiList="api.getList"
                                                 ref="xDrop"
                                                 :columns="column2"
                                                 rowId="id"
-                                                rowName="carVin"
+                                                rowName="userName"
                                                 :query="queryData"
                                                 :multiple="true"
                                                 :defaultCheckbox="data.defaultCheckbox1"
                                                 @on-select="handleCheckSelect">
                                     <template #query>
-                                        <Input v-model.trim="queryData.carVin" placeholder="VIN:" icon="ios-search" @on-enter="handleQuery" @on-click="handleQuery" style="margin: 12px;width: 230px"/>
+                                        <Input v-model.trim="queryData.userName" placeholder="姓名:" icon="ios-search" @on-enter="handleQuery" @on-click="handleQuery" style="margin: 12px;width: 230px"/>
                                     </template>
                                 </bmsa-drop-grid>
-                                <!--{{data.defaultCheckbox1}}-->
+                                {{data.defaultCheckbox1}}
                             </bingo-form-item>
                         </bingo-grid-item>
                         <bingo-grid-item>
                             <bingo-form-item label="单选根据数据集回显" prop="defaultRadio2" label-for="defaultRadio2">
-                                <bmsa-drop-grid :api="api"
+                                <bmsa-drop-grid :apiList="api.getList"
                                                 :columns="column3"
                                                 :isDefaultGather="true"
                                                 rowId="id"
-                                                rowName="carVin"
+                                                rowName="userName"
                                                 :defaultRadio="data.defaultRadio2"
                                                 @on-select="handleRadioSelect2">
                                 </bmsa-drop-grid>
@@ -50,11 +50,11 @@
                         </bingo-grid-item>
                         <bingo-grid-item>
                             <bingo-form-item label="多选根据数据集回显" prop="defaultCheckbox2" label-for="defaultCheckbox2">
-                                <bmsa-drop-grid :api="api"
+                                <bmsa-drop-grid :apiList="api.getList"
                                                 :columns="column4"
                                                 :isDefaultGather="true"
                                                 rowId="id"
-                                                rowName="carVin"
+                                                rowName="userName"
                                                 :multiple="true"
                                                 :defaultCheckbox="data.defaultCheckbox2"
                                                 @on-select="handleCheckSelect2">
@@ -67,7 +67,7 @@
                 <div slot="right" class="demo-split-pane">
                     <Divider>详细描述</Divider>
                     <h3>使用注意事项</h3>
-                    <p style="margin-top: 12px">1、下拉表格必须传入api和columns，且api接口名称必须叫getList，接口根据分页查询，数据返回格式是data[rows:{}]</p>
+                    <p style="margin-top: 12px">1、下拉表格必须传入api方法接口和columns，接口根据分页查询，数据返回格式是data[rows:{}]</p>
                     <p style="margin-top: 12px">2、组件必须传入rowId属性，即代表数据唯一的字段(默认是id字段)</p>
                     <p style="margin-top: 12px">3、组件必须传入rowName属性，即代表数据显示的字段(默认是name字段)</p>
                     <p style="margin-top: 12px">4、选中数据时监听on-select方法获取选中的数据，没有v-model，所有选中、全选、取消全选、删除都会走on-select</p>
@@ -94,56 +94,36 @@
                 split1: 0.7,
                 api: Api,
                 data: {
-                    defaultRadio1: 9985, // radio选中的数据
-                    defaultRadio2: { id: 9987, carVin: '1A19ABD4514C'},
-                    defaultCheckbox1: [ 9984, 9985, 9986, 9987 ], // check选中的数据
+                    defaultRadio1: 2, // radio选中的数据
+                    defaultRadio2: { id: 2, userName: '王五'},
+                    defaultCheckbox1: [ 1, 3, 4, 11 ], // check选中的数据
                     defaultCheckbox2: [
-                        {id: 9985, carVin: 'BE7E0BD1FE37'},
-                        {id: 9995, carVin: '91AFD41B5AE7 '}
+                        {id: 2, userName: '王五'},
+                        {id: 11, userName: 'Test11 '}
                     ],
                 },
                 queryData: {
-                    carVin: ''
+                    userName: ''
                 },
                 column1: [
                     { type: 'seq', title: $t('page.common.index'), align: 'center', fixed: 'left', width: 60 },
-                    { field: 'carVin', title: 'VIN', width: 200 },
-                    { field: 'carTypeName', title: '车型', width: 150 },
-                    { field: 'configName', title: '配置', width: 100 },
-                    { field: 'colorName', title: '颜色', width: 120 },
-                    { field: 'colorCode', title: '颜色编码', width: 130 },
-                    { field: 'orderNo', title: '订单号', width: 180 },
-                    { field: 'orderType', title: '订单类型', width: 120 },
+                    { field: 'userName', title: '姓名', width: 200 },
+                    { field: 'depart', title: '部门' },
                 ],
                 column2: [
                     { type: 'seq', title: $t('page.common.index'), align: 'center', fixed: 'left', width: 60 },
-                    { field: 'carVin', title: 'VIN', width: 200 },
-                    { field: 'carTypeName', title: '车型', width: 150 },
-                    { field: 'configName', title: '配置', width: 100 },
-                    { field: 'colorName', title: '颜色', width: 120 },
-                    { field: 'colorCode', title: '颜色编码', width: 130 },
-                    { field: 'orderNo', title: '订单号', width: 180 },
-                    { field: 'orderType', title: '订单类型', width: 120 },
+                    { field: 'userName', title: '姓名', width: 200 },
+                    { field: 'depart', title: '部门' },
                 ],
                 column3: [
                     { type: 'seq', title: $t('page.common.index'), align: 'center', fixed: 'left', width: 60 },
-                    { field: 'carVin', title: 'VIN', width: 200 },
-                    { field: 'carTypeName', title: '车型', width: 150 },
-                    { field: 'configName', title: '配置', width: 100 },
-                    { field: 'colorName', title: '颜色', width: 120 },
-                    { field: 'colorCode', title: '颜色编码', width: 130 },
-                    { field: 'orderNo', title: '订单号', width: 180 },
-                    { field: 'orderType', title: '订单类型', width: 120 },
+                    { field: 'userName', title: '姓名', width: 200 },
+                    { field: 'depart', title: '部门' },
                 ],
                 column4: [
                     { type: 'seq', title: $t('page.common.index'), align: 'center', fixed: 'left', width: 60 },
-                    { field: 'carVin', title: 'VIN', width: 200 },
-                    { field: 'carTypeName', title: '车型', width: 150 },
-                    { field: 'configName', title: '配置', width: 100 },
-                    { field: 'colorName', title: '颜色', width: 120 },
-                    { field: 'colorCode', title: '颜色编码', width: 130 },
-                    { field: 'orderNo', title: '订单号', width: 180 },
-                    { field: 'orderType', title: '订单类型', width: 120 },
+                    { field: 'userName', title: '姓名', width: 200 },
+                    { field: 'depart', title: '部门' },
                 ],
                 query: {
                     col: 1,
@@ -175,7 +155,7 @@
                 } else {
                     this.data.defaultRadio1 = row.id
                 }
-                this.$refs.form.$refs.form.validateField('defaultRadio1')
+                // this.$refs.form.$refs.form.validateField('defaultRadio1')
             },
             // 单选2
             handleRadioSelect2 (row) {
@@ -184,7 +164,6 @@
                 } else {
                     this.data.defaultRadio2 = row
                 }
-                this.$refs.form.$refs.form.validateField('defaultRadio2')
             },
             // 多选
             handleCheckSelect (rows) {
@@ -196,7 +175,6 @@
                 } else {
                     this.data.defaultCheckbox1 = []
                 }
-                this.$refs.form.$refs.form.validateField('defaultCheckbox1')
             },
             // 多选2
             handleCheckSelect2 (rows) {
@@ -206,7 +184,6 @@
                 } else {
                     this.data.defaultCheckbox2 = []
                 }
-                this.$refs.form.$refs.form.validateField('defaultCheckbox2')
             },
             // 查询
             handleQuery () {

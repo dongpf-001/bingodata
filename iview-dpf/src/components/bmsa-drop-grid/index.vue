@@ -108,11 +108,8 @@
                 type: [String, Number],
                 default: '600'
             },
-            api: { // 查询数据源的api，接口方法名固定是getList
-                type: Object,
-                default: () => {
-                    return {}
-                }
+            apiList: { // 查询数据源的api方法
+                type: Function,
             },
             rowId: { // 区分数据唯一的字段
                 type: String,
@@ -200,7 +197,7 @@
             getApiData (params) {
                 // 核心api，需要自定义传，要求根据分页查询。
                 return new Promise((resolve) => {
-                    this.api.getList(params).then(res=>{
+                    this.apiList(params).then(res=>{
                         resolve(res)
                     })
                 })

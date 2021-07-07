@@ -2,8 +2,8 @@ import bmsaDropGrid from './bmsa-drop-grid';
 import bmsaOrgTree from './bmsa-org-tree';
 import bmsaShearImage from './bmsa-shear-image';
 import bmsaTableTool from './bmsa-table-tool';
-import bingoBill from './bingo-bill';
 
+import bingoBill from './bingo-bill';
 import bingoForm from './bingo-form';
 import bingoFormItem from './bingo-form-item';
 import bingoGridItem from './bingo-grid-item';
