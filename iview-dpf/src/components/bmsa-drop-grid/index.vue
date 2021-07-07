@@ -414,7 +414,9 @@
                         break
                     }
                 }
-                this.$refs.xTable.reloadData(this.gridOptions.data) // 从新加载数据
+                if (this.$refs.xTable) {
+                    this.$refs.xTable.reloadData(this.gridOptions.data) // 从新加载数据
+                }
                 this.$emit('on-select', this.checkSelect) // 选完查询条件后的回调
                 this.$emit('on-delete', row)
             },
