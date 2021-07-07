@@ -17,9 +17,6 @@ export default [
         path: '/api/getDropData',
         method: 'get',
         handle({ params }) {
-            // id: "9986"
-            // pageNum: "1"
-            // pageSize: "10"
             let backData = []
             if (params.id) { // 存在id查询返回对应数据
                 datas.forEach(item => {
