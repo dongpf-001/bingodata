@@ -18,7 +18,7 @@
                             </bingo-form-item>
                         </bingo-grid-item>
                         <bingo-grid-item>
-                            <bingo-form-item label="多选根据字段回显" prop="type" label-for="type">
+                            <bingo-form-item label="多选根据字段回显" prop="defaultCheckbox1" label-for="defaultCheckbox1">
                                 <bmsa-drop-grid :api="api"
                                                 ref="xDrop"
                                                 :columns="column2"
@@ -32,11 +32,11 @@
                                         <Input v-model.trim="queryData.carVin" placeholder="VIN:" icon="ios-search" @on-enter="handleQuery" @on-click="handleQuery" style="margin: 12px;width: 230px"/>
                                     </template>
                                 </bmsa-drop-grid>
-                                {{data.defaultCheckbox1}}
+                                <!--{{data.defaultCheckbox1}}-->
                             </bingo-form-item>
                         </bingo-grid-item>
                         <bingo-grid-item>
-                            <bingo-form-item label="单选根据数据集回显" prop="type" label-for="type">
+                            <bingo-form-item label="单选根据数据集回显" prop="defaultRadio2" label-for="defaultRadio2">
                                 <bmsa-drop-grid :api="api"
                                                 :columns="column3"
                                                 :isDefaultGather="true"
@@ -49,7 +49,7 @@
                             </bingo-form-item>
                         </bingo-grid-item>
                         <bingo-grid-item>
-                            <bingo-form-item label="多选根据数据集回显" prop="type" label-for="type">
+                            <bingo-form-item label="多选根据数据集回显" prop="defaultCheckbox2" label-for="defaultCheckbox2">
                                 <bmsa-drop-grid :api="api"
                                                 :columns="column4"
                                                 :isDefaultGather="true"
@@ -94,12 +94,12 @@
                 split1: 0.7,
                 api: Api,
                 data: {
-                    defaultRadio1: 661, // radio选中的数据
-                    defaultRadio2: { id: 672, carVin: '141DB6437C56'},
-                    defaultCheckbox1: [670, 671, 672, 661], // check选中的数据
+                    defaultRadio1: 9985, // radio选中的数据
+                    defaultRadio2: { id: 9987, carVin: '1A19ABD4514C'},
+                    defaultCheckbox1: [ 9984, 9985, 9986, 9987 ], // check选中的数据
                     defaultCheckbox2: [
-                        {id: 673, carVin: 'A7E5134FAE6B'},
-                        {id: 659, carVin: 'A209623A8B0E'}
+                        {id: 9985, carVin: 'BE7E0BD1FE37'},
+                        {id: 9995, carVin: '91AFD41B5AE7 '}
                     ],
                 },
                 queryData: {
@@ -154,6 +154,15 @@
                     defaultRadio1: [
                         {required: true, type: 'number', message: $t('page.common.noEmpty'), trigger: 'change'},
                     ],
+                    defaultRadio2: [
+                        {required: true, type: 'object', message: $t('page.common.noEmpty'), trigger: 'change'},
+                    ],
+                    defaultCheckbox1: [
+                        {required: true, type: 'array', message: $t('page.common.noEmpty'), trigger: 'change'},
+                    ],
+                    defaultCheckbox2: [
+                        {required: true, type: 'array', message: $t('page.common.noEmpty'), trigger: 'change'},
+                    ],
                 }
             }
         },
@@ -166,6 +175,7 @@
                 } else {
                     this.data.defaultRadio1 = row.id
                 }
+                this.$refs.form.$refs.form.validateField('defaultRadio1')
             },
             // 单选2
             handleRadioSelect2 (row) {
@@ -174,6 +184,7 @@
                 } else {
                     this.data.defaultRadio2 = row
                 }
+                this.$refs.form.$refs.form.validateField('defaultRadio2')
             },
             // 多选
             handleCheckSelect (rows) {
@@ -185,6 +196,7 @@
                 } else {
                     this.data.defaultCheckbox1 = []
                 }
+                this.$refs.form.$refs.form.validateField('defaultCheckbox1')
             },
             // 多选2
             handleCheckSelect2 (rows) {
@@ -194,6 +206,7 @@
                 } else {
                     this.data.defaultCheckbox2 = []
                 }
+                this.$refs.form.$refs.form.validateField('defaultCheckbox2')
             },
             // 查询
             handleQuery () {
