@@ -3,18 +3,25 @@
         <vxe-pulldown ref="xDown" transfer @hide-panel="handleHide">
             <div class="bmsa-drop-grid-tooltip" slot="default">
                 <!--显示框区域，可自定义头尾图标-->
-                <vxe-input ref="tagTable" v-model="queryRadioData" class="bmsa-drop-grid-input"
-                           :readonly="multiple"
-                           :clearable="!multiple"
-                           :class="showDrop ? 'is--active' : ''"
-                           @keyup="handleRadioQuery"
-                           @focus="handleShow"
-                           @blur="handleBlur"
-                           @clear="handleRadioClose">
-                    <template #suffix>
-                        <i class="ivu-icon ivu-icon-ios-arrow-down ivu-select-arrow" @click="handleShow"/>
-                    </template>
-                </vxe-input>
+                <Input ref="tagTable" v-model="queryRadioData" class="bmsa-drop-grid-input"
+                       :readonly="multiple"
+                       :clearable="!multiple"
+                       @on-keyup="handleRadioQuery"
+                       @on-focus="handleShow"
+                       @on-blur="handleBlur"
+                       @on-clear="handleRadioClose"/>
+                <!--<vxe-input ref="tagTable" v-model="queryRadioData" class="bmsa-drop-grid-input"-->
+                           <!--:readonly="multiple"-->
+                           <!--:clearable="!multiple"-->
+                           <!--:class="showDrop ? 'is&#45;&#45;active' : ''"-->
+                           <!--@keyup="handleRadioQuery"-->
+                           <!--@focus="handleShow"-->
+                           <!--@blur="handleBlur"-->
+                           <!--@clear="handleRadioClose">-->
+                    <!--<template #suffix>-->
+                        <!--<i class="ivu-icon ivu-icon-ios-arrow-down ivu-select-arrow" @click="handleShow"/>-->
+                    <!--</template>-->
+                <!--</vxe-input>-->
                 <!--选中数据后显示-->
                 <div class="bmsa-drop-grid-tag" v-if="multiple">
                     <Tag v-for="(item, key) in checkSelect" v-if="key<maxTagCount"

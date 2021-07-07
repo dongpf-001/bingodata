@@ -155,7 +155,7 @@
                 } else {
                     this.data.defaultRadio1 = row.id
                 }
-                // this.$refs.form.$refs.form.validateField('defaultRadio1')
+                this.$refs.form.$refs.form.validateField('defaultRadio1')
             },
             // 单选2
             handleRadioSelect2 (row) {
@@ -164,6 +164,7 @@
                 } else {
                     this.data.defaultRadio2 = row
                 }
+                this.$refs.form.$refs.form.validateField('defaultRadio2')
             },
             // 多选
             handleCheckSelect (rows) {
@@ -175,6 +176,7 @@
                 } else {
                     this.data.defaultCheckbox1 = []
                 }
+                this.$refs.form.$refs.form.validateField('defaultCheckbox1')
             },
             // 多选2
             handleCheckSelect2 (rows) {
@@ -184,6 +186,7 @@
                 } else {
                     this.data.defaultCheckbox2 = []
                 }
+                this.$refs.form.$refs.form.validateField('defaultCheckbox2')
             },
             // 查询
             handleQuery () {
