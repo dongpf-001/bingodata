@@ -41,7 +41,7 @@
                     <slot name="query"></slot>
                     <vxe-grid ref="xTable" v-bind="gridOptions" class="bmsa-table"
                               :row-id="rowId"
-                              :checkbox-config="{checkRowKeys: getCheckDefault}"
+                              :checkbox-config="{checkRowKeys: getCheckDefault, trigger: 'row'}"
                               @current-change="handleRadioChange"
                               @checkbox-change="handleCheckChange"
                               @checkbox-all="handleCheckAll">
