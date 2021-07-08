@@ -77,6 +77,7 @@
                         多选时回显属性是defaultCheckbox</p>
                     <p style="margin-top: 12px">7、提供slot='query'插槽进行数据据查询，需要自定义查询区域，传入的查询属性是query，点击查询后执行
                         组件里的getData方法</p>
+                    <p style="margin-top: 12px">8、校验时，在on-select方法执行后，自行触发下组件校验，this.$refs.form.$refs.form.validateField('defaultRadio1')</p>
                     <Divider>具体使用情况如上面四个例子</Divider>
                 </div>
             </Split>
