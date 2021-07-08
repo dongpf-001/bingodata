@@ -45,11 +45,6 @@
                               @current-change="handleRadioChange"
                               @checkbox-change="handleCheckChange"
                               @checkbox-all="handleCheckAll">
-                        <!--单选-->
-                        <template #radio="{ row }">
-                            <vxe-button type="text" @click="handleClearRadioRow" v-if="JSON.stringify(radioSelect)!='{}'">取消</vxe-button>
-                            <vxe-button type="text" v-else>选择</vxe-button>
-                        </template>
                         <!--分页-->
                         <template #pager>
                             <vxe-pager border
@@ -338,25 +333,32 @@
             },
             // 单选事件
             handleRadioChange ({ row }) {
-                this.radioSelect = row
-                this.queryRadioData = this.radioSelect[this.rowName]
-                this.$emit('on-select', this.radioSelect) // 选完查询条件后的回调
+                if (!this.multiple) {
+                    this.radioSelect = row
+                    this.queryRadioData = this.radioSelect[this.rowName]
+                    this.$emit('on-select', this.radioSelect) // 选完查询条件后的回调
+                }
             },
             // 单选的取消选中，即删除，由于是失焦时触发，而数据是在聚焦时获取高亮，所以不用清空
             handleClearRadioRow () {
-                this.radioSelect = {}
-                this.$refs.xTable.clearRadioRow()
-                this.$emit('on-select', this.radioSelect) // 选完查询条件后的回调
+                if (!this.multiple) {
+                    this.radioSelect = {}
+                    this.$refs.xTable.clearRadioRow()
+                    this.$emit('on-select', this.radioSelect) // 选完查询条件后的回调
+                }
             },
             // 单选时删除input中标签
             handleRadioClose () {
-                let deleteItem = JSON.parse(JSON.stringify(this.radioSelect))
-                this.radioSelect = {}
-                this.$emit('on-select', {}) // 选完查询条件后的回调
-                this.$emit('on-delete', deleteItem) // 单独提供删除的回调方法
+                if (!this.multiple) {
+                    let deleteItem = JSON.parse(JSON.stringify(this.radioSelect))
+                    this.radioSelect = {}
+                    this.$emit('on-select', {}) // 选完查询条件后的回调
+                    this.$emit('on-delete', deleteItem) // 单独提供删除的回调方法
+                }
             },
             // 多选事件
             handleCheckChange ({ row }) {
+                if (!this.multiple) return
                 let flag = true // true为选中，false为取消选中
                 let index = 0
                 for (let i=0; i<this.checkSelect.length; i++) {
@@ -377,6 +379,7 @@
             },
             // 全选事件
             handleCheckAll ({ records }) {
+                if (!this.multiple) return
                 let datas = JSON.parse(JSON.stringify(this.checkSelect)) // 拷贝当前选中的数据
                 if (records.length) { // 表示选中当前页数据
                     this.gridOptions.data.forEach(item => { // 当前页数据循环
@@ -411,6 +414,7 @@
             },
             // 多选时删除input中标签
             handleCheckClose (row) {
+                if (!this.multiple) return
                 for (let i=0; i<this.checkSelect.length; i++) {
                     let item = this.checkSelect[i]
                     if (item[this.rowId] == row[this.rowId]) {
