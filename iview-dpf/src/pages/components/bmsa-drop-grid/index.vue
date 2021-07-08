@@ -160,7 +160,7 @@
             // 单选2
             handleRadioSelect2 (row) {
                 if (JSON.stringify(row) == '{}') {
-                    this.data.defaultRadio2 = {}
+                    this.data.defaultRadio2 = null
                 } else {
                     this.data.defaultRadio2 = row
                 }
