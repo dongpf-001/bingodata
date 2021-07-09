@@ -24,11 +24,13 @@
                 <!--</vxe-input>-->
                 <!--选中数据后显示-->
                 <div class="bmsa-drop-grid-tag" v-if="multiple">
-                    <Tag v-for="(item, key) in checkSelect" v-if="key<maxTagCount"
-                         closable
-                         @on-close="handleCheckClose(item)">
-                        {{item[rowName]}}
-                    </Tag>
+                    <span v-for="(item, key) in checkSelect" :key="key">
+                        <Tag v-if="key<maxTagCount"
+                             closable
+                             @on-close="handleCheckClose(item)">
+                            {{item[rowName]}}
+                        </Tag>
+                    </span>
                     <Tooltip :content="getTooltip" transfer v-if="checkSelect.length>maxTagCount" :max-width="150">
                         <Tag v-if="checkSelect.length>maxTagCount">
                             + {{checkSelect.length-maxTagCount}}...
