@@ -24,13 +24,12 @@
                 <!--</vxe-input>-->
                 <!--选中数据后显示-->
                 <div class="bmsa-drop-grid-tag" v-if="multiple">
-                    <span v-for="(item, key) in checkSelect" :key="key">
-                        <Tag v-if="key<maxTagCount"
-                             closable
-                             @on-close="handleCheckClose(item)">
-                            {{item[rowName]}}
-                        </Tag>
-                    </span>
+                    <Tag v-for="(item, key) in getCheckSelect"
+                         :key="key"
+                         closable
+                         @on-close="handleCheckClose(item)">
+                        {{item[rowName]}}
+                    </Tag>
                     <Tooltip :content="getTooltip" transfer v-if="checkSelect.length>maxTagCount" :max-width="150">
                         <Tag v-if="checkSelect.length>maxTagCount">
                             + {{checkSelect.length-maxTagCount}}...
@@ -94,7 +93,7 @@
                     totalResult: 0, // 总数量
                 },
                 radioSelect: {}, // 单选选中的数据
-                checkSelect: {}, // 多选选中的数据
+                checkSelect: [], // 多选选中的数据
             }
         },
         props: {
@@ -157,6 +156,10 @@
             }
         },
         computed: {
+            // 获取显示框内应该显示的数据，这样写性能最佳
+            getCheckSelect () {
+                return this.checkSelect.slice(0, this.maxTagCount)
+            },
             getTooltip () { // 构造显示的tooltip
                 let message = []
                 if (this.checkSelect.length) {
