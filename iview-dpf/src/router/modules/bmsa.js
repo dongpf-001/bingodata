@@ -186,5 +186,15 @@ export default {
             },
             component: () => import('@/pages/components/bingo-create-info')
         },
+        {
+            path: 'bingo-state',
+            name: `${oldpre}state`,
+            meta: {
+                ...meta,
+                title: '状态选择组件',
+                closable: true
+            },
+            component: () => import('@/pages/components/bingo-state')
+        },
     ]
 };

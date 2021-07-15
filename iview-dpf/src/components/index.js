@@ -18,6 +18,7 @@ import bingoSelectIcon from './bingo-select-icon';
 import bingoTree from './bingo-tree';
 import bingoSelect from './bingo-select';
 import bingoCreateInfo from './bingo-create-info';
+import bingoState from './bingo-state';
 
 const components = {
     bmsaDropGrid,
@@ -40,6 +41,7 @@ const components = {
     bingoTree,
     bingoSelect,
     bingoCreateInfo,
+    bingoState,
 }
 const install = Vue => {
     Object.keys(components).forEach((key) => {

@@ -86,6 +86,10 @@ export default {
                     path: `${pre}bingo-tree`,
                     title: '树组件'
                 },
+                {
+                    path: `${pre}bingo-state`,
+                    title: '状态选择组件'
+                },
             ]
         },
     ]
