@@ -9,14 +9,17 @@
                     <Divider style="margin-top: 70px">鼠标滑入选择</Divider>
                     <bingo-state v-model="states2" :size="22"></bingo-state>
                     {{states2}}
-                    <Divider style="margin-top: 70px">红绿灯形式</Divider>
+                    <Divider style="margin-top: 70px">纵向选择形式</Divider>
                     <bingo-state type="vertical" v-model="states3" title="SSS" :size="30"></bingo-state>
                     {{states3}}
                 </div>
                 <div slot="right" class="demo-split-pane">
                     <Divider>详细描述</Divider>
                     <h3>使用注意事项</h3>
-                    <p style="margin-top: 12px">1、showSelectAll代表是否全选，多选的时候可开启此功能</p>
+                    <p style="margin-top: 12px">1、type代表组件类型，不写的话默认是鼠标划入选择形式，为select时是下拉选择形式，为vertical
+                    时是纵向选择形式</p>
+                    <p style="margin-top: 12px">2、states为状态灯的数据源，默认是红、黄、绿、红黄，可自定义传入</p>
+                    <p style="margin-top: 12px">3、size代表灯的大小</p>
                 </div>
             </Split>
         </Card>
