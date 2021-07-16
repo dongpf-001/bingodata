@@ -32,8 +32,7 @@
             </div>
             <div v-for='item in verticalState' :key='item.value' class="state-vertical-state">
                 <span class="traffic-light" :class='item.color' @click="change(item.color)"
-                      :style="showClass == item.color?styles:styles2">
-<!--                    <Icon type="md-checkmark" size="18" class="state-vertical-icon" v-if="showClass == item.color"/>-->
+                      :style="showClass == item.color ? styleVerticalY : styleVerticalN">
                 </span>
             </div>
         </div>
@@ -68,7 +67,7 @@
             }
         },
         props: {
-            states: {
+            states: { // 数据源
                 type: [Array, Function],
                 default () {
                     return [
@@ -92,41 +91,41 @@
                     ]
                 }
             },
-            value: {
+            value: { // 双向绑定
                 type: [String, Number, Array, Object],
                 default () {
                     return ''
                 }
             },
-            disabled: {
+            disabled: { // 是否禁用
                 type: Boolean,
                 default: false
             },
-            isCondition: {
+            isCondition: { // 选择状态前判断是否有条件
                 type: Boolean,
                 default: false
             },
-            type: {
+            type: { // 组件类型
                 type: String,
                 default: ''
             },
-            title: {
+            title: { // 纵向形式时的title
                 type: String,
                 default: ''
             },
-            size: {
+            size: { // 状态灯的大小
                 type: Number,
                 default: 22
             },
-            placement: {
+            placement: { // 默认形态显示灯的方向
                 type: String,
                 default: 'right'
             },
-            placeholder: {
+            placeholder: { // 水印
                 type: String,
                 default: ''
             },
-            transfer: {
+            transfer: { // 是否提出到body
                 type: Boolean,
                 default: false
             },
@@ -139,14 +138,16 @@
         mounted () {
         },
         computed: {
-            styles () {
+            // 纵向形式状态灯选中样式
+            styleVerticalY () {
                 let style = {
                     width: `${this.size}px`,
                     height: `${this.size}px`
                 };
                 return style;
             },
-            styles2 () {
+            // 纵向形式状态灯未选中样式
+            styleVerticalN () {
                 let style = {
                     width: `${this.size}px`,
                     height: `${this.size}px`,

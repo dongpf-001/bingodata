@@ -1,0 +1,81 @@
+.traffic-light {
+  margin-top: 4px;
+  border-radius: 50%;
+  display: inline-block;
+  overflow: hidden;
+}
+.state-content {
+  float: left;
+  text-align: center;
+}
+.state-content:not(:first-child) {
+  margin-left: 8px;
+}
+.drop-state-content {
+  float: left;
+  text-align: center;
+  margin-left: 8px;
+}
+.white {
+  background-color: #C0C0C0;
+}
+.red {
+  background-color: red;
+}
+
+.yellow {
+  background-color: yellow;
+}
+.green {
+  background-color: green;
+}
+.redYellow {
+  background: linear-gradient(to bottom, red 0%, red, red, red, yellow, yellow, yellow, yellow 100%);
+}
+.state-icon {
+  color: white;
+  margin: 0 auto;
+}
+/*----------------------------------*/
+.state-wrapper {
+  .ivu-poptip-inner {
+    background-color: rgba(0 ,0 ,0 , 0.2);
+  }
+  .ivu-poptip-rel {
+    top: 2px
+  }
+}
+.state-wrapper .ivu-poptip-popper[x-placement^=right] .ivu-poptip-arrow:after {
+  content: " ";
+  left: 1px;
+  bottom: -7px;
+  border-left-width: 0;
+  border-right-width: 7px;
+  border-right-color: rgba(0 ,0 ,0 , 0.1);
+}
+.state-vertical { // 纵向状态
+  width: 50px;
+  /*border: 1px solid red;*/
+  background: #d2dde3;
+  border-radius: 10px;
+  .state-vertical-title {
+    height: 32px;
+    text-align: center;
+    color: #fff;
+    background: #0077c8;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+    p {
+      padding-top: 6px;
+    }
+  }
+  .state-vertical-state {
+    margin-top: 4px;
+    margin-bottom: 4px;
+    text-align: center;
+    .state-vertical-icon {
+      color: #0077c8;
+      margin-top: 5px;
+    }
+  }
+}

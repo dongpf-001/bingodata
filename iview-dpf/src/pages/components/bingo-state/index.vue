@@ -3,9 +3,15 @@
         <Card>
             <Split v-model="split1">
                 <div slot="left" class="demo-split-pane">
-                    <bingo-state>
-                    
-                    </bingo-state>
+                    <Divider>下拉选框</Divider>
+                    <bingo-state type="select" v-model="states1" :size="22"></bingo-state>
+                    {{states1}}
+                    <Divider style="margin-top: 70px">鼠标滑入选择</Divider>
+                    <bingo-state v-model="states2" :size="22"></bingo-state>
+                    {{states2}}
+                    <Divider style="margin-top: 70px">红绿灯形式</Divider>
+                    <bingo-state type="vertical" v-model="states3" title="SSS" :size="30"></bingo-state>
+                    {{states3}}
                 </div>
                 <div slot="right" class="demo-split-pane">
                     <Divider>详细描述</Divider>
@@ -24,6 +30,9 @@
         data () {
             return {
                 split1: 0.7,
+                states1: 'yellow',
+                states2: 'yellow',
+                states3: '',
             }
         },
         computed: {},
